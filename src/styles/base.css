@@ -158,3 +158,47 @@
 .dm-proscons li + li {
   margin-top: 0.25rem;
 }
+
+/* --- Diagram --- */
+.dm-diagram {
+  margin-block: 1rem;
+  overflow-x: auto;
+}
+.dm-diagram svg {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  margin-inline: auto;
+}
+/* Menimpa warna tertanam Mermaid dengan warna tema. */
+.dm-diagram svg .node rect,
+.dm-diagram svg .node polygon,
+.dm-diagram svg .node circle,
+.dm-diagram svg .node ellipse,
+.dm-diagram svg .node path,
+.dm-diagram svg .cluster rect {
+  fill: var(--sl-color-bg-nav) !important;
+  stroke: var(--sl-color-gray-3) !important;
+}
+.dm-diagram svg .edgePath path,
+.dm-diagram svg .flowchart-link,
+.dm-diagram svg .messageLine0,
+.dm-diagram svg .messageLine1 {
+  stroke: var(--sl-color-gray-2) !important;
+}
+.dm-diagram svg marker path {
+  fill: var(--sl-color-gray-2) !important;
+  stroke: var(--sl-color-gray-2) !important;
+}
+.dm-diagram svg text,
+.dm-diagram svg .nodeLabel,
+.dm-diagram svg .edgeLabel,
+.dm-diagram svg span {
+  fill: var(--sl-color-white) !important;
+  color: var(--sl-color-white) !important;
+}
+.dm-diagram svg .edgeLabel,
+.dm-diagram svg .edgeLabel rect {
+  background-color: transparent !important;
+  fill: transparent !important;
+}

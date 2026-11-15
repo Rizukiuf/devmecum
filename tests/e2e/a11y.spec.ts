@@ -3,7 +3,11 @@ import { expect, test, type Page } from '@playwright/test';
 
 const KEY = 'devmecum:tampilan';
 /** Halaman yang diperiksa kontrasnya. Task berikutnya menambah halaman ke daftar ini. */
-const PAGES = ['/fondasi/uji-komponen/', '/fondasi/uji-komponen/02-prasyarat/halaman-usang/'];
+const PAGES = [
+  '/fondasi/uji-komponen/',
+  '/fondasi/uji-komponen/02-prasyarat/halaman-usang/',
+  '/fondasi/uji-komponen/03-konsep-inti-dan-teori/halaman-diagram/',
+];
 
 const AKSEN = ['biru', 'hijau', 'ungu', 'jingga'];
 const COMBOS: [string, string][] = [

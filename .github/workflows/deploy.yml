@@ -35,6 +35,9 @@ jobs:
       - name: Pasang dependensi
         run: pnpm install --frozen-lockfile
 
+      - name: Pasang Chromium (untuk merender diagram)
+        run: pnpm exec playwright install --with-deps chromium
+
       - name: Pemeriksaan tipe
         run: pnpm check
 

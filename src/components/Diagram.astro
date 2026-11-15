@@ -1,0 +1,22 @@
+---
+// Diagram Mermaid yang dirender saat build menjadi SVG inline, tanpa JavaScript
+// di browser. Ditulis sebagai komponen, bukan blok kode ```mermaid, karena
+// pemroses Markdown Astro 7 tidak menjalankan plugin rehype Mermaid.
+//
+//   <Diagram title="Alur uji" code={`flowchart LR
+//     A --> B`} />
+import { renderDiagram } from '../lib/diagram.ts';
+
+interface Props {
+  /** Deskripsi singkat untuk pembaca layar; wajib. */
+  title: string;
+  /** Sintaks Mermaid. */
+  code: string;
+}
+const { title, code } = Astro.props;
+const svg = await renderDiagram(title, code);
+---
+
+<figure class="dm-diagram not-content" role="img" aria-label={title}>
+  <Fragment set:html={svg} />
+</figure>

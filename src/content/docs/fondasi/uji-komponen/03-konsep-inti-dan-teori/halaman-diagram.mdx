@@ -15,4 +15,14 @@ codeTested: tidak-berlaku
 tags: [uji]
 ---
 
+import Diagram from '@components/Diagram.astro';
+
 Halaman ini memuat diagram uji.
+
+<Diagram
+  title="Alur uji"
+  code={`flowchart LR
+  A[Tulis tes] --> B[Tes gagal]
+  B --> C[Implementasi]
+  C --> D[Tes lolos]`}
+/>
