@@ -1,0 +1,14 @@
+node_modules/
+dist/
+.astro/
+.wrangler/
+.lighthouseci/
+test-results/
+playwright-report/
+.superpowers/
+
+.env
+.env.*
+.dev.vars
+
+.claude/settings.local.json
