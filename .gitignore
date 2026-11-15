@@ -12,3 +12,4 @@ playwright-report/
 .dev.vars
 
 .claude/settings.local.json
+wrangler-preview.log

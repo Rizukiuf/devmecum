@@ -64,10 +64,12 @@ jobs:
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           PR_NUMBER: ${{ github.event.pull_request.number }}
         run: |
-          set -o pipefail
-          output="$(pnpm exec wrangler preview --name "pr-${PR_NUMBER}" --json)"
-          printf '%s\n' "$output"
-          url="$(printf '%s' "$output" | jq -er '.preview.urls[0]')"
+          # Situs ini hanya aset statis tanpa skrip Worker, sedangkan
+          # `wrangler preview` butuh skrip. Jadi pratinjau dibuat sebagai versi
+          # baru ber-alias. dist/ masih berisi build uji dari langkah e2e.
+          pnpm exec wrangler versions upload --preview-alias "pr-${PR_NUMBER}" \
+            --message "PR ${PR_NUMBER}" 2>&1 | tee wrangler-preview.log
+          url="$(grep -i 'alias' wrangler-preview.log | grep -oE 'https://[^ ]+' | head -1 || true)"
           echo "url=$url" >> "$GITHUB_OUTPUT"
 
       - name: Tulis URL pratinjau di PR
