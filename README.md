@@ -9,7 +9,14 @@ Proyek ini masih di tahap awal. Rancangan dan rencana pelaksanaannya ada di:
 
 ## Menjalankan di komputer sendiri
 
-Butuh Node 26 dan pnpm 10. Perintah proyek ditambahkan di sini begitu kerangka aplikasinya ada.
+Butuh Node 26 dan pnpm 10.
+
+```
+pnpm install
+pnpm dev       # server pengembangan di http://localhost:4321
+pnpm build     # build produksi ke dist/
+pnpm check     # pemeriksaan tipe
+```
 
 ## Lisensi
 
