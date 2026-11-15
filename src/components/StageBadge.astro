@@ -1,0 +1,12 @@
+---
+// Lencana tingkat kematangan teknologi (rancangan §5.3). Nilainya dihitung dari
+// halaman yang terbit, tidak pernah ditulis tangan.
+import { STAGE_LABELS, type Stage } from '../lib/maturity.ts';
+
+interface Props {
+  stage: Stage;
+}
+const { stage } = Astro.props;
+---
+
+<span class="dm-badge dm-badge-stage" data-stage={stage}>{STAGE_LABELS[stage]}</span>

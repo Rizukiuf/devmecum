@@ -1,1 +1,81 @@
-/* Gaya dasar Devmecum. Tema dan pengaturan baca punya berkas sendiri. */
+/* Gaya dasar Devmecum. Tema dan pengaturan baca punya berkas sendiri.
+   Semua warna memakai variabel Starlight supaya mengikuti keempat tema. */
+
+/* --- Remah roti --- */
+.dm-breadcrumb ol {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem 0.5rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: var(--sl-text-sm);
+  color: var(--sl-color-gray-2);
+}
+.dm-breadcrumb li + li::before {
+  content: '›';
+  margin-inline-end: 0.5rem;
+  color: var(--sl-color-gray-3);
+}
+.dm-breadcrumb a {
+  color: var(--sl-color-text-accent);
+  text-decoration: none;
+}
+.dm-breadcrumb a:hover {
+  text-decoration: underline;
+}
+
+/* --- Baris meta di bawah judul --- */
+.dm-page-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 0.75rem;
+  margin-top: 0.75rem;
+  font-size: var(--sl-text-sm);
+  color: var(--sl-color-gray-2);
+}
+
+/* --- Lencana --- */
+.dm-badge {
+  display: inline-block;
+  padding: 0.1rem 0.6rem;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  font-size: var(--sl-text-xs);
+  font-weight: 600;
+  line-height: 1.6;
+  white-space: nowrap;
+}
+.dm-badge-level,
+.dm-badge-stage {
+  background: var(--sl-color-accent-low);
+  color: var(--sl-color-accent-high);
+  border-color: var(--sl-color-accent);
+}
+.dm-badge-stale {
+  background: var(--sl-color-orange-low);
+  color: var(--sl-color-orange-high);
+  border-color: var(--sl-color-orange);
+}
+.dm-badge-untested {
+  border-color: var(--sl-color-gray-4);
+  color: var(--sl-color-gray-2);
+}
+
+/* --- Tautan sunting dan lapor di kaki halaman --- */
+.dm-page-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.5rem;
+  margin: 0;
+  font-size: var(--sl-text-sm);
+}
+.dm-page-links a {
+  color: var(--sl-color-gray-3);
+  text-decoration: none;
+}
+.dm-page-links a:hover {
+  color: var(--sl-color-white);
+  text-decoration: underline;
+}

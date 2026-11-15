@@ -1,0 +1,25 @@
+---
+// Pengganti EditLink Starlight: "Sunting halaman" ditambah "Lapor kesalahan".
+// Keduanya menuju GitHub, jadi hanya tampil bila repositorinya publik
+// (lihat `repo.public` di site.config.mjs).
+import site from '../../site.config.mjs';
+
+const { editUrl } = Astro.locals.starlightRoute;
+const { repo } = site;
+
+const pagePath = Astro.url.pathname;
+const params = new URLSearchParams({
+  title: `Kesalahan di ${pagePath}`,
+  body: `Halaman: ${site.url}${pagePath}\n\nApa yang salah:\n\nSumber yang benar (tautan):\n`,
+});
+const reportUrl = `https://github.com/${repo.owner}/${repo.name}/issues/new?${params}`;
+---
+
+{
+  repo.public && (
+    <p class="dm-page-links print:hidden">
+      {editUrl && <a href={editUrl}>Sunting halaman</a>}
+      <a href={reportUrl}>Lapor kesalahan</a>
+    </p>
+  )
+}

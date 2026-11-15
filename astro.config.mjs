@@ -29,8 +29,14 @@ export default defineConfig({
       components: {
         ThemeProvider: './src/overrides/ThemeProvider.astro',
         ThemeSelect: './src/overrides/ThemeSelect.astro',
+        PageTitle: './src/overrides/PageTitle.astro',
+        EditLink: './src/overrides/EditLink.astro',
       },
       routeMiddleware: './src/routeData.ts',
+      // Tautan ke GitHub hanya aktif bila repositorinya publik.
+      editLink: site.repo.public
+        ? { baseUrl: `https://github.com/${site.repo.owner}/${site.repo.name}/edit/${site.repo.branch}/` }
+        : undefined,
     }),
   ],
 });

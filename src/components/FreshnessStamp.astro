@@ -1,0 +1,25 @@
+---
+// Stempel kemutakhiran: versi yang dibahas dan tanggal verifikasi terakhir.
+// Lencana "Perlu ditinjau" dihitung saat build; situs dibangun ulang tiap minggu
+// supaya lencana ini tetap sesuai tanggal.
+import { getDomain, getTech } from '../lib/data.ts';
+import { formatDate, isStale, today } from '../lib/freshness.ts';
+
+const { tech: techSlug, techVersion, lastVerified, codeTested } = Astro.locals.starlightRoute.entry.data;
+const tech = techSlug === undefined ? undefined : await getTech(techSlug);
+const domain = tech === undefined ? undefined : await getDomain(tech.domain);
+const stale =
+  lastVerified !== undefined && isStale(lastVerified, domain?.freshnessMonths ?? 6, today());
+---
+
+{
+  techVersion !== undefined && lastVerified !== undefined && (
+    <>
+      <span class="dm-stamp">
+        Membahas versi {techVersion} · Diverifikasi {formatDate(lastVerified)}
+      </span>
+      {stale && <span class="dm-badge dm-badge-stale">Perlu ditinjau</span>}
+      {codeTested === false && <span class="dm-badge dm-badge-untested">Belum diuji otomatis</span>}
+    </>
+  )
+}

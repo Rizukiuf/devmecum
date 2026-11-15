@@ -1,0 +1,13 @@
+---
+// Lencana level halaman. Level `umum` (Ringkasan, Evaluasi, Referensi, …) tidak
+// diberi lencana.
+import { LEVEL_LABELS } from '../lib/labels.ts';
+import type { Level } from '../lib/schemas.ts';
+
+interface Props {
+  level: Level;
+}
+const { level } = Astro.props;
+---
+
+{level !== 'umum' && <span class="dm-badge dm-badge-level">{LEVEL_LABELS[level]}</span>}
