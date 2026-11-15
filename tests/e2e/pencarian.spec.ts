@@ -12,7 +12,8 @@ test('pencarian menemukan kata unik dan menawarkan filter', async ({ page }) => 
   await expect(result).toHaveAttribute('href', /\/fondasi\/uji-komponen\/02-prasyarat\/halaman-usang\//);
 
   const filters = page.locator('.pagefind-ui__filter-name');
-  await expect(filters).toHaveText(['domain', 'jenis', 'level'], { ignoreCase: true });
+  // Filter dirender bertahap oleh Pagefind; beri waktu lebih saat tes berjalan paralel.
+  await expect(filters).toHaveText(['domain', 'jenis', 'level'], { ignoreCase: true, timeout: 20_000 });
 });
 
 test('halaman materi membawa nilai filter domain, level, dan jenis', async ({ page }) => {
