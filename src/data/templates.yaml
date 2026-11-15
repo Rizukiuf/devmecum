@@ -1,0 +1,111 @@
+# Lima templat bab (rancangan §5.4 dan Lampiran B).
+# Level bab menentukan tingkat kematangan yang dicapai saat bab itu lengkap:
+# dasar → 2, menengah → 3, lanjut → 4, profesional → 5, umum → 5 (bab 1 → 1).
+- id: A
+  name: Bahasa pemrograman
+  chapters:
+    - { number: 1, title: Ringkasan, level: umum }
+    - { number: 2, title: Pengenalan, level: dasar }
+    - { number: 3, title: Lingkungan kerja, level: dasar }
+    - { number: 4, title: Sintaks dasar, level: dasar }
+    - { number: 5, title: Alur kontrol, level: dasar }
+    - { number: 6, title: Struktur data bawaan, level: dasar }
+    - { number: 7, title: Fungsi, level: menengah }
+    - { number: 8, title: Modul dan paket, level: menengah }
+    - { number: 9, title: Berorientasi objek dan sistem tipe lanjut, level: menengah }
+    - { number: 10, title: Gaya fungsional, level: menengah }
+    - { number: 11, title: Error handling dan debugging, level: menengah }
+    - { number: 12, title: "File, I/O, dan serialisasi", level: menengah }
+    - { number: 13, title: Pustaka standar, level: menengah }
+    - { number: 14, title: Testing, level: menengah }
+    - { number: 15, title: Tooling dan kualitas kode, level: menengah }
+    - { number: 16, title: Konkurensi dan paralelisme, level: lanjut }
+    - { number: 17, title: Memori dan performa, level: lanjut }
+    - { number: 18, title: Metaprogramming dan internals, level: lanjut }
+    - { number: 19, title: Pola desain dan idiom, level: lanjut }
+    - { number: 20, title: Keamanan, level: lanjut }
+    - { number: 21, title: Ekosistem dan framework, level: lanjut }
+    - { number: 22, title: Di dunia profesional, level: profesional }
+    - { number: 23, title: Bekerja dengan AI, level: umum }
+    - { number: 24, title: Evaluasi, level: umum }
+    - { number: 25, title: Latihan dan proyek, level: umum }
+    - { number: 26, title: Referensi, level: umum }
+
+- id: B
+  name: Framework dan library
+  chapters:
+    - { number: 1, title: Ringkasan, level: umum }
+    - { number: 2, title: Pengenalan, level: dasar }
+    - { number: 3, title: Instalasi dan struktur proyek, level: dasar }
+    - { number: 4, title: Konsep inti, level: dasar }
+    - { number: 5, title: Routing dan navigasi, level: dasar }
+    - { number: 6, title: Data, level: menengah }
+    - { number: 7, title: "Form, validasi, dan input", level: menengah }
+    - { number: 8, title: Tampilan dan styling, level: menengah }
+    - { number: 9, title: Autentikasi dan otorisasi, level: menengah }
+    - { number: 10, title: API dan integrasi layanan, level: menengah }
+    - { number: 11, title: Testing, level: menengah }
+    - { number: 12, title: Performa dan optimisasi, level: lanjut }
+    - { number: 13, title: Keamanan, level: lanjut }
+    - { number: 14, title: Build dan deployment, level: lanjut }
+    - { number: 15, title: Ekosistem dan plugin, level: lanjut }
+    - { number: 16, title: Topik lanjut dan internals, level: lanjut }
+    - { number: 17, title: Di dunia profesional, level: profesional }
+    - { number: 18, title: Bekerja dengan AI, level: umum }
+    - { number: 19, title: Evaluasi, level: umum }
+    - { number: 20, title: Proyek latihan, level: umum }
+    - { number: 21, title: Referensi dan cheat sheet, level: umum }
+
+- id: C
+  name: Tools dan platform
+  chapters:
+    - { number: 1, title: Ringkasan, level: umum }
+    - { number: 2, title: Konsep dan arsitektur, level: dasar }
+    - { number: 3, title: Instalasi dan konfigurasi awal, level: dasar }
+    - { number: 4, title: Perintah dan antarmuka inti, level: dasar }
+    - { number: 5, title: Alur kerja harian, level: dasar }
+    - { number: 6, title: Konfigurasi lanjut, level: menengah }
+    - { number: 7, title: "Jaringan, penyimpanan, dan integrasi", level: menengah }
+    - { number: 8, title: Keamanan dan manajemen akses, level: lanjut }
+    - { number: 9, title: Observability dan troubleshooting, level: lanjut }
+    - { number: 10, title: Otomasi dan CI/CD, level: lanjut }
+    - { number: 11, title: Produksi dan skala, level: profesional }
+    - { number: 12, title: Alternatif dan perbandingan, level: umum }
+    - { number: 13, title: Evaluasi, level: umum }
+    - { number: 14, title: Lab praktik, level: umum }
+    - { number: 15, title: Sertifikasi dan referensi, level: umum }
+
+- id: D
+  name: Database
+  chapters:
+    - { number: 1, title: Ringkasan, level: umum }
+    - { number: 2, title: Model data dan arsitektur, level: dasar }
+    - { number: 3, title: Instalasi dan tools klien, level: dasar }
+    - { number: 4, title: Bahasa kueri dasar, level: dasar }
+    - { number: 5, title: Desain skema dan pemodelan data, level: menengah }
+    - { number: 6, title: Kueri lanjut, level: menengah }
+    - { number: 7, title: Indeks dan optimisasi kueri, level: menengah }
+    - { number: 8, title: Transaksi dan konsistensi, level: lanjut }
+    - { number: 9, title: "Replikasi, sharding, ketersediaan tinggi", level: lanjut }
+    - { number: 10, title: "Backup, restore, dan migrasi", level: lanjut }
+    - { number: 11, title: Keamanan, level: lanjut }
+    - { number: 12, title: Integrasi dengan aplikasi, level: lanjut }
+    - { number: 13, title: Operasional di produksi dan cloud, level: profesional }
+    - { number: 14, title: Evaluasi dan perbandingan, level: umum }
+    - { number: 15, title: Latihan, level: umum }
+
+- id: E
+  name: Konsep dan disiplin
+  chapters:
+    - { number: 1, title: Ringkasan dan peta konsep, level: umum }
+    - { number: 2, title: Prasyarat, level: dasar }
+    - { number: 3, title: Konsep inti dan teori, level: dasar }
+    - { number: 4, title: Algoritma dan teknik utama, level: menengah }
+    - { number: 5, title: Implementasi langkah demi langkah, level: menengah }
+    - { number: 6, title: Evaluasi dan metrik, level: menengah }
+    - { number: 7, title: Studi kasus, level: lanjut }
+    - { number: 8, title: Praktik produksi, level: profesional }
+    - { number: 9, title: "Etika, risiko, dan keterbatasan", level: umum }
+    - { number: 10, title: Perkembangan terkini, level: umum }
+    - { number: 11, title: Latihan dan proyek, level: umum }
+    - { number: 12, title: Referensi, level: umum }

@@ -1,0 +1,17 @@
+# Teknologi uji, bukan konten nyata. Dipakai tes e2e dan pratinjau PR untuk
+# menampilkan semua komponen. Hanya ikut dibangun bila DEVMECUM_FIXTURES=1;
+# build produksi tidak memuatnya.
+name: Uji Komponen
+slug: uji-komponen
+type: concept
+domain: fondasi
+template: E
+website: https://example.com
+docs: https://example.com/docs
+latestVersion: "1.0"
+versionSource: { kind: github, repo: Rizukiuf/devmecum }
+requires: []
+alternatives: [python]
+tags: [uji]
+useCases:
+  - menguji tampilan komponen

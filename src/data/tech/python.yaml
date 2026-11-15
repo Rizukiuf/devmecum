@@ -1,0 +1,20 @@
+name: Python
+slug: python
+type: language
+domain: bahasa
+template: A
+creator: Guido van Rossum
+firstRelease: 1991
+license: PSF-2.0
+website: https://www.python.org
+docs: https://docs.python.org/3/
+latestVersion: "3.15.2" # dari https://www.python.org/downloads/ per 15 November 2026
+versionSource: { kind: github, repo: python/cpython }
+requires: []
+alternatives: [javascript, ruby, go]
+tags: [serbaguna, scripting, data, otomasi]
+useCases:
+  - otomasi dan scripting
+  - analisis data dan machine learning
+  - backend web dan API
+  - pengajaran pemrograman
