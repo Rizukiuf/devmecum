@@ -29,5 +29,24 @@
       "Read(./.env.*)",
       "Read(./.dev.vars)"
     ]
+  },
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [{ "type": "command", "command": "node scripts/hooks/protect-files.mjs" }]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [{ "type": "command", "command": "node scripts/hooks/validate-edited.mjs" }]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [{ "type": "command", "command": "node scripts/hooks/validate-on-stop.mjs" }]
+      }
+    ]
   }
 }
