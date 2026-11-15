@@ -1,0 +1,31 @@
+/* Tema Kontras tinggi: hitam pekat, teks putih, tautan kuning. Berbasis tema
+   gelap (data-theme="dark"). Pilihan warna aksen diabaikan di tema ini supaya
+   kontrasnya selalu maksimal. */
+:root[data-tema='contrast'] {
+  --sl-color-white: #ffffff;
+  --sl-color-gray-1: #ffffff;
+  --sl-color-gray-2: #f2f2f2;
+  --sl-color-gray-3: #e0e0e0;
+  --sl-color-gray-4: #bdbdbd;
+  --sl-color-gray-5: #8a8a8a;
+  --sl-color-gray-6: #141414;
+  --sl-color-gray-7: #0a0a0a;
+  --sl-color-black: #000000;
+
+  --sl-color-accent-low: #332b00;
+  --sl-color-accent: #ffd400;
+  --sl-color-accent-high: #ffee33;
+
+  /* Bawaan Starlight memakai gray-5, yang di tema ini terlalu terang untuk teks putih. */
+  --sl-color-bg-inline-code: #262626;
+
+  --sl-color-hairline: #8a8a8a;
+  --sl-color-hairline-light: #bdbdbd;
+  --sl-color-hairline-shade: #ffffff;
+}
+
+/* Tautan selalu bergaris bawah: warna saja tidak cukup sebagai penanda. */
+:root[data-tema='contrast'] .sl-markdown-content a {
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+}

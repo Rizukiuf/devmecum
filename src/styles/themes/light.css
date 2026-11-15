@@ -1,0 +1,23 @@
+/* Tema Terang. Abu-abu memakai palet terang bawaan Starlight; berkas ini hanya
+   menetapkan warna aksen. Di tema terang, teks tautan memakai --sl-color-accent,
+   jadi nilainya harus berkontras minimal 4,5:1 terhadap latar putih. */
+:root[data-tema='light'][data-aksen='biru'] {
+  --sl-color-accent-low: #dbeafe;
+  --sl-color-accent: #1d4ed8;
+  --sl-color-accent-high: #1e3a8a;
+}
+:root[data-tema='light'][data-aksen='hijau'] {
+  --sl-color-accent-low: #dcfce7;
+  --sl-color-accent: #166534;
+  --sl-color-accent-high: #14532d;
+}
+:root[data-tema='light'][data-aksen='ungu'] {
+  --sl-color-accent-low: #f3e8ff;
+  --sl-color-accent: #7e22ce;
+  --sl-color-accent-high: #581c87;
+}
+:root[data-tema='light'][data-aksen='jingga'] {
+  --sl-color-accent-low: #ffedd5;
+  --sl-color-accent: #9a3412;
+  --sl-color-accent-high: #7c2d12;
+}

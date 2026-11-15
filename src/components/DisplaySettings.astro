@@ -1,0 +1,144 @@
+---
+// Tombol "Tampilan" dan dialog pengaturannya. Logikanya ada di custom element
+// `dm-display-settings` (TypeScript biasa, tanpa framework UI).
+const fields = [
+  {
+    key: 'tema',
+    label: 'Tema',
+    options: [
+      ['auto', 'Ikuti sistem'],
+      ['light', 'Terang'],
+      ['dark', 'Gelap'],
+      ['sepia', 'Sepia'],
+      ['contrast', 'Kontras tinggi'],
+    ],
+  },
+  {
+    key: 'aksen',
+    label: 'Warna aksen',
+    options: [
+      ['biru', 'Biru'],
+      ['hijau', 'Hijau'],
+      ['ungu', 'Ungu'],
+      ['jingga', 'Jingga'],
+    ],
+  },
+  {
+    key: 'huruf',
+    label: 'Ukuran huruf',
+    options: [
+      ['kecil', 'Kecil'],
+      ['normal', 'Normal'],
+      ['besar', 'Besar'],
+      ['sangat-besar', 'Sangat besar'],
+    ],
+  },
+  {
+    key: 'lebar',
+    label: 'Lebar konten',
+    options: [
+      ['sempit', 'Sempit'],
+      ['normal', 'Normal'],
+      ['lebar', 'Lebar'],
+    ],
+  },
+  {
+    key: 'fontKode',
+    label: 'Font kode',
+    options: [
+      ['bawaan', 'Bawaan'],
+      ['klasik', 'Klasik'],
+      ['lokal', 'Font terpasang'],
+    ],
+  },
+] as const;
+---
+
+<dm-display-settings>
+  <button type="button" class="dm-ds-open" aria-haspopup="dialog">Tampilan</button>
+  <dialog class="dm-ds-dialog" aria-label="Pengaturan tampilan">
+    <form method="dialog">
+      <p class="dm-ds-title">Tampilan</p>
+      {
+        fields.map((field) => (
+          <label class="dm-ds-field">
+            <span>{field.label}</span>
+            <select data-pref={field.key}>
+              {field.options.map(([value, label]) => (
+                <option value={value}>{label}</option>
+              ))}
+            </select>
+          </label>
+        ))
+      }
+      <p class="dm-ds-note">Tersimpan di browser ini saja.</p>
+      <button type="submit" class="dm-ds-close">Tutup</button>
+    </form>
+  </dialog>
+</dm-display-settings>
+
+<script>
+  import { parsePrefs, PREF_KEY, prefsToAttrs, type Prefs } from '../lib/prefs.ts';
+
+  const systemLight = matchMedia('(prefers-color-scheme: light)');
+
+  function load(): Prefs {
+    try {
+      return parsePrefs(localStorage.getItem(PREF_KEY));
+    } catch {
+      // localStorage diblokir (mode privat tertentu): pakai nilai yang sedang terpasang.
+      return current;
+    }
+  }
+
+  function apply(prefs: Prefs): void {
+    const attrs = prefsToAttrs(prefs, systemLight.matches);
+    for (const [name, value] of Object.entries(attrs)) document.documentElement.setAttribute(name, value);
+  }
+
+  let current: Prefs = parsePrefs(null);
+  current = load();
+
+  class DisplaySettings extends HTMLElement {
+    connectedCallback(): void {
+      const dialog = this.querySelector('dialog');
+      const opener = this.querySelector<HTMLButtonElement>('.dm-ds-open');
+      if (!dialog || !opener) return;
+
+      opener.addEventListener('click', () => {
+        this.sync();
+        dialog.showModal();
+      });
+      // Klik di luar kotak dialog menutupnya.
+      dialog.addEventListener('click', (event) => {
+        if (event.target === dialog) dialog.close();
+      });
+      dialog.addEventListener('close', () => opener.focus());
+
+      this.addEventListener('change', (event) => {
+        const select = event.target;
+        if (!(select instanceof HTMLSelectElement) || !select.dataset.pref) return;
+        current = parsePrefs(JSON.stringify({ ...current, [select.dataset.pref]: select.value }));
+        try {
+          localStorage.setItem(PREF_KEY, JSON.stringify(current));
+        } catch {
+          // Tidak bisa disimpan: pilihan tetap berlaku untuk halaman ini.
+        }
+        apply(current);
+      });
+    }
+
+    /** Menyamakan isi pilihan dengan preferensi yang berlaku. */
+    sync(): void {
+      current = load();
+      for (const select of this.querySelectorAll<HTMLSelectElement>('select[data-pref]')) {
+        select.value = current[select.dataset.pref as keyof Prefs];
+      }
+    }
+  }
+
+  customElements.define('dm-display-settings', DisplaySettings);
+
+  // Tema "Ikuti sistem" ikut berubah saat perangkat berganti terang/gelap.
+  systemLight.addEventListener('change', () => apply(current));
+</script>

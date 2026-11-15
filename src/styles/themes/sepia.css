@@ -1,0 +1,35 @@
+/* Tema Sepia: latar krem hangat untuk membaca lama. Berbasis tema terang
+   (data-theme="light"), dengan seluruh skala abu-abu diganti nada cokelat.
+   Di Starlight, "white" adalah warna teks terkuat dan "black" warna latar. */
+:root[data-tema='sepia'] {
+  --sl-color-white: hsl(30, 25%, 12%);
+  --sl-color-gray-1: hsl(30, 22%, 18%);
+  --sl-color-gray-2: hsl(32, 18%, 24%);
+  --sl-color-gray-3: hsl(34, 14%, 32%);
+  --sl-color-gray-4: hsl(36, 12%, 42%);
+  --sl-color-gray-5: hsl(38, 25%, 70%);
+  --sl-color-gray-6: hsl(40, 45%, 87%);
+  --sl-color-gray-7: hsl(42, 52%, 90%);
+  --sl-color-black: hsl(44, 56%, 94%);
+}
+
+:root[data-tema='sepia'][data-aksen='biru'] {
+  --sl-color-accent-low: hsl(214, 60%, 85%);
+  --sl-color-accent: #1e40af;
+  --sl-color-accent-high: #1e3a8a;
+}
+:root[data-tema='sepia'][data-aksen='hijau'] {
+  --sl-color-accent-low: hsl(140, 40%, 82%);
+  --sl-color-accent: #14532d;
+  --sl-color-accent-high: #052e16;
+}
+:root[data-tema='sepia'][data-aksen='ungu'] {
+  --sl-color-accent-low: hsl(270, 50%, 87%);
+  --sl-color-accent: #6b21a8;
+  --sl-color-accent-high: #581c87;
+}
+:root[data-tema='sepia'][data-aksen='jingga'] {
+  --sl-color-accent-low: hsl(30, 80%, 82%);
+  --sl-color-accent: #9a3412;
+  --sl-color-accent-high: #7c2d12;
+}

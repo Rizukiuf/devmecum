@@ -18,7 +18,18 @@ export default defineConfig({
       locales: {
         root: { label: 'Bahasa Indonesia', lang: 'id' },
       },
-      customCss: ['./src/styles/base.css'],
+      customCss: [
+        './src/styles/base.css',
+        './src/styles/settings.css',
+        './src/styles/themes/light.css',
+        './src/styles/themes/dark.css',
+        './src/styles/themes/sepia.css',
+        './src/styles/themes/contrast.css',
+      ],
+      components: {
+        ThemeProvider: './src/overrides/ThemeProvider.astro',
+        ThemeSelect: './src/overrides/ThemeSelect.astro',
+      },
       routeMiddleware: './src/routeData.ts',
     }),
   ],

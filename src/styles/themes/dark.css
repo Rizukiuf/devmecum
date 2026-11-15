@@ -1,0 +1,23 @@
+/* Tema Gelap. Abu-abu memakai palet gelap bawaan Starlight; berkas ini hanya
+   menetapkan warna aksen. Di tema gelap, teks tautan memakai
+   --sl-color-accent-high, jadi nilai itu yang harus terang. */
+:root[data-tema='dark'][data-aksen='biru'] {
+  --sl-color-accent-low: #172554;
+  --sl-color-accent: #3b82f6;
+  --sl-color-accent-high: #bfdbfe;
+}
+:root[data-tema='dark'][data-aksen='hijau'] {
+  --sl-color-accent-low: #052e16;
+  --sl-color-accent: #22c55e;
+  --sl-color-accent-high: #bbf7d0;
+}
+:root[data-tema='dark'][data-aksen='ungu'] {
+  --sl-color-accent-low: #3b0764;
+  --sl-color-accent: #a855f7;
+  --sl-color-accent-high: #e9d5ff;
+}
+:root[data-tema='dark'][data-aksen='jingga'] {
+  --sl-color-accent-low: #431407;
+  --sl-color-accent: #f97316;
+  --sl-color-accent-high: #fed7aa;
+}
