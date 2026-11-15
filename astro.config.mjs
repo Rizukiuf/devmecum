@@ -19,6 +19,7 @@ export default defineConfig({
         root: { label: 'Bahasa Indonesia', lang: 'id' },
       },
       customCss: ['./src/styles/base.css'],
+      routeMiddleware: './src/routeData.ts',
     }),
   ],
 });
