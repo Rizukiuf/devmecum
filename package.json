@@ -1,0 +1,41 @@
+{
+  "name": "devmecum",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Buku panduan teknologi IT berbahasa Indonesia",
+  "license": "MIT",
+  "packageManager": "pnpm@10.34.9",
+  "engines": {
+    "node": ">=26"
+  },
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "check": "astro check",
+    "test": "vitest run",
+    "test:e2e": "node scripts/build-uji.mjs && playwright test",
+    "budget": "node scripts/count-files.mjs dist",
+    "lhci": "lhci autorun"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "esbuild",
+      "sharp"
+    ]
+  },
+  "dependencies": {
+    "@astrojs/starlight": "0.43.1",
+    "astro": "7.4.12",
+    "sharp": "0.35.5"
+  },
+  "devDependencies": {
+    "@astrojs/check": "0.9.12",
+    "@lhci/cli": "0.16.1",
+    "@playwright/test": "1.65.1",
+    "typescript": "6.0.3",
+    "vitest": "5.1.0",
+    "wrangler": "4.162.0"
+  }
+}
