@@ -1,6 +1,7 @@
 // @ts-check
 import { defineConfig } from 'astro/config';
 import starlight from '@astrojs/starlight';
+import starlightLinksValidator from 'starlight-links-validator';
 import site from './site.config.mjs';
 
 // Build dengan konten uji memakai cache sendiri. Astro menyimpan hasil olahan
@@ -37,6 +38,8 @@ export default defineConfig({
         EditLink: './src/overrides/EditLink.astro',
       },
       routeMiddleware: './src/routeData.ts',
+      // Gagalkan build bila ada tautan internal yang menunjuk halaman yang tidak ada.
+      plugins: [starlightLinksValidator()],
       // Tautan ke GitHub hanya aktif bila repositorinya publik.
       editLink: site.repo.public
         ? { baseUrl: `https://github.com/${site.repo.owner}/${site.repo.name}/edit/${site.repo.branch}/` }

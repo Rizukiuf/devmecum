@@ -6,6 +6,7 @@ import { defineRouteMiddleware } from '@astrojs/starlight/route-data';
 import { getDomain, getTech, getTechPages, getTemplate } from './lib/data.ts';
 import { LEVEL_LABELS, TYPE_LABELS } from './lib/labels.ts';
 import { buildTechSidebar, homeSidebar, paginate } from './lib/sidebar.ts';
+import site from '../site.config.mjs';
 
 export const onRequest = defineRouteMiddleware(async (context) => {
   const route = context.locals.starlightRoute;
@@ -32,6 +33,14 @@ export const onRequest = defineRouteMiddleware(async (context) => {
     level: level === undefined ? undefined : LEVEL_LABELS[level],
     jenis: TYPE_LABELS[tech.type],
   };
+  // Satu gambar pratinjau per teknologi (src/pages/og/[tech].png.ts).
+  const image = `${site.url}/og/${tech.slug}.png`;
+  route.head.push(
+    { tag: 'meta', attrs: { property: 'og:image', content: image } },
+    { tag: 'meta', attrs: { name: 'twitter:image', content: image } },
+    { tag: 'meta', attrs: { name: 'twitter:card', content: 'summary_large_image' } },
+  );
+
   for (const [name, content] of Object.entries(filters)) {
     if (content === undefined) continue;
     route.head.push({ tag: 'meta', attrs: { 'data-pagefind-filter': `${name}[content]`, content } });
