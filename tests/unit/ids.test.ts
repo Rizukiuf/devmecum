@@ -15,7 +15,7 @@ test.each(['', 'Python', '/python', 'python/', 'a/b/c', 'bahasa/python/index.mdx
 
 test('pageSlug mengambil nama file tanpa folder dan ekstensi', () => {
   expect(pageSlug('02-pengenalan/apa-itu.mdx')).toBe('apa-itu');
-  expect(pageSlug('02-pengenalan\apa-itu.md')).toBe('apa-itu');
+  expect(pageSlug('02-pengenalan\\apa-itu.md')).toBe('apa-itu');
   expect(pageSlug('index.mdx')).toBe('');
 });
 
