@@ -13,7 +13,9 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "check": "astro check"
+    "check": "astro check",
+    "test": "vitest run",
+    "test:e2e": "node scripts/build-uji.mjs && playwright test"
   },
   "pnpm": {
     "onlyBuiltDependencies": [
@@ -28,6 +30,8 @@
   },
   "devDependencies": {
     "@astrojs/check": "0.9.12",
-    "typescript": "6.0.3"
+    "@playwright/test": "1.65.1",
+    "typescript": "6.0.3",
+    "vitest": "5.1.0"
   }
 }
