@@ -3,6 +3,9 @@
 // hanya punya satu implementasi.
 import { z } from 'astro/zod';
 
+// Pesan galat bawaan Zod dalam bahasa Indonesia, untuk build maupun validator.
+z.config(z.locales.id());
+
 export const LEVELS = ['dasar', 'menengah', 'lanjut', 'profesional', 'umum'] as const;
 export const STATUSES = ['draf', 'terbit'] as const;
 export const TECH_TYPES = [

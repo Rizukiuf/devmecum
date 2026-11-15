@@ -44,6 +44,9 @@ jobs:
       - name: Tes unit
         run: pnpm test
 
+      - name: Validasi konten
+        run: pnpm validate
+
       - name: Build dengan konten uji dan tes e2e
         run: pnpm test:e2e
 
