@@ -1,0 +1,62 @@
+---
+// Kartu data teknologi. Tanpa prop: isinya dibaca dari file data teknologi
+// halaman yang sedang dibuka (src/data/tech/<slug>.yaml), tidak ditulis tangan.
+// Baris tanpa data tidak ditampilkan.
+import { getStage, getTech, getTechRef } from '../lib/data.ts';
+import { TYPE_LABELS } from '../lib/labels.ts';
+import StageBadge from './StageBadge.astro';
+
+const slug = Astro.locals.starlightRoute.entry.data.tech;
+const tech = slug === undefined ? undefined : await getTech(slug);
+if (tech === undefined) {
+  throw new Error('<TechCard /> hanya bisa dipakai di halaman yang punya `tech` di frontmatter.');
+}
+
+const stage = await getStage(tech.slug);
+const requires = await Promise.all(tech.requires.map(getTechRef));
+const alternatives = await Promise.all(tech.alternatives.map(getTechRef));
+const hostOf = (url: string) => new URL(url).host.replace(/^www\./, '');
+---
+
+<section class="dm-techcard" aria-label="Kartu data">
+  <dl>
+    <div><dt>Jenis</dt><dd>{TYPE_LABELS[tech.type]}</dd></div>
+    {tech.creator && <div><dt>Pembuat</dt><dd>{tech.creator}</dd></div>}
+    {tech.firstRelease && <div><dt>Rilis pertama</dt><dd>{tech.firstRelease}</dd></div>}
+    {tech.license && <div><dt>Lisensi</dt><dd>{tech.license}</dd></div>}
+    <div><dt>Situs resmi</dt><dd><a href={tech.website}>{hostOf(tech.website)}</a></dd></div>
+    <div><dt>Dokumentasi</dt><dd><a href={tech.docs}>{hostOf(tech.docs)}</a></dd></div>
+    <div><dt>Versi terbaru</dt><dd>{tech.latestVersion}</dd></div>
+    <div><dt>Kematangan</dt><dd><StageBadge stage={stage} /></dd></div>
+    {
+      requires.length > 0 && (
+        <div>
+          <dt>Prasyarat</dt>
+          <dd>
+            <ul>{requires.map((ref) => <li>{ref.href ? <a href={ref.href}>{ref.label}</a> : ref.label}</li>)}</ul>
+          </dd>
+        </div>
+      )
+    }
+    {
+      alternatives.length > 0 && (
+        <div>
+          <dt>Alternatif</dt>
+          <dd>
+            <ul>{alternatives.map((ref) => <li>{ref.href ? <a href={ref.href}>{ref.label}</a> : ref.label}</li>)}</ul>
+          </dd>
+        </div>
+      )
+    }
+    {
+      tech.useCases.length > 0 && (
+        <div>
+          <dt>Kegunaan</dt>
+          <dd>
+            <ul>{tech.useCases.map((useCase) => <li>{useCase}</li>)}</ul>
+          </dd>
+        </div>
+      )
+    }
+  </dl>
+</section>

@@ -1,0 +1,27 @@
+---
+// Keunggulan dan kelemahan berdampingan, supaya selalu ditulis berimbang.
+// Pemakaian di MDX:
+//   <ProsCons>
+//     <Fragment slot="keunggulan">
+//
+//     - butir
+//
+//     </Fragment>
+//     <Fragment slot="kelemahan">
+//
+//     - butir
+//
+//     </Fragment>
+//   </ProsCons>
+---
+
+<div class="dm-proscons not-content">
+  <section class="dm-pros">
+    <h3>Keunggulan</h3>
+    <slot name="keunggulan" />
+  </section>
+  <section class="dm-cons">
+    <h3>Kelemahan</h3>
+    <slot name="kelemahan" />
+  </section>
+</div>

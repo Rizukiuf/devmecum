@@ -108,3 +108,15 @@ export async function getStage(slug: string): Promise<Stage> {
   const published = (await getTechPages(slug)).filter((page) => page.status === 'terbit');
   return computeStage({ template, published });
 }
+
+/**
+ * Label dan tautan untuk rujukan ke teknologi lain (prasyarat, alternatif).
+ * Tautan hanya diberikan bila teknologi itu sudah punya halaman Ringkasan yang
+ * terbit; yang baru terdaftar tampil sebagai nama, yang tak dikenal sebagai ID.
+ */
+export async function getTechRef(id: string): Promise<{ label: string; href?: string }> {
+  const tech = await getTech(id);
+  if (tech === undefined) return { label: id };
+  const href = (await getStage(tech.slug)) >= 1 ? (await getIdIndex()).get(tech.slug) : undefined;
+  return href === undefined ? { label: tech.name } : { label: tech.name, href };
+}

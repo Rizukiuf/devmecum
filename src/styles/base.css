@@ -79,3 +79,82 @@
   color: var(--sl-color-white);
   text-decoration: underline;
 }
+
+/* --- Kartu data teknologi --- */
+.dm-techcard {
+  margin-block: 1rem;
+  padding: 0.25rem 1rem;
+  border: 1px solid var(--sl-color-gray-5);
+  border-radius: 0.5rem;
+  background: var(--sl-color-bg-nav);
+}
+.dm-techcard dl {
+  margin: 0;
+}
+.dm-techcard dl > div {
+  display: grid;
+  grid-template-columns: 9rem 1fr;
+  gap: 0.75rem;
+  padding-block: 0.5rem;
+  border-top: 1px solid var(--sl-color-hairline-light);
+}
+.dm-techcard dl > div:first-child {
+  border-top: 0;
+}
+.dm-techcard dt {
+  font-size: var(--sl-text-sm);
+  font-weight: 600;
+  color: var(--sl-color-gray-2);
+}
+.dm-techcard dd {
+  margin: 0;
+}
+.dm-techcard ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.15rem 1rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.dm-techcard li {
+  margin: 0;
+}
+@media (max-width: 30rem) {
+  .dm-techcard dl > div {
+    grid-template-columns: 1fr;
+    gap: 0.1rem;
+  }
+}
+
+/* --- Keunggulan dan kelemahan --- */
+.dm-proscons {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+  gap: 1rem;
+  margin-block: 1rem;
+}
+.dm-proscons section {
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--sl-color-gray-5);
+  border-top-width: 4px;
+  border-radius: 0.5rem;
+}
+.dm-proscons .dm-pros {
+  border-top-color: var(--sl-color-green);
+}
+.dm-proscons .dm-cons {
+  border-top-color: var(--sl-color-orange);
+}
+.dm-proscons h3 {
+  margin: 0 0 0.5rem;
+  font-size: var(--sl-text-base);
+  color: var(--sl-color-white);
+}
+.dm-proscons ul {
+  margin: 0;
+  padding-inline-start: 1.25rem;
+}
+.dm-proscons li + li {
+  margin-top: 0.25rem;
+}

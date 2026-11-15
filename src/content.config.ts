@@ -1,7 +1,7 @@
 import { defineCollection } from 'astro:content';
 import { file, glob } from 'astro/loaders';
-import { docsLoader } from '@astrojs/starlight/loaders';
-import { docsSchema } from '@astrojs/starlight/schema';
+import { docsLoader, i18nLoader } from '@astrojs/starlight/loaders';
+import { docsSchema, i18nSchema } from '@astrojs/starlight/schema';
 import {
   deriveDraft,
   domainSchema,
@@ -21,6 +21,8 @@ export const collections = {
         .superRefine(refinePage)
         .transform((data) => ({ ...data, draft: deriveDraft(data) })),
   }),
+  // Teks antarmuka Starlight yang ditimpa (src/content/i18n/id.json).
+  i18n: defineCollection({ loader: i18nLoader(), schema: i18nSchema() }),
   // Satu file YAML per teknologi.
   tech: defineCollection({
     loader: glob({ base: './src/data/tech', pattern: '*.yaml' }),

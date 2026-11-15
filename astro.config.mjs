@@ -11,6 +11,10 @@ const withFixtures = process.env.DEVMECUM_FIXTURES === '1';
 export default defineConfig({
   site: site.url,
   cacheDir: withFixtures ? './node_modules/.astro-uji' : './node_modules/.astro',
+  // Komponen Tabs Starlight memakai `satteri`, yang memuat berkas biner (.node).
+  // Bila ikut dibundel, berkas biner itu tidak ditemukan saat halaman dirender.
+  // Halaman statis dirender di environment Vite bernama `prerender`.
+  vite: { environments: { prerender: { resolve: { external: ['satteri'] } } } },
   integrations: [
     starlight({
       title: site.title,
