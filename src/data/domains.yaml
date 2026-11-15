@@ -1,0 +1,21 @@
+# Delapan belas domain Devmecum (rancangan §5.2).
+# freshnessMonths: batas kedaluwarsa verifikasi halaman. 3 bulan untuk bidang
+# yang bergerak cepat, 6 bulan untuk lainnya (rancangan §9).
+- { id: fondasi, name: Fondasi, order: 1, freshnessMonths: 6 }
+- { id: bahasa, name: Bahasa pemrograman, order: 2, freshnessMonths: 6 }
+- { id: web-frontend, name: Web frontend, order: 3, freshnessMonths: 3 }
+- { id: web-backend, name: Web backend dan API, order: 4, freshnessMonths: 6 }
+- { id: mobile, name: Mobile, order: 5, freshnessMonths: 6 }
+- { id: desktop, name: Desktop, order: 6, freshnessMonths: 6 }
+- { id: database, name: Database, order: 7, freshnessMonths: 6 }
+- { id: data, name: Data dan analitik, order: 8, freshnessMonths: 6 }
+- { id: ai-ml, name: AI dan machine learning, order: 9, freshnessMonths: 6 }
+- { id: genai, name: Generative AI dan LLM, order: 10, freshnessMonths: 3 }
+- { id: cloud, name: Cloud, order: 11, freshnessMonths: 3 }
+- { id: devops, name: DevOps dan infrastruktur, order: 12, freshnessMonths: 6 }
+- { id: keamanan, name: Keamanan, order: 13, freshnessMonths: 6 }
+- { id: arsitektur, name: Arsitektur dan rekayasa perangkat lunak, order: 14, freshnessMonths: 6 }
+- { id: testing, name: Testing dan kualitas, order: 15, freshnessMonths: 6 }
+- { id: tools, name: Tools dan produktivitas, order: 16, freshnessMonths: 6 }
+- { id: game, name: Game, order: 17, freshnessMonths: 6 }
+- { id: embedded, name: "Embedded, IoT, dan bidang khusus", order: 18, freshnessMonths: 6 }
