@@ -15,7 +15,8 @@
     "preview": "astro preview",
     "check": "astro check",
     "test": "vitest run",
-    "test:e2e": "node scripts/build-uji.mjs && playwright test"
+    "test:e2e": "node scripts/build-uji.mjs && playwright test",
+    "budget": "node scripts/count-files.mjs dist"
   },
   "pnpm": {
     "onlyBuiltDependencies": [
