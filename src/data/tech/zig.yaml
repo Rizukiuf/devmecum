@@ -6,7 +6,7 @@ template: A
 creator: Andrew Kelley # sumber: https://ziglang.org/ ("Andrew Kelley, the creator of Zig")
 license: MIT # sumber: https://codeberg.org/ziglang/zig/raw/branch/master/LICENSE
 website: https://ziglang.org
-docs: https://ziglang.org/documentation/master/
+docs: https://ziglang.org/documentation/master/ # tanpa pemantau versi: sumber resmi di Codeberg; tag GitHub berhenti di 0.15.2
 requires: []
 alternatives: [c, rust, cpp]
 tags: [sistem, tingkat-rendah, kompilasi-ke-native, manual-memori]

@@ -6,7 +6,7 @@ template: A
 license: Apache-2.0 # sumber: https://raw.githubusercontent.com/scala/scala3/main/LICENSE
 website: https://www.scala-lang.org
 docs: https://docs.scala-lang.org
-latestVersion: "3.10.1" # dari GitHub scala/scala3 (tag) per 17 November 2026
+latestVersion: "3.10.1" # dari GitHub scala/scala3 (tag) per 17 November 2026; yang dipantau Scala 3 (scala-lang.org/download: Next 3.10.1, LTS 3.9.0); Scala 2.13.x dirilis terpisah di scala/scala
 versionSource: { kind: github, repo: scala/scala3, tagPattern: '^(\d+)\.(\d+)\.(\d+)$' }
 requires: []
 alternatives: [kotlin, java, haskell]
