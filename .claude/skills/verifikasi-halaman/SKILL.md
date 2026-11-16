@@ -21,6 +21,7 @@ Argumen: `$ARGUMENTS` = slug teknologi (halaman `index.mdx`-nya) atau path file 
    - Bila ada URL di `sources` yang tidak terbuka, ganti dengan sumber resmi yang terbuka.
    - Ulangi langkah 2. **Paling banyak tiga putaran**; sesudah itu berhenti dan laporkan klaim yang tersisa ke pemilik.
 4. **Bila `HASIL: LOLOS`:**
+   - Periksa tabelnya sendiri: bila ada klaim faktual (selain contoh kode yang kamu jalankan sendiri) berstatus `tidak bisa diperiksa`, **berhenti** dan tampilkan klaim itu ke pemilik; terbitkan hanya sesudah pemilik menyetujui secara eksplisit.
    - Setel `factChecked` dan `lastVerified` ke tanggal hari ini (YYYY-MM-DD), dan `status: terbit`.
    - Jalankan `pnpm validate`; harus tanpa galat.
    - Commit: `git add <file> && git commit -m "docs: terbitkan <judul halaman>"` (tambahkan file data bila `latestVersion` berubah).

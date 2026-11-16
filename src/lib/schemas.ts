@@ -38,12 +38,15 @@ const versionString = z
 const httpsUrl = z.url({ protocol: /^https$/, error: 'Harus berupa URL https' });
 
 // Tanggal boleh berupa Date (hasil parser YAML Astro) atau teks YYYY-MM-DD.
+// Teks yang tidak ada di kalender (2026-02-31) ditolak: `new Date` akan
+// menggesernya diam-diam ke 3 Maret, dan stempel verifikasi jadi salah.
 const dateField = z.preprocess(
-  (value) =>
-    typeof value === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(value)
-      ? new Date(`${value}T00:00:00Z`)
-      : value,
-  z.date({ error: 'Tanggal harus berbentuk YYYY-MM-DD' }),
+  (value) => {
+    if (typeof value !== 'string' || !/^\d{4}-\d{2}-\d{2}$/.test(value)) return value;
+    const date = new Date(`${value}T00:00:00Z`);
+    return Number.isNaN(date.getTime()) || date.toISOString().slice(0, 10) !== value ? value : date;
+  },
+  z.date({ error: 'Tanggal harus berbentuk YYYY-MM-DD dan ada di kalender' }),
 );
 
 const versionSourceSchema = z

@@ -83,6 +83,20 @@ test('tanggal berupa teks YYYY-MM-DD diterima sebagai tanggal UTC', () => {
   expect(r.data?.lastVerified).toEqual(new Date('2026-11-14T00:00:00Z'));
 });
 
+test.each(['2026-02-31', '2026-13-01', '2026-00-10', '2026-04-31'])(
+  'tanggal kalender yang tidak ada ditolak, bukan digeser: %s',
+  (value) => {
+    const r = materiSchema.safeParse({ ...page, lastVerified: value });
+    expect(r.success).toBe(false);
+    expect(JSON.stringify(r.error?.issues)).toContain('YYYY-MM-DD');
+  },
+);
+
+test('tanggal kabisat yang sah diterima', () => {
+  expect(materiSchema.safeParse({ ...page, lastVerified: '2028-02-29' }).success).toBe(true);
+  expect(materiSchema.safeParse({ ...page, lastVerified: '2027-02-29' }).success).toBe(false);
+});
+
 test('tanggal berupa angka ditolak', () => {
   expect(materiSchema.safeParse({ ...page, lastVerified: 2026 }).success).toBe(false);
 });
