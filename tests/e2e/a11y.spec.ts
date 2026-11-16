@@ -7,6 +7,9 @@ const PAGES = [
   '/fondasi/uji-komponen/',
   '/fondasi/uji-komponen/02-prasyarat/halaman-usang/',
   '/fondasi/uji-komponen/03-konsep-inti-dan-teori/halaman-diagram/',
+  '/katalog/',
+  '/fondasi/',
+  '/bahasa/python/',
 ];
 
 const AKSEN = ['biru', 'hijau', 'ungu', 'jingga'];

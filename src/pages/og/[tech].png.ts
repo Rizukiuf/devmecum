@@ -3,18 +3,24 @@
 import type { APIRoute, GetStaticPaths } from 'astro';
 import sharp from 'sharp';
 import site from '../../../site.config.mjs';
-import { getAllTech, getDomain } from '../../lib/data.ts';
+import { getAllTech, getDomain, getStage } from '../../lib/data.ts';
 
 const escapeXml = (text: string) =>
   text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 
-export const getStaticPaths = (async () => {
+/** Hanya teknologi berhalaman (tahap ≥ 1) yang punya gambar; tahap 0 tidak punya halaman untuk dibagikan. */
+async function withPages() {
   const techs = await getAllTech();
-  return techs.map((tech) => ({ params: { tech: tech.slug } }));
+  const stages = await Promise.all(techs.map((tech) => getStage(tech.slug)));
+  return techs.filter((_, index) => stages[index]! >= 1);
+}
+
+export const getStaticPaths = (async () => {
+  return (await withPages()).map((tech) => ({ params: { tech: tech.slug } }));
 }) satisfies GetStaticPaths;
 
 export const GET: APIRoute = async ({ params }) => {
-  const tech = (await getAllTech()).find((item) => item.slug === params.tech);
+  const tech = (await withPages()).find((item) => item.slug === params.tech);
   if (tech === undefined) return new Response('Tidak ditemukan', { status: 404 });
   const domain = await getDomain(tech.domain);
 

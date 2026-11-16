@@ -20,6 +20,10 @@ const scan = await scanDir(dir);
 const result = evaluateBudget(scan);
 
 console.log(`${scan.count} file di ${target} (peringatan di ${WARN_AT}, gagal di ${FAIL_AT}).`);
+const largest = Object.entries(scan.byTopDir)
+  .sort(([nameA, a], [nameB, b]) => b - a || nameA.localeCompare(nameB))
+  .slice(0, 5);
+console.log(`Lima folder terbesar: ${largest.map(([name, n]) => `${name} (${n})`).join(', ')}.`);
 for (const message of result.messages) {
   console.log(`${result.level === 'fail' ? 'GAGAL' : 'PERINGATAN'}: ${message}`);
 }

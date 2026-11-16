@@ -2,7 +2,7 @@
   "ci": {
     "collect": {
       "staticDistDir": "./dist",
-      "url": ["http://localhost/fondasi/uji-komponen/"],
+      "url": ["http://localhost/fondasi/uji-komponen/", "http://localhost/katalog/"],
       "numberOfRuns": 3
     },
     "assert": {
