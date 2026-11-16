@@ -19,7 +19,8 @@
     "budget": "node scripts/count-files.mjs dist",
     "lhci": "lhci autorun",
     "validate": "node scripts/validate-content.mjs",
-    "new-tech": "node scripts/new-tech.mjs"
+    "new-tech": "node scripts/new-tech.mjs",
+    "versions": "node scripts/check-versions.mjs"
   },
   "pnpm": {
     "onlyBuiltDependencies": [
