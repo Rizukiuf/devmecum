@@ -3,12 +3,12 @@ slug: objective-c
 type: language
 domain: bahasa
 template: A
-website: https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/ProgrammingWithObjectiveC/Introduction/Introduction.html # Documentation Archive Apple (2014): "Objective-C is the primary programming language you use when writing software for OS X and iOS"
+website: https://developer.apple.com/documentation/objectivec # Apple Developer Documentation: Objective-C Runtime
 docs: https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/ProgrammingWithObjectiveC/Introduction/Introduction.html # tanpa pemantau versi: bahasa dirilis lewat toolchain Apple, tanpa repo atau registri rilis tersendiri
 requires: []
 alternatives: [swift, c, cpp]
 tags: [apple, ios, macos, berorientasi-objek]
-adoption: khusus # SO Survey 2026: 2,5% responden (357 dari 14.099), peringkat 34, di bawah 5%; ceruk platform Apple (halaman Apple: bahasa utama untuk OS X dan iOS, dokumen 2014); tidak ada pernyataan resmi deprecated atau penerus yang dibuka, jadi bukan warisan menurut rubrik, dan status "pilihan utama" saat ini tidak dibuktikan halaman resmi; https://survey.stackoverflow.co/2026/technology/data/languages
+adoption: khusus # SO Survey 2026: 2,5% responden (357 dari 14.099), peringkat 34, di bawah 5%; ceruk platform Apple: dokumen Apple (diperbarui 2014-09-17) menyebutnya "primary programming language" untuk OS X dan iOS, dan halaman Apple saat ini hanya memuat Objective-C Runtime; tidak ada pernyataan resmi deprecated, mode pemeliharaan, atau penerus yang dibuka, jadi bukan warisan menurut rubrik; https://survey.stackoverflow.co/2026/technology/data/languages
 trend: stabil # bawaan rubrik: baru satu titik data survei yang sebanding (SO 2026 2,5%, https://survey.stackoverflow.co/2026/technology/data/languages); SO 2025 hanya memuatnya di tabel isian bebas ("Have Used" 0%, https://survey.stackoverflow.co/2025/technology), label berbeda dan tidak sebanding
 useCases:
   - pemeliharaan aplikasi iOS dan macOS lama

@@ -5,7 +5,7 @@ domain: bahasa
 template: A
 license: MIT # sumber: https://raw.githubusercontent.com/dotnet/fsharp/main/License.txt
 website: https://fsharp.org
-docs: https://learn.microsoft.com/en-us/dotnet/fsharp/ # tanpa pemantau versi: tag dotnet/fsharp berupa versi FSharp.Compiler dan SDK (v15.2.x, v14.0.x, tag preview) yang tidak dipetakan halaman resmi ke satu versi bahasa; halaman Microsoft menyebut F# 11 (https://learn.microsoft.com/en-us/dotnet/fsharp/whats-new/fsharp-11)
+docs: https://learn.microsoft.com/en-us/dotnet/fsharp/ # tanpa pemantau versi: tag dotnet/fsharp berupa versi FSharp.Compiler dan SDK (v15.2.x, v14.0.x, tag preview) yang tidak dipetakan halaman resmi ke satu versi bahasa; tag terbaru v15.2.404 (versi FSharp.Compiler) tidak terpetakan ke "F# 11"; halaman Microsoft menyebut F# 11 (https://learn.microsoft.com/en-us/dotnet/fsharp/whats-new/fsharp-11)
 requires: []
 alternatives: [csharp, haskell, scala, clojure]
 tags: [dotnet, fungsional, tipe-statis, multiparadigma]

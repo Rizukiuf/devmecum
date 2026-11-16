@@ -11,7 +11,7 @@ versionSource: { kind: github, repo: modular/modular, tagPattern: '^mojo/v(\d)\.
 requires: []
 alternatives: [python, rust, zig]
 tags: [ai, gpu, sistem, python-interop]
-adoption: khusus # SO Survey 2026: 0,6% responden (82 dari 14.099), peringkat 49, di bawah 5%; ceruk komputasi AI dan GPU ("The systems language for the AI era", https://www.mojolang.org); bukan berkembang karena tren tidak naik >= 2 poin; status "pilihan utama" di ceruk itu tidak dibuktikan halaman resmi; https://survey.stackoverflow.co/2026/technology/data/languages
+adoption: khusus # SO Survey 2026: 0,6% responden (82 dari 14.099), peringkat 49, di bawah 5%; ceruk komputasi AI dan GPU ("The systems language for the AI era", https://www.mojolang.org); bukan berkembang karena tren tidak naik >= 2 poin; https://survey.stackoverflow.co/2026/technology/data/languages
 trend: stabil # SO 0,4% (2025; https://survey.stackoverflow.co/2025/technology) ke 0,6% (2026; https://survey.stackoverflow.co/2026/technology/data/languages), naik 0,2 poin (< 2); sampel kecil (82 responden)
 metrics:
   github: { repo: modular/modular }

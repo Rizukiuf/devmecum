@@ -6,8 +6,8 @@ template: A
 license: Apache-2.0 # sumber: https://groovy.apache.org/download.html ("Groovy is Open Source: Apache 2 License") dan https://raw.githubusercontent.com/apache/groovy/master/LICENSE
 website: https://groovy.apache.org
 docs: https://groovy-lang.org/documentation.html
-latestVersion: "6.0.0" # dari Maven Central org.apache.groovy:groovy per 17 November 2026
-versionSource: { kind: maven, name: 'org.apache.groovy:groovy' } # Maven Central; halaman unduhan resmi (groovy.apache.org/download.html) menjadikan 6.0.0 tombol unduhan utama, meski teksnya masih menyebut 5.1 "latest stable" dan 6.0 "work in progress"
+latestVersion: "6.0.0" # dari Maven Central org.apache.groovy:groovy per 17 November 2026 (release = 6.0.0, 22 September 2026) dan tag GROOVY_6_0_0 setelah RC-1 sampai RC-3; groovy.apache.org/download.html menjadikan 6.0.0 unduhan utama, tetapi teksnya masih menyebut 5.1 "latest stable" dan 6.0 "work in progress" (basi); seri 5.1.x (5.1.3) masih dipelihara
+versionSource: { kind: maven, name: 'org.apache.groovy:groovy' }
 requires: []
 alternatives: [kotlin, java, scala]
 tags: [jvm, dinamis, skrip, dsl]
