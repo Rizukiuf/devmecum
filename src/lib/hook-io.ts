@@ -2,7 +2,7 @@
 // Hook menerima JSON lewat stdin. Keluar dengan kode 2 berarti menolak, dan isi
 // stderr dikembalikan ke Claude; kode lain tidak menolak apa pun.
 import { readFile } from 'node:fs/promises';
-import { isAbsolute, join } from 'node:path';
+import { join } from 'node:path';
 import { parseFrontmatter } from './frontmatter.ts';
 import { loadProject, validateProject, type Problem, type Project } from './validate.ts';
 
@@ -53,8 +53,18 @@ export function editedFile(input: Record<string, unknown> | null, repoRoot: stri
 const DOCS_PREFIX = 'src/content/docs/';
 const PAGE_RE = /\.mdx?$/;
 
-const repoRelative = (root: string, filePath: string): string | null =>
-  toRepoRelative(isAbsolute(filePath) ? filePath : join(root, filePath), root);
+/**
+ * Seperti `toRepoRelative`, tetapi juga menerima path relatif terhadap root.
+ * Tidak memakai `node:path`, supaya hasilnya sama di Windows dan Linux: `\`
+ * dinormalkan dulu menjadi `/`, lalu path dianggap absolut bila berawalan `/`
+ * atau huruf drive.
+ */
+export function resolveRepoPath(filePath: string, repoRoot: string): string | null {
+  const file = filePath.replaceAll('\\', '/');
+  if (file.startsWith('/') || DRIVE_RE.test(file)) return toRepoRelative(file, repoRoot);
+  const root = repoRoot.replaceAll('\\', '/').replace(/\/+$/, '');
+  return toRepoRelative(`${root}/${file.replace(/^(\.\/)+/, '')}`, repoRoot);
+}
 
 /** Slug teknologi dari path halaman `<domain>/<tech>/…`; `undefined` bila bukan halaman teknologi. */
 const techFolder = (docsPath: string): string | undefined => {
@@ -69,7 +79,7 @@ const techFolder = (docsPath: string): string | undefined => {
  * Berkas lain (`src/data/**`): tanpa halaman, cukup indeks ID dari path.
  */
 export async function loadProjectFor(root: string, filePath: string): Promise<Project | null> {
-  const rel = repoRelative(root, filePath);
+  const rel = resolveRepoPath(filePath, root);
   if (rel === null || !isContentPath(rel)) return null;
   if (!rel.startsWith(DOCS_PREFIX) || !PAGE_RE.test(rel)) return loadProject(root, { pages: () => false });
 
@@ -98,7 +108,7 @@ export async function loadProjectFor(root: string, filePath: string): Promise<Pr
 export async function fileProblems(root: string, filePath: string, now: Date): Promise<Problem[]> {
   const project = await loadProjectFor(root, filePath);
   if (project === null) return [];
-  const rel = repoRelative(root, filePath);
+  const rel = resolveRepoPath(filePath, root);
   return validateProject(project, now).filter((problem) => problem.file === rel);
 }
 

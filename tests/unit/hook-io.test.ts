@@ -7,6 +7,7 @@ import {
   isContentPath,
   isProtectedPath,
   loadProjectFor,
+  resolveRepoPath,
   toRepoRelative,
   validateFile,
 } from '../../src/lib/hook-io.ts';
@@ -37,6 +38,29 @@ test('di luar repo → null', () => {
 
 test('path POSIX tetap peka kapital', () => {
   expect(toRepoRelative('/home/r/Devmecum/a.md', '/home/r/devmecum')).toBeNull();
+});
+
+test('resolveRepoPath sama di semua platform: absolut atau relatif, `\\` atau `/`', () => {
+  // Root POSIX dengan path bergaris miring terbalik (CI Linux).
+  expect(resolveRepoPath('\\home\\r\\devmecum\\src\\data\\tech\\python.yaml', '/home/r/devmecum')).toBe(
+    'src/data/tech/python.yaml',
+  );
+  expect(resolveRepoPath('/home/r/devmecum/src/content/docs/index.mdx', '/home/r/devmecum/')).toBe(
+    'src/content/docs/index.mdx',
+  );
+  // Root Windows dengan path Windows (hook di Windows).
+  expect(
+    resolveRepoPath('c:\\D\\vibapps\\devmecum\\src\\content\\docs\\index.mdx', 'C:\\D\\vibapps\\devmecum\\'),
+  ).toBe('src/content/docs/index.mdx');
+  expect(resolveRepoPath('C:/D/vibapps/devmecum/src/data/domains.yaml', 'c:\\D\\vibapps\\devmecum')).toBe(
+    'src/data/domains.yaml',
+  );
+  // Relatif terhadap root.
+  expect(resolveRepoPath('src\\data\\tech\\python.yaml', '/home/r/devmecum')).toBe('src/data/tech/python.yaml');
+  expect(resolveRepoPath('./src/data/tech/python.yaml', 'C:\\D\\vibapps\\devmecum')).toBe('src/data/tech/python.yaml');
+  // Di luar repo.
+  expect(resolveRepoPath('\\home\\r\\lain\\a.md', '/home/r/devmecum')).toBeNull();
+  expect(resolveRepoPath('D:\\lain\\a.md', 'C:\\D\\vibapps\\devmecum')).toBeNull();
 });
 
 test('klasifikasi path konten', () => {
