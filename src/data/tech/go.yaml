@@ -1,0 +1,23 @@
+name: Go
+slug: go
+type: language
+domain: bahasa
+template: A
+creator: Robert Griesemer, Rob Pike, Ken Thompson # sumber: https://go.dev/doc/faq#history
+firstRelease: 2009 # sumber: https://go.dev/doc/faq#history
+license: BSD-3-Clause
+website: https://go.dev
+docs: https://go.dev/doc/
+latestVersion: "1.27.4" # dari GitHub golang/go (tag) per 16 November 2026
+versionSource: { kind: github, repo: golang/go, tagPattern: '^go(\d+)\.(\d+)(?:\.(\d+))?$' }
+requires: []
+alternatives: [rust, java]
+tags: [serbaguna, backend, cloud, concurrency]
+adoption: mapan # SO Survey 2026: 16,5% responden (peringkat 14), di bawah ambang 20% dan masih dirilis; https://survey.stackoverflow.co/2026/technology/data/languages
+trend: stabil # SO Survey: 16,4% (2025) -> 16,5% (2026), perubahan < 2 poin; https://survey.stackoverflow.co/2025/technology
+metrics:
+  github: { repo: golang/go }
+useCases:
+  - layanan backend dan API
+  - alat command-line
+  - infrastruktur cloud

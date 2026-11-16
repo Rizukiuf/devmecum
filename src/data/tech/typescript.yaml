@@ -1,0 +1,23 @@
+name: TypeScript
+slug: typescript
+type: language
+domain: bahasa
+template: A
+firstRelease: 2012 # sumber: https://devblogs.microsoft.com/typescript/ten-years-of-typescript/
+license: Apache-2.0
+website: https://www.typescriptlang.org
+docs: https://www.typescriptlang.org/docs/
+latestVersion: "7.0.2" # dari npm typescript per 16 November 2026
+versionSource: { kind: npm, name: typescript }
+requires: []
+alternatives: [javascript, dart]
+tags: [tipe-statis, web, frontend, tooling]
+adoption: arus-utama # SO Survey 2026: 43,8% responden, peringkat 6; https://survey.stackoverflow.co/2026/technology/data/languages
+trend: naik # unduhan npm `typescript` Okt 2025 446.651.443 -> Okt 2026 1.379.933.278 (naik >= 25%); https://api.npmjs.org/downloads/point/2026-10-01:2026-10-31/typescript
+metrics:
+  github: { repo: microsoft/TypeScript }
+  downloads: { registry: npm, name: typescript }
+useCases:
+  - aplikasi web berskala besar dengan tipe statis
+  - pustaka dan SDK yang aman tipe
+  - backend Node.js
