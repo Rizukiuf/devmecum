@@ -4,7 +4,7 @@ type: standard
 domain: fondasi
 template: E
 website: https://www.rfc-editor.org/info/rfc9293
-docs: https://www.rfc-editor.org/rfc/rfc9293.html
+docs: https://www.rfc-editor.org/rfc/rfc1122.html
 requires: [jaringan-komputer]
 alternatives: []
 tags: [tcp, ip, ipv6, protokol, ietf]

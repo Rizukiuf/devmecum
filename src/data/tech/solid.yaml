@@ -8,7 +8,7 @@ docs: https://blog.cleancoder.com/uncle-bob/2020/10/18/Solid-Relevance.html
 requires: [oop]
 alternatives: []
 tags: [solid, desain, prinsip, berorientasi-objek]
-adoption: mapan # bawaan rubrik: prinsip desain tanpa bukti kuantitatif; sumber primer dari penggagasnya, Robert C. Martin (The Clean Code Blog, 18 Oktober 2020), yang menyebut dan menjelaskan kelima prinsip SOLID https://blog.cleancoder.com/uncle-bob/2020/10/18/Solid-Relevance.html; tidak ada badan standar (CS2023 Body of Knowledge tidak menyebut SOLID)
+adoption: mapan # bawaan rubrik: prinsip desain tanpa bukti kuantitatif; halaman resmi Robert C. Martin (The Clean Code Blog, 18 Oktober 2020) yang menyebut dan menjelaskan kelima prinsip SOLID https://blog.cleancoder.com/uncle-bob/2020/10/18/Solid-Relevance.html; tidak ada badan standar (CS2023 Body of Knowledge tidak menyebut SOLID)
 trend: stabil # bawaan rubrik: konsep tanpa bukti kuantitatif dua titik data
 useCases:
   - merancang kelas yang mudah diubah

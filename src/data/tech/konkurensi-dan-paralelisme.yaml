@@ -5,7 +5,7 @@ domain: fondasi
 template: E
 website: https://csed.acm.org/parallel-and-distributed-computing/
 docs: https://csed.acm.org/wp-content/uploads/2024/04/3.1-Body-of-Knowledge-1.pdf
-requires: []
+requires: [sistem-operasi]
 alternatives: []
 tags: [konkurensi, paralelisme, thread, race-condition]
 adoption: mapan # bawaan rubrik: konsep fondasi tanpa bukti kuantitatif; rujukan CS2023 Body of Knowledge, area Parallel and Distributed Computing (PDC-Programs, PDC-Coordination) dan unit OS-Concurrency (race condition, deadlock) https://csed.acm.org/wp-content/uploads/2024/04/3.1-Body-of-Knowledge-1.pdf
