@@ -4,9 +4,10 @@ Daftar teknologi yang direncanakan masuk katalog Devmecum, satu tabel per domain
 
 ## Aturan
 
-- **Sumber:** benih di Lampiran A rancangan (`docs/superpowers/specs/2026-11-14-buku-panduan-teknologi-design.md`), kecuali baris "Lintas topik: karier" yang menjadi bagian lintas topik M3. Entri bercatatan "Tambahan" berasal dari pelengkapan sesuai §14: masih dipakai industri atau penting untuk belajar, dan punya dokumentasi resmi.
+- **Sumber:** benih di Lampiran A rancangan (`docs/superpowers/specs/2026-11-14-buku-panduan-teknologi-design.md`), kecuali baris "Lintas topik: karier" yang menjadi bagian lintas topik M3. Entri bercatatan "Tambahan" berasal dari pelengkapan sesuai §14: masih dipakai industri atau penting untuk belajar, dan punya dokumentasi resmi. Entri konsep (`concept`) cukup bila ada rujukan otoritatif, misalnya badan standar, spesifikasi, atau panduan yang diakui. Pemilik boleh mencoret entri "Tambahan" saat meninjau; dari 441 entri, sekitar 319 berasal dari benih dan 122 adalah tambahan.
 - **Dipisah** bila tiap bagian punya dokumentasi dan rilis sendiri (misalnya Svelte dan SvelteKit). **Disatukan** bila konsep selalu dibahas bersama (misalnya TDD dan BDD).
-- **Slug** huruf kecil dan tanda hubung, unik di seluruh katalog.
+- **Slug** huruf kecil dan tanda hubung, unik di seluruh katalog, tidak berawalan `uji-`.
+- **`type`** salah satu dari `language`, `framework`, `library`, `tool`, `platform`, `database`, `concept`, `standard`.
 - **Templat bawaan menurut `type`:** `language` A; `framework` dan `library` B; `tool` dan `platform` C; `database` D; `concept` dan `standard` E. Pengecualian ditulis di kolom Catatan.
 - Kolom `domain` tidak ada karena tiap tabel mewakili satu domain.
 - "Calon adopsi warisan" atau "calon adopsi mapan" hanyalah dugaan awal; nilai adopsi ditentukan lewat `docs/rubrik-adopsi.md` saat entri didaftarkan.
