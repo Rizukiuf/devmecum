@@ -4,7 +4,9 @@
 // Baris tanpa data tidak ditampilkan.
 import { getStage, getTech, getTechRef } from '../lib/data.ts';
 import { TYPE_LABELS } from '../lib/labels.ts';
+import AdoptionBadge from './AdoptionBadge.astro';
 import StageBadge from './StageBadge.astro';
+import TrendBadge from './TrendBadge.astro';
 
 const slug = Astro.locals.starlightRoute.entry.data.tech;
 const tech = slug === undefined ? undefined : await getTech(slug);
@@ -28,6 +30,8 @@ const hostOf = (url: string) => new URL(url).host.replace(/^www\./, '');
     <div><dt>Dokumentasi</dt><dd><a href={tech.docs}>{hostOf(tech.docs)}</a></dd></div>
     {tech.latestVersion && <div><dt>Versi terbaru</dt><dd>{tech.latestVersion}</dd></div>}
     <div><dt>Kematangan</dt><dd><StageBadge stage={stage} /></dd></div>
+    {tech.adoption && <div><dt>Adopsi</dt><dd><AdoptionBadge adoption={tech.adoption} /></dd></div>}
+    {tech.trend && <div><dt>Tren</dt><dd><TrendBadge trend={tech.trend} /></dd></div>}
     {
       requires.length > 0 && (
         <div>

@@ -4,7 +4,8 @@
 import { getCollection, getEntry } from 'astro:content';
 import { buildIdIndex, pageSlug, type IdIndex } from './ids.ts';
 import { computeStage, type Stage } from './maturity.ts';
-import { FIXTURE_TECH, type Domain, type Tech, type Template } from './schemas.ts';
+import { buildCatalog, type CatalogEntry } from './catalog.ts';
+import { isFixtureTech, type Domain, type Tech, type Template } from './schemas.ts';
 
 export type TechPage = {
   /** ID entri Starlight, mis. `bahasa/python/04-sintaks-dasar/variabel`. */
@@ -36,7 +37,7 @@ const loadTechs = () =>
 /** Semua teknologi untuk daftar publik. Teknologi uji hanya ikut bila DEVMECUM_FIXTURES=1. */
 export async function getAllTech(): Promise<Tech[]> {
   const techs = await loadTechs();
-  return fixturesEnabled() ? techs : techs.filter((tech) => tech.slug !== FIXTURE_TECH);
+  return fixturesEnabled() ? techs : techs.filter((tech) => !isFixtureTech(tech.slug));
 }
 
 export async function getTech(slug: string): Promise<Tech | undefined> {
@@ -45,6 +46,13 @@ export async function getTech(slug: string): Promise<Tech | undefined> {
 
 export async function getDomain(id: string): Promise<Domain | undefined> {
   return (await getEntry('domains', id))?.data as Domain | undefined;
+}
+
+/** Semua domain, urut `order`. */
+export function getAllDomains(): Promise<Domain[]> {
+  return cached('domains', async () =>
+    (await getCollection('domains')).map((entry) => entry.data as Domain).sort((a, b) => a.order - b.order),
+  );
 }
 
 export async function getTemplate(id: string): Promise<Template | undefined> {
@@ -119,4 +127,24 @@ export async function getTechRef(id: string): Promise<{ label: string; href?: st
   if (tech === undefined) return { label: id };
   const href = (await getStage(tech.slug)) >= 1 ? (await getIdIndex()).get(tech.slug) : undefined;
   return href === undefined ? { label: tech.name } : { label: tech.name, href };
+}
+
+/**
+ * Entri katalog untuk halaman domain dan katalog. Tautan hanya untuk teknologi
+ * yang sudah punya Ringkasan terbit (tingkat 1 ke atas); tingkat 0 tidak punya halaman.
+ */
+export function getCatalog(): Promise<CatalogEntry[]> {
+  return cached('catalog', async () => {
+    const techs = await getAllTech();
+    const stages = new Map<string, Stage>();
+    const hrefs = new Map<string, string>();
+    const index = await getIdIndex();
+    for (const tech of techs) {
+      const stage = await getStage(tech.slug);
+      stages.set(tech.slug, stage);
+      const href = index.get(tech.slug);
+      if (stage >= 1 && href !== undefined) hrefs.set(tech.slug, href);
+    }
+    return buildCatalog({ techs, domains: await getAllDomains(), stages, hrefs });
+  });
 }

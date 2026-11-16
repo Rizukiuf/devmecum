@@ -1,0 +1,45 @@
+---
+// Halaman domain: daftar teknologi satu domain, dikelompokkan per jenis. Dibangkitkan
+// dari koleksi `domains`; tanpa JavaScript.
+import StarlightPage from '@astrojs/starlight/components/StarlightPage.astro';
+import type { GetStaticPaths } from 'astro';
+import CatalogCard from '../../components/CatalogCard.astro';
+import { getAllDomains, getCatalog } from '../../lib/data.ts';
+import { TYPE_LABELS } from '../../lib/labels.ts';
+import type { TechType } from '../../lib/schemas.ts';
+
+export const getStaticPaths = (async () => {
+  const domains = await getAllDomains();
+  return domains.map((domain) => ({ params: { domain: domain.id }, props: { domain } }));
+}) satisfies GetStaticPaths;
+
+const { domain } = Astro.props;
+const entries = (await getCatalog()).filter((entry) => entry.domain === domain.id);
+const groups = (Object.keys(TYPE_LABELS) as TechType[])
+  .map((type) => ({
+    type,
+    label: TYPE_LABELS[type],
+    slug: `jenis-${type}`,
+    entries: entries.filter((entry) => entry.type === type),
+  }))
+  .filter((group) => group.entries.length > 0);
+const headings = groups.map((group) => ({ depth: 2, slug: group.slug, text: group.label }));
+---
+
+<StarlightPage frontmatter={{ title: domain.name, description: domain.description }} headings={headings}>
+  <p>{domain.description}</p>
+  <p class="dm-domain-summary">
+    {entries.length} teknologi terdaftar · <a href={`/katalog/?domain=${domain.id}`}>Lihat di katalog berfilter</a>
+  </p>
+  {entries.length === 0 && <p>Belum ada teknologi terdaftar di domain ini.</p>}
+  {
+    groups.map((group) => (
+      <section class="dm-domain-group">
+        <h2 id={group.slug}>{group.label}</h2>
+        <div class="dm-catalog-grid not-content">
+          {group.entries.map((entry) => <CatalogCard entry={entry} />)}
+        </div>
+      </section>
+    ))
+  }
+</StarlightPage>

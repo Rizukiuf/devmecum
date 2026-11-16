@@ -1,0 +1,16 @@
+# Teknologi uji tingkat 0 (Terdaftar), bukan konten nyata: tanpa halaman, dipakai
+# tes e2e untuk kartu katalog. Hanya ikut dibangun bila DEVMECUM_FIXTURES=1.
+name: Uji Terdaftar
+slug: uji-terdaftar
+type: tool
+domain: fondasi
+template: C
+website: https://example.com
+docs: https://example.com/docs
+requires: []
+alternatives: []
+tags: [uji]
+adoption: mapan # data uji
+trend: naik # data uji
+useCases:
+  - menguji kartu tingkat 0

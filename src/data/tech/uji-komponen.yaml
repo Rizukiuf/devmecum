@@ -13,5 +13,7 @@ versionSource: { kind: github, repo: Rizukiuf/devmecum }
 requires: []
 alternatives: [python]
 tags: [uji]
+adoption: khusus # data uji
+trend: turun # data uji
 useCases:
   - menguji tampilan komponen

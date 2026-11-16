@@ -1,0 +1,21 @@
+---
+// Katalog: semua teknologi dalam satu daftar, bisa difilter di browser lewat
+// `dm-catalog-filter`. Tanpa JavaScript semua kartu tampil. Route statis ini
+// didahulukan Astro atas `[domain]`.
+import StarlightPage from '@astrojs/starlight/components/StarlightPage.astro';
+import CatalogCard from '../components/CatalogCard.astro';
+import CatalogFilter from '../components/CatalogFilter.astro';
+import { getAllDomains, getCatalog } from '../lib/data.ts';
+
+const [entries, domains] = await Promise.all([getCatalog(), getAllDomains()]);
+const description = 'Semua teknologi di Devmecum, bisa disaring menurut domain, jenis, kematangan, adopsi, dan tren.';
+---
+
+<StarlightPage frontmatter={{ title: 'Katalog', description, tableOfContents: false }}>
+  <p>{description}</p>
+  <CatalogFilter entries={entries} domains={domains}>
+    <div class="dm-catalog-grid not-content">
+      {entries.map((entry) => <CatalogCard entry={entry} />)}
+    </div>
+  </CatalogFilter>
+</StarlightPage>

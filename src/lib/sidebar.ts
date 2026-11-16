@@ -26,9 +26,23 @@ const group = (label: string, entries: SidebarEntry[], collapsed: boolean): Side
   badge: undefined,
 });
 
-/** Sidebar untuk halaman yang bukan milik teknologi mana pun. */
-export function homeSidebar(currentHref: string): SidebarEntry[] {
-  return [link('Beranda', '/', currentHref)];
+type DomainRef = { id: string; name: string };
+
+const topLinks = (currentHref: string): SidebarLink[] => [
+  link('Beranda', '/', currentHref),
+  link('Katalog', '/katalog/', currentHref),
+];
+
+/** Sidebar untuk halaman yang bukan milik teknologi mana pun: beranda, katalog, dan semua domain. */
+export function siteSidebar(currentHref: string, domains: DomainRef[]): SidebarEntry[] {
+  return [
+    ...topLinks(currentHref),
+    group(
+      'Domain',
+      domains.map((domain) => link(domain.name, `/${domain.id}/`, currentHref)),
+      false,
+    ),
+  ];
 }
 
 /**
@@ -40,8 +54,9 @@ export function buildTechSidebar(input: {
   template: Template;
   pages: TechPage[];
   currentHref: string;
+  domain: DomainRef;
 }): SidebarEntry[] {
-  const { techName, template, pages, currentHref } = input;
+  const { techName, template, pages, currentHref, domain } = input;
   const entries: SidebarEntry[] = [];
 
   for (const chapter of template.chapters) {
@@ -57,7 +72,11 @@ export function buildTechSidebar(input: {
     entries.push(group(`${chapter.number} · ${chapter.title}`, links, !containsCurrent));
   }
 
-  return [...homeSidebar(currentHref), group(techName, entries, false)];
+  return [
+    ...topLinks(currentHref),
+    link(domain.name, `/${domain.id}/`, currentHref),
+    group(techName, entries, false),
+  ];
 }
 
 /** Sebelumnya/berikutnya di antara halaman teknologi yang sama. */

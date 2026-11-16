@@ -1,0 +1,12 @@
+---
+// Lencana tren teknologi. Panah hanya hiasan (CSS, base.css); maknanya dibawa oleh teksnya.
+import { TREND_LABELS } from '../lib/labels.ts';
+import type { Trend } from '../lib/schemas.ts';
+
+interface Props {
+  trend: Trend;
+}
+const { trend } = Astro.props;
+---
+
+<span class="dm-badge dm-badge-trend" data-trend={trend}>{TREND_LABELS[trend]}</span>

@@ -21,6 +21,12 @@ test('gambar pratinjau per teknologi', async ({ page, request }) => {
   expect([buf.readUInt32BE(16), buf.readUInt32BE(20)]).toEqual([1200, 630]);
 });
 
+test('gambar OG hanya untuk teknologi berhalaman', async ({ request }) => {
+  expect((await request.get('/og/uji-komponen.png')).status()).toBe(200);
+  // `uji-terdaftar` berada di tingkat 0: terdaftar di katalog tetapi tanpa halaman.
+  expect((await request.get('/og/uji-terdaftar.png')).status()).toBe(404);
+});
+
 test('halaman tanpa teknologi memakai gambar pratinjau bawaan Starlight, bukan milik teknologi', async ({ page }) => {
   await page.goto('/');
   const og = await page.locator('meta[property="og:image"]').count();

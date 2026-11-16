@@ -16,7 +16,7 @@ if (tech !== undefined) {
   const techHref = `/${tech.domain}/${tech.slug}/`;
   const chapterTitle = chapter === 1 ? undefined : template?.chapters.find((item) => item.number === chapter)?.title;
   crumbs.push({ label: 'Beranda', href: '/' });
-  if (domain !== undefined) crumbs.push({ label: domain.name });
+  if (domain !== undefined) crumbs.push({ label: domain.name, href: `/${domain.id}/` });
   crumbs.push(chapterTitle === undefined ? { label: tech.name } : { label: tech.name, href: techHref });
   if (chapterTitle !== undefined) crumbs.push({ label: chapterTitle });
 }

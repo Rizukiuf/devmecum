@@ -5,7 +5,7 @@ import { afterEach, expect, test } from 'vitest';
 import { evaluateBudget, MAX_FILE_BYTES, scanDir } from '../../src/lib/budget.ts';
 
 type Oversized = { path: string; bytes: number };
-const scan = (count: number, oversized: Oversized[] = []) => ({ count, oversized });
+const scan = (count: number, oversized: Oversized[] = []) => ({ count, oversized, byTopDir: {} });
 
 test.each([
   [14_999, 'ok'],
@@ -43,4 +43,16 @@ test('scanDir melaporkan file yang melebihi batas ukuran', async () => {
   await writeFile(join(tmp, 'besar.bin'), 'x'.repeat(11));
   const result = await scanDir(tmp, 10);
   expect(result.oversized).toEqual([{ path: 'besar.bin', bytes: 11 }]);
+});
+
+test('scanDir menghitung per folder teratas', async () => {
+  tmp = await mkdtemp(join(tmpdir(), 'devmecum-budget-'));
+  await mkdir(join(tmp, 'pagefind', 'dalam'), { recursive: true });
+  await mkdir(join(tmp, 'og'));
+  await writeFile(join(tmp, 'index.html'), 'a');
+  await writeFile(join(tmp, 'pagefind', 'x.js'), 'b');
+  await writeFile(join(tmp, 'pagefind', 'dalam', 'y.js'), 'c');
+  await writeFile(join(tmp, 'og', 'z.png'), 'd');
+  const result = await scanDir(tmp);
+  expect(result.byTopDir).toEqual({ '.': 1, pagefind: 2, og: 1 });
 });

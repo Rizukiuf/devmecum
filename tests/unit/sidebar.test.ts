@@ -4,7 +4,7 @@ import { expect, test } from 'vitest';
 import { parse } from 'yaml';
 import type { TechPage } from '../../src/lib/data.ts';
 import { templateSchema } from '../../src/lib/schemas.ts';
-import { buildTechSidebar, homeSidebar, paginate } from '../../src/lib/sidebar.ts';
+import { buildTechSidebar, paginate, siteSidebar } from '../../src/lib/sidebar.ts';
 
 const templatesFile = fileURLToPath(new URL('../../src/data/templates.yaml', import.meta.url));
 const tplA = (parse(readFileSync(templatesFile, 'utf8')) as unknown[])
@@ -32,7 +32,13 @@ const pages = [
   p(4, '04-sintaks-dasar/variabel.mdx', 'Variabel'),
 ];
 const current = `${BASE}04-sintaks-dasar/variabel/`;
-const sb = buildTechSidebar({ techName: 'Python', template: tplA, pages, currentHref: current });
+const domain = { id: 'bahasa', name: 'Bahasa pemrograman' };
+const domains = [
+  { id: 'fondasi', name: 'Fondasi' },
+  domain,
+  { id: 'web-frontend', name: 'Web frontend' },
+];
+const sb = buildTechSidebar({ techName: 'Python', template: tplA, pages, currentHref: current, domain });
 
 type Entry = (typeof sb)[number];
 const group = (entries: Entry[], label: string) => {
@@ -42,9 +48,11 @@ const group = (entries: Entry[], label: string) => {
 };
 const tech = group(sb, 'Python');
 
-test('hanya Beranda dan grup teknologi', () => {
-  expect(sb.map((e) => e.label)).toEqual(['Beranda', 'Python']);
+test('Beranda, Katalog, domain, lalu grup teknologi', () => {
+  expect(sb.map((e) => e.label)).toEqual(['Beranda', 'Katalog', 'Bahasa pemrograman', 'Python']);
   expect(sb[0]).toMatchObject({ type: 'link', href: '/', isCurrent: false });
+  expect(sb[1]).toMatchObject({ type: 'link', href: '/katalog/', isCurrent: false });
+  expect(sb[2]).toMatchObject({ type: 'link', href: '/bahasa/', isCurrent: false });
 });
 
 test('Ringkasan lalu subgrup per bab berurutan', () => {
@@ -74,9 +82,34 @@ test('setiap entri punya bentuk yang diminta Starlight', () => {
   expect(tech.badge).toBeUndefined();
 });
 
-test('halaman tanpa teknologi hanya mendapat Beranda', () => {
-  expect(homeSidebar('/').map((e) => e.label)).toEqual(['Beranda']);
-  expect(homeSidebar('/')[0]).toMatchObject({ isCurrent: true });
+test('halaman tanpa teknologi mendapat Beranda, Katalog, dan grup Domain', () => {
+  const site = siteSidebar('/', domains);
+  expect(site.map((e) => e.label)).toEqual(['Beranda', 'Katalog', 'Domain']);
+  expect(site[0]).toMatchObject({ type: 'link', href: '/', isCurrent: true });
+  expect(site[1]).toMatchObject({ type: 'link', href: '/katalog/', isCurrent: false });
+  const grup = group(site, 'Domain');
+  expect(grup.collapsed).toBe(false);
+  expect(grup.entries).toEqual(
+    domains.map((d) => ({
+      type: 'link',
+      label: d.name,
+      href: `/${d.id}/`,
+      isCurrent: false,
+      badge: undefined,
+      attrs: {},
+    })),
+  );
+});
+
+test('Katalog menjadi aktif di /katalog/', () => {
+  const site = siteSidebar('/katalog/', domains);
+  expect(site[0]).toMatchObject({ isCurrent: false });
+  expect(site[1]).toMatchObject({ href: '/katalog/', isCurrent: true });
+});
+
+test('tautan domain menjadi aktif di halaman domainnya', () => {
+  const grup = group(siteSidebar('/bahasa/', domains), 'Domain');
+  expect(grup.entries.map((e) => e.type === 'link' && e.isCurrent)).toEqual([false, true, false]);
 });
 
 test('pagination tetap di dalam teknologi', () => {

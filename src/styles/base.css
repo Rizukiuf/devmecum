@@ -63,6 +63,51 @@
   color: var(--sl-color-gray-2);
 }
 
+/* Adopsi dan tren: pasangan warna latar/teks semantik Starlight, yang sudah
+   punya varian untuk tema terang dan gelap. Teks label selalu ikut tampil. */
+.dm-badge-adoption[data-adoption='arus-utama'],
+.dm-badge-trend[data-trend='naik'] {
+  background: var(--sl-color-green-low);
+  color: var(--sl-color-green-high);
+  border-color: var(--sl-color-green);
+}
+.dm-badge-adoption[data-adoption='mapan'] {
+  background: var(--sl-color-blue-low);
+  color: var(--sl-color-blue-high);
+  border-color: var(--sl-color-blue);
+}
+.dm-badge-adoption[data-adoption='berkembang'] {
+  background: var(--sl-color-purple-low);
+  color: var(--sl-color-purple-high);
+  border-color: var(--sl-color-purple);
+}
+.dm-badge-adoption[data-adoption='warisan'] {
+  background: var(--sl-color-orange-low);
+  color: var(--sl-color-orange-high);
+  border-color: var(--sl-color-orange);
+}
+.dm-badge-trend[data-trend='turun'] {
+  background: var(--sl-color-red-low);
+  color: var(--sl-color-red-high);
+  border-color: var(--sl-color-red);
+}
+.dm-badge-adoption[data-adoption='khusus'],
+.dm-badge-trend[data-trend='stabil'] {
+  border-color: var(--sl-color-gray-4);
+  color: var(--sl-color-gray-2);
+}
+
+/* Panah tren: hiasan; teks alternatif kosong menyembunyikannya dari pembaca layar. */
+.dm-badge-trend[data-trend='naik']::before {
+  content: '↑ ' / '';
+}
+.dm-badge-trend[data-trend='stabil']::before {
+  content: '→ ' / '';
+}
+.dm-badge-trend[data-trend='turun']::before {
+  content: '↓ ' / '';
+}
+
 /* --- Tautan sunting dan lapor di kaki halaman --- */
 .dm-page-links {
   display: flex;
@@ -201,4 +246,133 @@
 .dm-diagram svg .edgeLabel rect {
   background-color: transparent !important;
   fill: transparent !important;
+}
+
+/* --- Halaman domain dan kartu katalog --- */
+.dm-domain-summary {
+  color: var(--sl-color-gray-2);
+}
+.dm-catalog-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(17rem, 1fr));
+  gap: 1rem;
+  margin-block: 1rem;
+}
+.dm-catalog-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--sl-color-gray-5);
+  border-radius: 0.5rem;
+  background: var(--sl-color-bg-nav);
+}
+.dm-catalog-card h3 {
+  margin: 0;
+  font-size: var(--sl-text-lg);
+  line-height: var(--sl-line-height-headings);
+  color: var(--sl-color-white);
+}
+.dm-catalog-card h3 a {
+  color: inherit;
+  text-decoration: underline;
+  text-decoration-color: var(--sl-color-gray-4);
+  text-underline-offset: 0.2em;
+}
+.dm-catalog-card h3 a:hover {
+  text-decoration-color: currentColor;
+}
+.dm-catalog-card p,
+.dm-catalog-card ul {
+  margin: 0;
+}
+.dm-catalog-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+.dm-catalog-meta {
+  font-size: var(--sl-text-sm);
+  color: var(--sl-color-gray-2);
+}
+.dm-catalog-usecases {
+  padding-inline-start: 1.1rem;
+  font-size: var(--sl-text-sm);
+}
+.dm-catalog-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem 1rem;
+  margin-top: auto;
+  font-size: var(--sl-text-sm);
+}
+
+/* --- Katalog berfilter --- */
+/* Elemen kustom bawaannya inline; isinya blok. */
+.dm-catalog-filter {
+  display: block;
+}
+/* Kartu dan formulir memakai `display`, yang mengalahkan gaya bawaan [hidden]. */
+.dm-catalog-card[hidden],
+.dm-catalog-filter [hidden] {
+  display: none;
+}
+.dm-catalog-filter form {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(10rem, 1fr));
+  gap: 0.75rem 1rem;
+  margin-block: 1rem;
+  padding: 1rem;
+  border: 1px solid var(--sl-color-gray-5);
+  border-radius: 0.5rem;
+  background: var(--sl-color-bg-nav);
+}
+.dm-catalog-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  font-size: var(--sl-text-sm);
+}
+.dm-catalog-field label {
+  font-weight: 600;
+  color: var(--sl-color-gray-2);
+}
+.dm-catalog-field select,
+.dm-catalog-field input {
+  width: 100%;
+  padding: 0.3rem 0.5rem;
+  border: 1px solid var(--sl-color-gray-4);
+  border-radius: 0.375rem;
+  background: var(--sl-color-bg);
+  color: var(--sl-color-white);
+  font: inherit;
+}
+.dm-catalog-actions {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem 1rem;
+}
+.dm-catalog-count {
+  margin: 0;
+  font-size: var(--sl-text-sm);
+  color: var(--sl-color-gray-2);
+}
+.dm-catalog-reset {
+  padding: 0.35rem 0.75rem;
+  border: 1px solid var(--sl-color-gray-4);
+  border-radius: 0.375rem;
+  background: transparent;
+  color: var(--sl-color-white);
+  font: inherit;
+  font-size: var(--sl-text-sm);
+  cursor: pointer;
+}
+.dm-catalog-reset:hover {
+  border-color: var(--sl-color-gray-2);
+}
+.dm-catalog-empty {
+  font-weight: 600;
 }
