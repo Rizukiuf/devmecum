@@ -158,10 +158,17 @@ async function probe(url: string, method: 'HEAD' | 'GET', fetchFn: typeof fetch)
   }
 }
 
-/** Memeriksa satu URL: `HEAD`, diulang dengan `GET` bila 403/405/501. Tidak pernah melempar. */
+/** Status HEAD yang diulang dengan GET sebelum dinilai. */
+const RETRY_WITH_GET = new Set([403, 404, 405, 410, 501]);
+
+/**
+ * Memeriksa satu URL: `HEAD`, diulang dengan `GET` bila 403/405/501 (server menolak HEAD)
+ * atau 404/410 (sebagian server salah menjawab HEAD dengan 404 padahal GET berhasil;
+ * menyatakan mati hanya dari HEAD akan memberi temuan palsu). Tidak pernah melempar.
+ */
 export async function checkLink(url: string, fetchFn: typeof fetch = fetch): Promise<{ status: LinkStatus; detail: string }> {
   let result = await probe(url, 'HEAD', fetchFn);
-  if (result.status === 403 || result.status === 405 || result.status === 501) result = await probe(url, 'GET', fetchFn);
+  if (RETRY_WITH_GET.has(result.status ?? 0)) result = await probe(url, 'GET', fetchFn);
 
   const status = classifyLink({ ...result, url });
   if (result.status === undefined) return { status, detail: result.errorCode ?? 'galat tak dikenal' };

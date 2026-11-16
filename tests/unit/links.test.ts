@@ -194,14 +194,30 @@ test('checkLink: HEAD 403/405/501 diulang dengan GET dan hasil GET yang dipakai'
   }
 });
 
-test('checkLink: HEAD 404 tidak diulang; HEAD 403 lalu GET 403 → tak-pasti', async () => {
-  const notFound = fakeFetch(() => response(404));
-  expect(await checkLink('https://example.com/x', notFound.fetch)).toMatchObject({ status: 'mati', detail: 'HTTP 404' });
-  expect(notFound.calls).toHaveLength(1);
+test('checkLink: HEAD 404/410 diulang dengan GET; GET 200 → ok (server yang salah menjawab HEAD)', async () => {
+  for (const headStatus of [404, 410]) {
+    const { fetch, calls } = fakeFetch(({ init }) => (init.method === 'HEAD' ? response(headStatus) : response(200)));
+    expect(await checkLink('https://example.com/x', fetch), String(headStatus)).toMatchObject({ status: 'ok', detail: 'HTTP 200' });
+    expect(calls.map((call) => call.init.method)).toEqual(['HEAD', 'GET']);
+  }
+});
 
+test('checkLink: HEAD 404/410 lalu GET 404 → mati dengan hasil GET', async () => {
+  for (const headStatus of [404, 410]) {
+    const { fetch, calls } = fakeFetch(({ init }) => (init.method === 'HEAD' ? response(headStatus) : response(404)));
+    expect(await checkLink('https://example.com/x', fetch), String(headStatus)).toMatchObject({ status: 'mati', detail: 'HTTP 404' });
+    expect(calls.map((call) => call.init.method)).toEqual(['HEAD', 'GET']);
+  }
+});
+
+test('checkLink: HEAD 403 lalu GET 403 → tak-pasti; HEAD 200 tidak diulang', async () => {
   const blocked = fakeFetch(() => response(403));
   expect(await checkLink('https://example.com/x', blocked.fetch)).toMatchObject({ status: 'tak-pasti', detail: 'HTTP 403' });
   expect(blocked.calls).toHaveLength(2);
+
+  const fine = fakeFetch(() => response(200));
+  await checkLink('https://example.com/x', fine.fetch);
+  expect(fine.calls).toHaveLength(1);
 });
 
 test('checkLink: redirect 301 tidak diikuti; lokasi relatif diselesaikan dan dicatat', async () => {
