@@ -5,6 +5,7 @@
 import { getStage, getTech, getTechRef } from '../lib/data.ts';
 import { TYPE_LABELS } from '../lib/labels.ts';
 import AdoptionBadge from './AdoptionBadge.astro';
+import Popularity from './Popularity.astro';
 import StageBadge from './StageBadge.astro';
 import TrendBadge from './TrendBadge.astro';
 
@@ -17,6 +18,7 @@ if (tech === undefined) {
 const stage = await getStage(tech.slug);
 const requires = await Promise.all(tech.requires.map(getTechRef));
 const alternatives = await Promise.all(tech.alternatives.map(getTechRef));
+const surveys = tech.surveys ?? [];
 const hostOf = (url: string) => new URL(url).host.replace(/^www\./, '');
 ---
 
@@ -29,6 +31,7 @@ const hostOf = (url: string) => new URL(url).host.replace(/^www\./, '');
     <div><dt>Situs resmi</dt><dd><a href={tech.website}>{hostOf(tech.website)}</a></dd></div>
     <div><dt>Dokumentasi</dt><dd><a href={tech.docs}>{hostOf(tech.docs)}</a></dd></div>
     {tech.latestVersion && <div><dt>Versi terbaru</dt><dd>{tech.latestVersion}</dd></div>}
+    <Popularity slug={tech.slug} />
     <div><dt>Kematangan</dt><dd><StageBadge stage={stage} /></dd></div>
     {tech.adoption && <div><dt>Adopsi</dt><dd><AdoptionBadge adoption={tech.adoption} /></dd></div>}
     {tech.trend && <div><dt>Tren</dt><dd><TrendBadge trend={tech.trend} /></dd></div>}
@@ -48,6 +51,25 @@ const hostOf = (url: string) => new URL(url).host.replace(/^www\./, '');
           <dt>Alternatif</dt>
           <dd>
             <ul>{alternatives.map((ref) => <li>{ref.href ? <a href={ref.href}>{ref.label}</a> : ref.label}</li>)}</ul>
+          </dd>
+        </div>
+      )
+    }
+    {
+      surveys.length > 0 && (
+        <div>
+          <dt>Survei</dt>
+          <dd>
+            <ul>
+              {surveys.map((survey) => (
+                <li>
+                  <a href={survey.url}>
+                    {survey.name} {survey.year}
+                  </a>
+                  : {survey.value}
+                </li>
+              ))}
+            </ul>
           </dd>
         </div>
       )

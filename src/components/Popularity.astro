@@ -1,0 +1,67 @@
+---
+// Bintang GitHub dan unduhan paket satu teknologi, dari data yang diambil saat
+// deploy. Tanpa data tidak merender apa pun. Bentuk bawaan: baris untuk <dl>
+// kartu data; `compact`: satu baris ringkas untuk kartu katalog. Angkanya berubah
+// tiap deploy dan berulang di banyak halaman, jadi tidak diindeks Pagefind
+// (`data-pagefind-ignore`, sengaja).
+import { getMetrics } from '../lib/data.ts';
+import { formatDate } from '../lib/freshness.ts';
+import { formatCompact } from '../lib/metrics.ts';
+
+interface Props {
+  slug: string;
+  compact?: boolean;
+}
+const { slug, compact = false } = Astro.props;
+const metrics = await getMetrics(slug);
+
+const REGISTRY_LABELS = { npm: 'npm', pypi: 'PyPI', crates: 'crates.io' } as const;
+const PERIOD_LABELS = { minggu: 'per minggu', '90-hari': 'per 90 hari' } as const;
+const dateOf = (date: string) => `per ${formatDate(new Date(`${date}T00:00:00Z`))}`;
+
+const { github, downloads } = metrics ?? {};
+const label = downloads && `Unduhan ${REGISTRY_LABELS[downloads.registry]} ${PERIOD_LABELS[downloads.period]}`;
+const summary = [
+  github && { text: `${formatCompact(github.stars)} bintang GitHub`, date: dateOf(github.date) },
+  downloads && {
+    text: `${formatCompact(downloads.value)} unduhan ${REGISTRY_LABELS[downloads.registry]} ${PERIOD_LABELS[downloads.period]}`,
+    date: dateOf(downloads.date),
+  },
+].filter((item) => !!item);
+---
+
+{
+  compact
+    ? summary.length > 0 && (
+        <p class="dm-catalog-meta dm-popularity" data-pagefind-ignore>
+          {summary.map((item, index) => (
+            <>
+              {index > 0 && ' · '}
+              <span>
+                {item.text} <small>{item.date}</small>
+              </span>
+            </>
+          ))}
+        </p>
+      )
+    : (
+        <>
+          {github && (
+            <div class="dm-popularity" data-pagefind-ignore>
+              <dt>Bintang GitHub</dt>
+              <dd>
+                {formatCompact(github.stars)} <small>{dateOf(github.date)}</small>
+              </dd>
+            </div>
+          )}
+          {downloads && (
+            <div class="dm-popularity" data-pagefind-ignore>
+              <dt>{label}</dt>
+              <dd>
+                {formatCompact(downloads.value)} <small>{dateOf(downloads.date)}</small>
+              </dd>
+            </div>
+          )}
+        </>
+      )
+}

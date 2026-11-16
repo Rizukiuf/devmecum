@@ -5,6 +5,7 @@ import { getCollection, getEntry } from 'astro:content';
 import { buildIdIndex, pageSlug, type IdIndex } from './ids.ts';
 import { computeStage, type Stage } from './maturity.ts';
 import { buildCatalog, type CatalogEntry } from './catalog.ts';
+import { readMetricsFile, type TechMetrics } from './metrics.ts';
 import { isFixtureTech, type Domain, type Tech, type Template } from './schemas.ts';
 
 export type TechPage = {
@@ -147,4 +148,16 @@ export function getCatalog(): Promise<CatalogEntry[]> {
     }
     return buildCatalog({ techs, domains: await getAllDomains(), stages, hrefs });
   });
+}
+
+/**
+ * Metrik popularitas satu teknologi dari berkas yang ditulis saat deploy
+ * (`DEVMECUM_METRICS_FILE`, bawaan `src/data/metrics/metrics.json`). Tanpa berkas
+ * atau tanpa entri, hasilnya `undefined` dan angka tidak ditampilkan.
+ */
+export async function getMetrics(slug: string): Promise<TechMetrics | undefined> {
+  const file = await cached('metrics', async () =>
+    readMetricsFile(process.env.DEVMECUM_METRICS_FILE ?? 'src/data/metrics/metrics.json'),
+  );
+  return file !== undefined && Object.hasOwn(file.tech, slug) ? file.tech[slug] : undefined;
 }

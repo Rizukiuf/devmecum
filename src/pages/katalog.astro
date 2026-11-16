@@ -14,6 +14,7 @@ const description = 'Semua teknologi di Devmecum, bisa disaring menurut domain, 
 <StarlightPage frontmatter={{ title: 'Katalog', description, tableOfContents: false }}>
   <p>{description}</p>
   <CatalogFilter entries={entries} domains={domains}>
+    <h2 class="dm-visually-hidden">Daftar teknologi</h2>
     <div class="dm-catalog-grid not-content">
       {entries.map((entry) => <CatalogCard entry={entry} />)}
     </div>

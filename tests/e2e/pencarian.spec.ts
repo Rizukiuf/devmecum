@@ -7,9 +7,12 @@ test('pencarian menemukan kata unik dan menawarkan filter', async ({ page }) => 
   const input = page.locator('.pagefind-ui__search-input');
   await input.fill('kuartadesimal');
 
+  // Pagefind dimuat malas; beri waktu lebih saat suite lain berjalan paralel.
   const result = page.locator('.pagefind-ui__result-link').first();
-  await expect(result).toContainText('Halaman usang');
-  await expect(result).toHaveAttribute('href', /\/fondasi\/uji-komponen\/02-prasyarat\/halaman-usang\//);
+  await expect(result).toContainText('Halaman usang', { timeout: 20_000 });
+  await expect(result).toHaveAttribute('href', /\/fondasi\/uji-komponen\/02-prasyarat\/halaman-usang\//, {
+    timeout: 20_000,
+  });
 
   const filters = page.locator('.pagefind-ui__filter-name');
   // Filter dirender bertahap oleh Pagefind; beri waktu lebih saat tes berjalan paralel.
