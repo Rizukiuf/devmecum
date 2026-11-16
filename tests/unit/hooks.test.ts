@@ -1,6 +1,8 @@
 // Menjalankan skrip hook sungguhan sebagai proses anak, seperti yang dilakukan
 // Claude Code: JSON masuk lewat stdin, keputusan keluar lewat kode keluar.
 import { spawnSync } from 'node:child_process';
+import { cpSync, mkdirSync, mkdtempSync, rmSync } from 'node:fs';
+import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { expect, test } from 'vitest';
@@ -47,4 +49,21 @@ test.each(['protect-files', 'validate-edited', 'validate-on-stop'])(
 
 test('validate-on-stop tidak memblokir saat sudah berjalan karena hook', () => {
   expect(run('validate-on-stop', { stop_hook_active: true }).status).toBe(0);
+});
+
+test('protect-files menolak (exit 2) bila modulnya tidak bisa dimuat, bukan lolos diam-diam', () => {
+  // Salinan skrip di folder tanpa src/lib: impornya gagal.
+  const dir = mkdtempSync(join(tmpdir(), 'devmecum-hook-'));
+  try {
+    mkdirSync(join(dir, 'scripts/hooks'), { recursive: true });
+    cpSync(abs('scripts/hooks/protect-files.mjs'), join(dir, 'scripts/hooks/protect-files.mjs'));
+    const r = spawnSync(process.execPath, [join(dir, 'scripts/hooks/protect-files.mjs')], {
+      input: JSON.stringify({ tool_input: { file_path: abs('pnpm-lock.yaml') } }),
+      encoding: 'utf8',
+    });
+    expect(r.status).toBe(2);
+    expect(r.stderr).toContain('protect-files');
+  } finally {
+    rmSync(dir, { recursive: true, force: true });
+  }
 });

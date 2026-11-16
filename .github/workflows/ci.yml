@@ -47,11 +47,20 @@ jobs:
       - name: Validasi konten
         run: pnpm validate
 
+      # Jalur yang sama dengan deploy.yml, supaya kegagalan deploy (draf bocor,
+      # tautan mati di set halaman asli, anggaran file, render diagram) terlihat
+      # di PR dan bukan sesudah merge.
+      - name: Build produksi
+        run: pnpm build
+
+      - name: Pastikan tanpa konten uji
+        run: node scripts/assert-no-fixtures.mjs
+
+      - name: Anggaran file (build produksi)
+        run: pnpm budget
+
       - name: Build dengan konten uji dan tes e2e
         run: pnpm test:e2e
-
-      - name: Anggaran file
-        run: pnpm budget
 
       - name: Anggaran Lighthouse
         run: pnpm lhci
