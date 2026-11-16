@@ -196,3 +196,11 @@ test('formulir bisa dipakai dengan papan ketik', async ({ page }) => {
   await expect(page.locator(`${CARD}:visible`)).toHaveCount(total);
   await expect(page).toHaveURL(/\/katalog\/$/);
 });
+
+test('kartu menampilkan bintang GitHub ringkas bila datanya ada', async ({ page }) => {
+  await page.goto(URL);
+  await expect(card(page, 'uji-komponen')).toContainText('12,3 rb');
+  await expect(card(page, 'uji-komponen')).toContainText('2,5 jt');
+  // Teknologi tanpa data metrik tidak memuat baris popularitas.
+  await expect(card(page, 'uji-terdaftar').locator('.dm-popularity')).toHaveCount(0);
+});

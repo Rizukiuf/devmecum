@@ -20,7 +20,8 @@
     "lhci": "lhci autorun",
     "validate": "node scripts/validate-content.mjs",
     "new-tech": "node scripts/new-tech.mjs",
-    "versions": "node scripts/check-versions.mjs"
+    "versions": "node scripts/check-versions.mjs",
+    "metrics": "node scripts/update-metrics.mjs"
   },
   "pnpm": {
     "onlyBuiltDependencies": [

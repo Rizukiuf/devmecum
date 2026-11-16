@@ -5,6 +5,7 @@
 import type { CatalogEntry } from '../lib/catalog.ts';
 import { TYPE_LABELS } from '../lib/labels.ts';
 import AdoptionBadge from './AdoptionBadge.astro';
+import Popularity from './Popularity.astro';
 import StageBadge from './StageBadge.astro';
 import TrendBadge from './TrendBadge.astro';
 
@@ -32,6 +33,7 @@ const meta = [TYPE_LABELS[entry.type], entry.domainName, entry.latestVersion].fi
     {entry.trend && <TrendBadge trend={entry.trend} />}
   </p>
   <p class="dm-catalog-meta">{meta}</p>
+  <Popularity slug={entry.slug} compact />
   {
     entry.useCases.length > 0 && (
       <ul class="dm-catalog-usecases">

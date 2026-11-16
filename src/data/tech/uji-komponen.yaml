@@ -17,3 +17,11 @@ adoption: khusus # data uji
 trend: turun # data uji
 useCases:
   - menguji tampilan komponen
+metrics:
+  github: { repo: example/uji-komponen }
+  downloads: { registry: npm, name: uji-komponen }
+surveys:
+  - name: Survei Uji
+    year: 2026
+    value: 42% pengguna
+    url: https://example.com/survei

@@ -17,3 +17,6 @@ wrangler-preview.log
 # Laporan sementara dari pemantau (skrip versions / rolling-issue)
 laporan.md
 laporan-*.md
+
+# Metrik popularitas, diambil saat deploy oleh scripts/update-metrics.mjs
+src/data/metrics/

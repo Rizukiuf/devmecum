@@ -47,6 +47,13 @@ jobs:
       - name: Validasi konten
         run: pnpm validate
 
+      # Angka popularitas berubah tiap minggu, jadi diambil saat deploy (tidak masuk Git).
+      # Kegagalan registri tidak menggagalkan langkah ini; angka lama atau kosong dipakai.
+      - name: Ambil metrik
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: pnpm metrics
+
       - name: Build produksi
         run: pnpm build
 

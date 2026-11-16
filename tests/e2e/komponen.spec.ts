@@ -58,3 +58,22 @@ test('tab multi-bahasa berganti isi', async ({ page }) => {
   await tabs.getByRole('tab', { name: 'JavaScript' }).click();
   await expect(tabs.getByRole('tabpanel')).toContainText('console.log("Halo")');
 });
+
+test('kartu data menampilkan bintang GitHub dan unduhan paket beserta tanggalnya', async ({ page }) => {
+  await page.goto(URL);
+  const card = page.getByRole('region', { name: 'Kartu data' });
+  const row = (term: string) => card.locator('div', { has: page.locator('dt', { hasText: new RegExp(`^${term}$`) }) }).locator('dd');
+
+  await expect(row('Bintang GitHub')).toContainText('12,3 rb');
+  await expect(row('Bintang GitHub')).toContainText('per 15 November 2026');
+  await expect(row('Unduhan npm per minggu')).toContainText('2,5 jt');
+  await expect(row('Unduhan npm per minggu')).toContainText('per 15 November 2026');
+});
+
+test('kartu data memuat baris survei dengan tautan', async ({ page }) => {
+  await page.goto(URL);
+  const card = page.getByRole('region', { name: 'Kartu data' });
+  const survey = card.locator('div', { has: page.locator('dt', { hasText: /^Survei$/ }) }).locator('dd');
+  await expect(survey.getByRole('link', { name: 'Survei Uji 2026' })).toHaveAttribute('href', 'https://example.com/survei');
+  await expect(survey).toContainText('42% pengguna');
+});
