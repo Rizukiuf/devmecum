@@ -308,6 +308,10 @@
 }
 
 /* --- Katalog berfilter --- */
+/* Elemen kustom bawaannya inline; isinya blok. */
+.dm-catalog-filter {
+  display: block;
+}
 /* Kartu dan formulir memakai `display`, yang mengalahkan gaya bawaan [hidden]. */
 .dm-catalog-card[hidden],
 .dm-catalog-filter [hidden] {

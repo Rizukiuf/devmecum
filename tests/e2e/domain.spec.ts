@@ -62,7 +62,16 @@ test('halaman domain menautkan katalog berfilter', async ({ page }) => {
   await expect(page.locator('.dm-domain-summary')).toContainText('terdaftar · Lihat di katalog berfilter');
 });
 
+// Tidak memakai domain tertentu sebagai "domain kosong": konten nyata akan mengisinya.
+// Setiap halaman domain diperiksa; pesan kosong muncul tepat bila tidak ada kartu,
+// dan jumlah di ringkasan sama dengan jumlah kartu.
 test('domain tanpa teknologi menampilkan pesan kosong', async ({ page }) => {
-  await page.goto('/mobile/');
-  await expect(page.getByText('Belum ada teknologi terdaftar di domain ini.')).toBeVisible();
+  for (const domain of domains) {
+    await page.goto(`/${domain.id}/`);
+    const cards = await page.locator('article.dm-catalog-card').count();
+    const empty = page.getByText('Belum ada teknologi terdaftar di domain ini.');
+    await expect(page.locator('.dm-domain-summary'), domain.id).toContainText(`${cards} teknologi terdaftar`);
+    if (cards === 0) await expect(empty, domain.id).toBeVisible();
+    else await expect(empty, domain.id).toHaveCount(0);
+  }
 });

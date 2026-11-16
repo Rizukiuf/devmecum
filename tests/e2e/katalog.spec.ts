@@ -7,6 +7,35 @@ const filter = (page: Page) => page.locator('dm-catalog-filter');
 const card = (page: Page, slug: string) => page.locator(`${CARD}[data-slug="${slug}"]`);
 const counter = (page: Page) => filter(page).locator('[aria-live="polite"]');
 
+/**
+ * Atribut tiap kartu yang terlihat. Tes membandingkan atribut ini dengan filter,
+ * bukan menghitung kartu, supaya tidak bergantung pada jumlah teknologi nyata.
+ */
+const visibleCards = (page: Page) =>
+  page.locator(`${CARD}:visible`).evaluateAll((cards) =>
+    cards.map((el) => ({
+      slug: el.getAttribute('data-slug') ?? '',
+      name: el.querySelector('h3')?.textContent?.trim() ?? '',
+      tags: JSON.parse(el.getAttribute('data-tags') ?? '[]') as string[],
+      domain: el.getAttribute('data-domain'),
+      tingkat: el.getAttribute('data-tingkat'),
+      adopsi: el.getAttribute('data-adopsi'),
+    })),
+  );
+
+/** Setiap kartu yang terlihat memuat `term` di nama, slug, atau tagnya. */
+async function expectVisibleMatchSearch(page: Page, term: string) {
+  const cards = await visibleCards(page);
+  expect(cards.length).toBeGreaterThan(0);
+  for (const item of cards) {
+    const haystack = [item.name, item.slug, ...item.tags].map((text) => text.toLowerCase());
+    expect(haystack.some((text) => text.includes(term)), item.slug).toBe(true);
+  }
+}
+
+/** String yang tidak cocok dengan teknologi apa pun, nyata maupun uji. */
+const NO_MATCH = 'zzq-tidak-ada-teknologi-ini';
+
 /** Mencatat galat halaman dan galat konsol supaya tes bisa memastikan tidak ada. */
 function collectErrors(page: Page): string[] {
   const errors: string[] = [];
@@ -38,8 +67,7 @@ test('filter kematangan', async ({ page }) => {
   await expect(card(page, 'python')).toBeHidden();
   await expect(card(page, 'uji-komponen')).toBeHidden();
   // Hanya kartu tingkat 0 yang tersisa, termasuk entri nyata yang baru terdaftar.
-  const visible = page.locator(`${CARD}:visible`);
-  const stages = await visible.evaluateAll((cards) => cards.map((el) => el.getAttribute('data-tingkat')));
+  const stages = (await visibleCards(page)).map((item) => item.tingkat);
   expect(stages.length).toBeGreaterThan(0);
   expect(new Set(stages)).toEqual(new Set(['0']));
   await expect(page).toHaveURL(/\/katalog\/\?tingkat=0$/);
@@ -55,6 +83,7 @@ test('filter domain menyaring kartu dan URL', async ({ page }) => {
   await expect(card(page, 'uji-komponen')).toBeVisible();
   await expect(card(page, 'python')).toBeHidden();
   await expect(page).toHaveURL(/\/katalog\/\?domain=fondasi$/);
+  expect(new Set((await visibleCards(page)).map((item) => item.domain))).toEqual(new Set(['fondasi']));
   const shown = await page.locator(`${CARD}[data-domain="fondasi"]`).count();
   await expect(counter(page)).toHaveText(`Menampilkan ${shown} dari ${total} teknologi`);
 });
@@ -64,8 +93,10 @@ test('filter dari URL diterapkan saat dimuat', async ({ page }) => {
   await expect(filter(page).getByLabel('Adopsi')).toHaveValue('khusus');
   await expect(card(page, 'uji-komponen')).toBeVisible();
   await expect(card(page, 'python')).toBeHidden();
-  // Teknologi tanpa data adopsi tidak lolos filter adopsi.
+  // Teknologi dengan adopsi lain tidak lolos filter adopsi.
   await expect(card(page, 'uji-terdaftar')).toBeHidden();
+  // Kartu tanpa data adopsi (atribut tidak ada) juga tidak lolos.
+  expect(new Set((await visibleCards(page)).map((item) => item.adopsi))).toEqual(new Set(['khusus']));
 });
 
 test('nilai tak dikenal diabaikan', async ({ page }) => {
@@ -84,9 +115,11 @@ test('cari nama', async ({ page }) => {
   const total = await page.locator(CARD).count();
   await filter(page).getByLabel('Cari nama').fill('pyt');
 
-  await expect(page.locator(`${CARD}:visible`)).toHaveCount(1);
   await expect(card(page, 'python')).toBeVisible();
+  await expect(card(page, 'uji-komponen')).toBeHidden();
+  await expect(card(page, 'uji-terdaftar')).toBeHidden();
   await expect(page).toHaveURL(/\/katalog\/\?q=pyt$/);
+  await expectVisibleMatchSearch(page, 'pyt');
 
   await filter(page).getByRole('button', { name: 'Atur ulang' }).click();
   await expect(page.locator(`${CARD}:visible`)).toHaveCount(total);
@@ -100,7 +133,7 @@ test('tanpa hasil', async ({ page }) => {
   await expect(empty).toBeHidden();
 
   await filter(page).getByLabel('Domain').selectOption({ label: 'Fondasi' });
-  await filter(page).getByLabel('Jenis').selectOption({ label: 'Bahasa pemrograman' });
+  await filter(page).getByLabel('Cari nama').fill(NO_MATCH);
 
   await expect(page.locator(`${CARD}:visible`)).toHaveCount(0);
   await expect(empty).toBeVisible();
@@ -149,7 +182,9 @@ test('formulir bisa dipakai dengan papan ketik', async ({ page }) => {
     await expect(filter(page).getByLabel(label, { exact: true }), label).toBeFocused();
   }
   await page.keyboard.type('pyt');
-  await expect(page.locator(`${CARD}:visible`)).toHaveCount(1);
+  await expect(card(page, 'uji-komponen')).toBeHidden();
+  await expect(card(page, 'python')).toBeVisible();
+  await expectVisibleMatchSearch(page, 'pyt');
   // Enter di kotak pencarian tidak memuat ulang halaman.
   await page.keyboard.press('Enter');
   await expect(page).toHaveURL(/\/katalog\/\?q=pyt$/);
