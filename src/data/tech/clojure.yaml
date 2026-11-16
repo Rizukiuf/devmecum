@@ -1,0 +1,21 @@
+name: Clojure
+slug: clojure
+type: language
+domain: bahasa
+template: A
+license: EPL-1.0 # sumber: https://raw.githubusercontent.com/clojure/clojure/master/readme.txt ("Eclipse Public License 1.0")
+website: https://clojure.org
+docs: https://clojure.org/reference/documentation
+latestVersion: "1.12.6" # dari GitHub clojure/clojure (tag) per 17 November 2026
+versionSource: { kind: github, repo: clojure/clojure, tagPattern: '^clojure-(\d+)\.(\d+)\.(\d+)$' }
+requires: []
+alternatives: [scala, fsharp, haskell]
+tags: [lisp, fungsional, jvm, dinamis]
+adoption: mapan # SO Survey 2026: 1,3% responden (187 dari 14.099), peringkat 41, di bawah ambang 20% dan bukan lima besar; masih dirilis (1.12.6, 2 September 2026, https://clojure.org/releases/downloads); https://survey.stackoverflow.co/2026/technology/data/languages
+trend: stabil # bawaan rubrik: baru satu titik data survei yang sebanding (SO 2026 1,3%, https://survey.stackoverflow.co/2026/technology/data/languages); SO 2025 hanya memuatnya di tabel isian bebas ("Have Used" 0%, "Want to Use" 0,1%, https://survey.stackoverflow.co/2025/technology), label berbeda dan tidak sebanding
+metrics:
+  github: { repo: clojure/clojure }
+useCases:
+  - pemrograman fungsional dengan data tak-berubah di JVM
+  - layanan backend dan pemrosesan data
+  - pengembangan interaktif lewat REPL

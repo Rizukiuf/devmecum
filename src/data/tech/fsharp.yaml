@@ -1,0 +1,19 @@
+name: F#
+slug: fsharp
+type: language
+domain: bahasa
+template: A
+license: MIT # sumber: https://raw.githubusercontent.com/dotnet/fsharp/main/License.txt
+website: https://fsharp.org
+docs: https://learn.microsoft.com/en-us/dotnet/fsharp/ # tanpa pemantau versi: tag dotnet/fsharp berupa versi FSharp.Compiler dan SDK (v15.2.x, v14.0.x, tag preview) yang tidak dipetakan halaman resmi ke satu versi bahasa; halaman Microsoft menyebut F# 11 (https://learn.microsoft.com/en-us/dotnet/fsharp/whats-new/fsharp-11)
+requires: []
+alternatives: [csharp, haskell, scala, clojure]
+tags: [dotnet, fungsional, tipe-statis, multiparadigma]
+adoption: mapan # SO Survey 2026: 1,2% responden (172 dari 14.099), peringkat 44, di bawah ambang 20% dan bukan lima besar; masih dirilis (F# 11, halaman Microsoft bertanggal 2026-11-10); https://survey.stackoverflow.co/2026/technology/data/languages
+trend: stabil # SO 1,3% (2025; https://survey.stackoverflow.co/2025/technology) ke 1,2% (2026; https://survey.stackoverflow.co/2026/technology/data/languages), turun 0,1 poin (< 2)
+metrics:
+  github: { repo: dotnet/fsharp }
+useCases:
+  - aplikasi .NET dengan gaya fungsional
+  - pemodelan domain dan analisis data
+  - layanan backend dan skrip di ekosistem .NET

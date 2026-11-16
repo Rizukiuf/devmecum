@@ -1,0 +1,21 @@
+name: Perl
+slug: perl
+type: language
+domain: bahasa
+template: A
+license: Artistic-1.0-Perl OR GPL-1.0-or-later # sumber: https://www.perl.org/about.html ("licensed under its Artistic License, or the GNU General Public License") dan README repo https://raw.githubusercontent.com/Perl/perl5/blead/README (GPL "version 1, or ... any later version", atau "Artistic License")
+website: https://www.perl.org
+docs: https://perldoc.perl.org
+latestVersion: "5.44.0" # dari GitHub Perl/perl5 (tag) per 17 November 2026
+versionSource: { kind: github, repo: Perl/perl5, tagPattern: '^v(\d+)\.(\d*[02468])\.(\d+)$' }
+requires: []
+alternatives: [python, ruby, bash]
+tags: [scripting, teks, dinamis, sysadmin]
+adoption: mapan # SO Survey 2026: 3,8% responden (538 dari 14.099), peringkat 28, di bawah ambang 20% dan bukan lima besar; masih dirilis (5.44.0, stabil menurut https://www.perl.org/get.html); https://survey.stackoverflow.co/2026/technology/data/languages
+trend: stabil # SO 3,8% (2025; https://survey.stackoverflow.co/2025/technology) ke 3,8% (2026; https://survey.stackoverflow.co/2026/technology/data/languages), perubahan 0 poin (< 2)
+metrics:
+  github: { repo: Perl/perl5 }
+useCases:
+  - pemrosesan teks dan log
+  - skrip administrasi sistem
+  - alat dan skrip warisan yang masih berjalan di banyak server

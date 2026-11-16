@@ -1,0 +1,21 @@
+name: Erlang
+slug: erlang
+type: language
+domain: bahasa
+template: A
+license: Apache-2.0 # sumber: https://raw.githubusercontent.com/erlang/otp/master/LICENSE.txt
+website: https://www.erlang.org
+docs: https://www.erlang.org/docs.html
+latestVersion: "29.1.2" # dari GitHub erlang/otp (tag) per 17 November 2026
+versionSource: { kind: github, repo: erlang/otp, tagPattern: '^OTP-(\d+)\.(\d+)(?:\.(\d+))?$' } # yang dipantau Erlang/OTP (bahasa Erlang dirilis bersama pustaka OTP); tag prarilis OTP-NN.N-rcN dan tag empat komponen (OTP-28.5.0.8) tidak cocok
+requires: []
+alternatives: [elixir, go, rust]
+tags: [fungsional, concurrency, beam, tahan-galat]
+adoption: mapan # SO Survey 2026: 1,5% responden (218 dari 14.099), peringkat 39, di bawah ambang 20% dan bukan lima besar; masih dirilis (Erlang/OTP 29.1, 16 September 2026, https://www.erlang.org); https://survey.stackoverflow.co/2026/technology/data/languages
+trend: stabil # SO 1,5% (2025; https://survey.stackoverflow.co/2025/technology) ke 1,5% (2026; https://survey.stackoverflow.co/2026/technology/data/languages), perubahan 0 poin (< 2)
+metrics:
+  github: { repo: erlang/otp }
+useCases:
+  - sistem telekomunikasi dan messaging yang tahan galat
+  - layanan konkuren dan terdistribusi di BEAM
+  - sistem soft real-time

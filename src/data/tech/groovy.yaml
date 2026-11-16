@@ -1,0 +1,21 @@
+name: Groovy
+slug: groovy
+type: language
+domain: bahasa
+template: A
+license: Apache-2.0 # sumber: https://groovy.apache.org/download.html ("Groovy is Open Source: Apache 2 License") dan https://raw.githubusercontent.com/apache/groovy/master/LICENSE
+website: https://groovy.apache.org
+docs: https://groovy-lang.org/documentation.html
+latestVersion: "6.0.0" # dari Maven Central org.apache.groovy:groovy per 17 November 2026
+versionSource: { kind: maven, name: 'org.apache.groovy:groovy' } # Maven Central; halaman unduhan resmi (groovy.apache.org/download.html) menjadikan 6.0.0 tombol unduhan utama, meski teksnya masih menyebut 5.1 "latest stable" dan 6.0 "work in progress"
+requires: []
+alternatives: [kotlin, java, scala]
+tags: [jvm, dinamis, skrip, dsl]
+adoption: mapan # SO Survey 2026: 3,9% responden (544 dari 14.099), peringkat 27, di bawah ambang 20% dan bukan lima besar; masih dirilis (5.1.3 dan 6.0.0 di halaman unduhan resmi); https://survey.stackoverflow.co/2026/technology/data/languages
+trend: stabil # SO 4,8% (2025; https://survey.stackoverflow.co/2025/technology) ke 3,9% (2026; https://survey.stackoverflow.co/2026/technology/data/languages), turun 0,9 poin (< 2)
+metrics:
+  github: { repo: apache/groovy }
+useCases:
+  - skrip build Gradle
+  - pipeline Jenkins dan skrip otomasi di JVM
+  - DSL dan pengujian dengan Spock

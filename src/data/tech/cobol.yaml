@@ -1,0 +1,16 @@
+name: COBOL
+slug: cobol
+type: language
+domain: bahasa
+template: A
+website: https://www.iso.org/standard/74527.html # ISO/IEC 1989:2023 (COBOL), edisi ketiga, 2023-01 (menurut hasil pencarian iso.org); halaman membalas 403 untuk bot; tanpa pemantau versi: rujukan berupa standar ISO, bukan repo atau registri rilis
+docs: https://www.iso.org/standard/74527.html
+requires: []
+alternatives: [java, csharp]
+tags: [warisan, mainframe, bisnis, iso]
+adoption: mapan # SO Survey 2026: 1,1% responden (150 dari 14.099), peringkat 46, di bawah ambang 20% dan bukan lima besar; standar ISO/IEC 1989:2023 masih direvisi (draf ISO/IEC DIS 1989, https://www.iso.org/standard/87736.html), dan tidak ada pernyataan resmi deprecated atau penerus yang dibuka, jadi bukan warisan menurut rubrik; https://survey.stackoverflow.co/2026/technology/data/languages
+trend: stabil # SO 1,0% (2025; https://survey.stackoverflow.co/2025/technology) ke 1,1% (2026; https://survey.stackoverflow.co/2026/technology/data/languages), naik 0,1 poin (< 2)
+useCases:
+  - sistem transaksi bisnis dan perbankan di mainframe
+  - pemeliharaan aplikasi warisan skala besar
+  - pemrosesan batch data keuangan

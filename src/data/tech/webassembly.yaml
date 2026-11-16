@@ -1,0 +1,16 @@
+name: WebAssembly
+slug: webassembly
+type: standard
+domain: bahasa
+template: A
+website: https://www.w3.org/groups/wg/wasm/ # W3C WebAssembly Working Group; spesifikasi inti dikembangkan juga di W3C WebAssembly Community Group (https://webassembly.org)
+docs: https://webassembly.github.io/spec/core/ # sumber: https://webassembly.org/ (tautan spesifikasi webassembly.github.io/spec/core/...); tanpa pemantau versi: rilis spesifikasi bukan versi produk dan tidak didukung alat
+requires: []
+alternatives: []
+tags: [binary-format, virtual-machine, portabel, w3c]
+adoption: mapan # bawaan rubrik: tidak ada di tabel bahasa SO Survey 2026 (51 bahasa; https://survey.stackoverflow.co/2026/technology/data/languages) maupun SO 2025 (https://survey.stackoverflow.co/2025/technology), jadi tidak ada angka; spesifikasi masih aktif (Release 3.0 per 2026-11-16, https://webassembly.github.io/spec/core/) dan W3C WG berpiagam hingga 27 Agustus 2028 (https://www.w3.org/wasm/)
+trend: stabil # bawaan rubrik: tidak ada data survei sama sekali (SO 2025 dan 2026 tidak memuat WebAssembly)
+useCases:
+  - target kompilasi portabel untuk bahasa seperti C, C++, dan Rust
+  - menjalankan kode berkinerja tinggi di browser
+  - modul sandbox di luar browser (server dan edge)

@@ -1,0 +1,16 @@
+name: Fortran
+slug: fortran
+type: language
+domain: bahasa
+template: A
+website: https://wg5-fortran.org # ISO/IEC JTC1/SC22/WG5, kelompok kerja ISO untuk standar Fortran (komite nasional AS: https://j3-fortran.org); fortran-lang.org adalah situs komunitas yang tidak menyebut dirinya resmi, jadi tidak dijadikan rujukan
+docs: https://www.iso.org/standard/82170.html # ISO/IEC 1539-1:2023 (Fortran, Part 1: Base language), edisi 5, 2023-11 (menurut hasil pencarian iso.org); halaman membalas 403 untuk bot
+requires: []
+alternatives: [c, cpp, julia]
+tags: [komputasi-ilmiah, iso, kompilasi, numerik]
+adoption: mapan # SO Survey 2026: 1,7% responden (239 dari 14.099), peringkat 38, di bawah ambang 20% dan bukan lima besar; masih aktif (Fortran 2028 sedang disusun, https://wg5-fortran.org); ceruk (komputasi ilmiah) tidak dibuktikan halaman resmi yang dibuka; https://survey.stackoverflow.co/2026/technology/data/languages
+trend: stabil # SO 1,4% (2025; https://survey.stackoverflow.co/2025/technology) ke 1,7% (2026; https://survey.stackoverflow.co/2026/technology/data/languages), naik 0,3 poin (< 2)
+useCases:
+  - komputasi ilmiah dan numerik
+  - simulasi fisika, cuaca, dan iklim
+  - pustaka numerik berkinerja tinggi
