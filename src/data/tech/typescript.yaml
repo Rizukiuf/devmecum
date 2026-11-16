@@ -13,7 +13,7 @@ requires: []
 alternatives: [javascript, dart]
 tags: [tipe-statis, web, frontend, tooling]
 adoption: arus-utama # SO Survey 2026: 43,8% responden, peringkat 6; https://survey.stackoverflow.co/2026/technology/data/languages
-trend: naik # unduhan npm `typescript` Okt 2025 446.651.443 -> Okt 2026 1.379.933.278 (naik >= 25%); https://api.npmjs.org/downloads/point/2026-10-01:2026-10-31/typescript
+trend: stabil # SO 43,6% (2025) -> 43,8% (2026), < 2 poin; https://survey.stackoverflow.co/2025/technology , https://survey.stackoverflow.co/2026/technology/data/languages ; unduhan npm naik x3,09 (446.651.443 -> 1.379.933.278, Okt 2025 -> Okt 2026) dicatat sebagai konteks, tidak dipakai karena berbeda arah dengan survei
 metrics:
   github: { repo: microsoft/TypeScript }
   downloads: { registry: npm, name: typescript }
