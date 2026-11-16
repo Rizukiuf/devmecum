@@ -35,6 +35,6 @@ test('sidebar Python tidak memuat teknologi lain', async ({ page }) => {
     .first()
     .locator('a')
     .evaluateAll((links) => links.map((a) => a.getAttribute('href') ?? ''));
-  expect(hrefs).toEqual(['/', '/bahasa/python/']);
+  expect(hrefs).toEqual(['/', '/katalog/', '/bahasa/', '/bahasa/python/']);
   expect(await page.content()).not.toContain('/fondasi/uji-komponen/');
 });
