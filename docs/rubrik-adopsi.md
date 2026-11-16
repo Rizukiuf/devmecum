@@ -33,18 +33,26 @@ Satu bukti dari kolom "Terpenuhi bila" sudah cukup. Sumber angka (survei, statis
 
 | Tren | Terpenuhi bila |
 |---|---|
-| `naik` | Dua titik data berjarak ≥ 1 tahun: survei naik ≥ 2 poin persentase, atau unduhan registri naik ≥ 25% |
-| `turun` | Survei turun ≥ 2 poin, unduhan turun ≥ 15%, atau berstatus `warisan` |
+| `naik` | Dua titik data berjarak ≥ 1 tahun: survei naik ≥ 2 poin persentase, atau (tanpa data survei) unduhan registri naik ≥ 25% |
+| `turun` | Survei turun ≥ 2 poin, (tanpa data survei) unduhan turun ≥ 15%, atau berstatus `warisan` |
 | `stabil` | Bawaan: perubahan di antara keduanya, atau belum ada dua titik data |
+
+**Bila bukti berbeda arah, survei yang dipakai.** Survei yang dimaksud adalah Stack Overflow Developer Survey dua tahun berurutan; unduhan registri (npm, PyPI, crates) dua titik data berjarak ≥ 1 tahun. Jika keduanya menunjuk arah tren berbeda, nilai `trend` mengikuti survei dan unduhan dicatat di komentar bukti sebagai konteks. Unduhan registri jadi dasar tren hanya bila teknologi itu tidak punya data survei. Alasannya, unduhan mentah bisa membengkak karena CI, mirror, dan dependensi transitif.
 
 Konsep dan disiplin (templat E) dinilai dari seberapa luas dipraktikkan atau diajarkan. Tanpa bukti kuantitatif, nilainya `mapan` dan `stabil`, dengan alasan tertulis.
 
 ## Format bukti
 
-Bukti ditulis sebagai komentar di baris yang sama dengan nilainya: satu kalimat pendek dan satu URL.
+Bukti ditulis sebagai komentar di baris yang sama dengan nilainya. Bukti `adoption` berupa satu kalimat pendek dan satu URL. Bukti `trend` berbasis dua titik data boleh menyebut kedua titik data dan memakai dua URL (satu per titik atau tahun).
 
 ```yaml
 adoption: arus-utama # SO Survey 2026: 58,0% responden; https://survey.stackoverflow.co/2026/technology
+```
+
+Contoh `trend` saat survei dan unduhan berbeda arah (TypeScript: unduhan npm ×3,09 dalam setahun, tetapi survei 43,6% lalu 43,8%, jadi `stabil`):
+
+```yaml
+trend: stabil # survei SO 43,6% (2025; https://survey.stackoverflow.co/2025/technology) ke 43,8% (2026; https://survey.stackoverflow.co/2026/technology/data/languages); unduhan npm ×3,09 dalam setahun hanya konteks
 ```
 
 Nilai bawaan (`mapan` atau `stabil` karena tidak ada bukti lain) ditulis dengan alasannya:
