@@ -5,7 +5,7 @@ domain: bahasa
 template: A
 creator: Rasmus Lerdorf # sumber: https://www.php.net/manual/en/history.php.php
 firstRelease: 1995 # sumber: https://www.php.net/manual/en/history.php.php ("In June of 1995, Rasmus released the source code for PHP Tools to the public")
-license: BSD-3-Clause # sumber: https://www.php.net/license/
+license: BSD-3-Clause # berlaku untuk PHP 8.6+; rilis lama (mis. 8.5) bernaung di PHP License 3.01 tetapi boleh dipakai atas pilihan di bawah PHP License v4 (Modified BSD); sumber: https://www.php.net/license/
 website: https://www.php.net
 docs: https://www.php.net/docs.php
 latestVersion: "8.5.12" # dari GitHub php/php-src (tag) per 16 November 2026

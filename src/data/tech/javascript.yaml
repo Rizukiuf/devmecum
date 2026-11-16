@@ -9,7 +9,7 @@ requires: []
 alternatives: [typescript]
 tags: [web, scripting, frontend, ecmascript]
 adoption: arus-utama # SO Survey 2026: 62,0% responden, peringkat 1; https://survey.stackoverflow.co/2026/technology/data/languages
-trend: turun # SO 66% (2025; https://survey.stackoverflow.co/2025/technology) ke 62,0% (2026; https://survey.stackoverflow.co/2026/technology/data/languages), turun 4,0 poin (>= 2)
+trend: turun # SO 66% (2025; https://survey.stackoverflow.co/2025/technology) ke 62,0% (2026; https://survey.stackoverflow.co/2026/technology/data/languages), turun 4,0 poin (>= 2); sampel survei menyusut (n 31.771 -> 14.099) tetapi Python/TypeScript/SQL stabil, jadi bukan artefak penyebut umum
 useCases:
   - antarmuka web interaktif di browser
   - backend dan alat command-line dengan runtime seperti Node.js
