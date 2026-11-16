@@ -21,6 +21,7 @@
     "validate": "node scripts/validate-content.mjs",
     "new-tech": "node scripts/new-tech.mjs",
     "versions": "node scripts/check-versions.mjs",
+    "links": "node scripts/check-links.mjs",
     "metrics": "node scripts/update-metrics.mjs"
   },
   "pnpm": {
