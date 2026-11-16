@@ -6,6 +6,11 @@ import { fileURLToPath } from 'node:url';
 const dist = fileURLToPath(new URL('../dist/', import.meta.url));
 const failures = [];
 
+if (!existsSync(dist)) {
+  console.error('GAGAL: folder dist/ tidak ada. Jalankan pnpm build lebih dulu.');
+  process.exit(1);
+}
+
 if (existsSync(`${dist}fondasi/uji-komponen/`)) {
   failures.push('dist/ memuat konten uji (fondasi/uji-komponen).');
 }
@@ -21,6 +26,9 @@ if (existsSync(ogDir)) {
 const scanned = ['katalog/index.html', 'fondasi/index.html'];
 for (const name of readdirSync(dist)) {
   if (/^sitemap.*\.xml$/.test(name)) scanned.push(name);
+}
+if (!scanned.some((name) => name.startsWith('sitemap'))) {
+  failures.push('dist/ tidak memuat sitemap*.xml.');
 }
 for (const rel of scanned) {
   const file = `${dist}${rel}`;

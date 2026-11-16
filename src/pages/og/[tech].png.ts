@@ -4,24 +4,25 @@ import type { APIRoute, GetStaticPaths } from 'astro';
 import sharp from 'sharp';
 import site from '../../../site.config.mjs';
 import { getAllTech, getDomain, getStage } from '../../lib/data.ts';
+import type { Tech } from '../../lib/schemas.ts';
 
 const escapeXml = (text: string) =>
   text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 
-/** Hanya teknologi berhalaman (tahap ≥ 1) yang punya gambar; tahap 0 tidak punya halaman untuk dibagikan. */
-async function withPages() {
+/**
+ * Hanya teknologi berhalaman (tahap ≥ 1) yang punya gambar; tahap 0 tidak punya
+ * halaman untuk dibagikan. Tahap dihitung sekali di sini, lalu `GET` memakai props.
+ */
+export const getStaticPaths = (async () => {
   const techs = await getAllTech();
   const stages = await Promise.all(techs.map((tech) => getStage(tech.slug)));
-  return techs.filter((_, index) => stages[index]! >= 1);
-}
-
-export const getStaticPaths = (async () => {
-  return (await withPages()).map((tech) => ({ params: { tech: tech.slug } }));
+  return techs
+    .filter((_, index) => stages[index]! >= 1)
+    .map((tech) => ({ params: { tech: tech.slug }, props: { tech } }));
 }) satisfies GetStaticPaths;
 
-export const GET: APIRoute = async ({ params }) => {
-  const tech = (await withPages()).find((item) => item.slug === params.tech);
-  if (tech === undefined) return new Response('Tidak ditemukan', { status: 404 });
+export const GET: APIRoute = async ({ props }) => {
+  const { tech } = props as { tech: Tech };
   const domain = await getDomain(tech.domain);
 
   // Ukuran huruf mengecil untuk nama panjang supaya tidak terpotong.
