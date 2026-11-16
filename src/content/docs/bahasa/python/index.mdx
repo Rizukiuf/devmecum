@@ -1,6 +1,6 @@
 ---
 title: Python
-description: Python adalah bahasa pemrograman interpreted yang dipakai untuk web, komputasi ilmiah, pemrograman jaringan, dan pendidikan.
+description: Pengenalan Python, bahasa pemrograman yang dijalankan lewat interpreter dan dipakai untuk web, komputasi ilmiah, pemrograman jaringan, dan belajar coding.
 tech: python
 chapter: 1
 level: umum
@@ -14,15 +14,18 @@ sources:
   - https://www.python.org/downloads/
   - https://devguide.python.org/versions/
   - https://docs.python.org/3/whatsnew/3.15.html
+  - https://docs.python.org/3/whatsnew/3.14.html
   - https://docs.python.org/3/howto/free-threading-python.html
   - https://docs.python.org/3/library/typing.html
   - https://docs.python.org/3/library/asyncio.html
   - https://docs.python.org/3/tutorial/interpreter.html
   - https://docs.python.org/3/tutorial/venv.html
   - https://docs.python.org/3/glossary.html
+  - https://survey.stackoverflow.co/2026/technology
   - https://survey.stackoverflow.co/2025/technology
   - https://www.tiobe.com/tiobe-index/
-  - https://go.dev/doc/
+  - https://pypi.org/
+  - https://go.dev/doc/faq
   - https://www.ruby-lang.org/en/
 codeTested: true
 tags: [serbaguna, scripting, data, otomasi]
@@ -34,7 +37,7 @@ import VersionNote from '@components/VersionNote.astro';
 
 ## Sekilas
 
-Dengan Python, kamu menulis program berorientasi objek yang dieksekusi oleh interpreter, dan bisa mencobanya langsung di mode interaktif. Karena bersifat interpreted, kamu cukup menyimpan file kode lalu menjalankannya; tahap membuat executable terpisah tidak diperlukan. Python juga mendukung gaya prosedural dan fungsional, serta berjalan di Unix (termasuk Linux dan macOS) dan Windows. Sintaksnya sederhana dan konsisten, dan pustaka standarnya luas.
+Tulis kodenya, simpan, lalu jalankan lewat interpreter; atau coba baris demi baris di mode interaktif. Begitulah cara kerja Python, bahasa pemrograman yang mendukung gaya berorientasi objek, prosedural, dan fungsional. Ia berjalan di Unix (termasuk Linux dan macOS) maupun Windows, dengan sintaks yang sederhana dan konsisten serta pustaka standar yang luas.
 
 ## Kartu data
 
@@ -42,35 +45,38 @@ Dengan Python, kamu menulis program berorientasi objek yang dieksekusi oleh inte
 
 ## Untuk apa dan siapa pemakainya
 
-Python.org menyebut area pemakaian seperti web dan internet, akses database, GUI desktop, komputasi ilmiah dan numerik, pendidikan, serta pemrograman jaringan.
+Python dipakai di banyak bidang. Halaman About di python.org menyebut web dan internet, akses database, GUI desktop, komputasi ilmiah, pendidikan, pemrograman jaringan, serta pengembangan perangkat lunak dan game.
 
-FAQ resmi menyebut Mailman dan Zope sebagai proyek terkenal yang ditulis dengan Python. Anggap keduanya contoh dari FAQ, bukan daftar pemakai terkini. FAQ yang sama menyarankan Python sebagai bahasa pertama karena sintaksnya sederhana dan konsisten serta tersedia interpreter interaktif.
+Untuk contoh proyek nyata, FAQ resmi menyebut Mailman (pengelola milis) dan Zope (application server) yang ditulis dengan Python. Anggap keduanya sekadar contoh dari FAQ, bukan daftar pemakai terkini.
+
+FAQ yang sama menyarankan Python sebagai bahasa pertama. Alasannya, sintaksnya sederhana dan konsisten, jadi kamu bisa fokus memecahkan masalah, dan ada interpreter interaktif untuk coba-coba.
 
 ## Popularitas dan status
 
-- **Stack Overflow Developer Survey 2025:** Python dipakai 57,9% responden dan berada di peringkat 4, di bawah JavaScript (66%), HTML/CSS (61,9%), dan SQL (58,6%).
-- **TIOBE Index, November 2026:** Python di peringkat 1 dengan rating 20,86%.
-- **Status pengembangan:** aktif. Rilis stabil terbaru 3.15.2 terbit pada 25 Oktober 2026 (python.org, per 16 November 2026). Seri 3.15 berstatus bugfix, sedangkan seri 3.10 sudah mencapai end-of-life pada 1 Oktober 2026 (devguide.python.org, per 16 November 2026).
+- **Stack Overflow Developer Survey 2026:** Python dipakai 58,0% responden.
+- **Stack Overflow Developer Survey 2025:** 57,9% responden, peringkat 4 di bawah JavaScript (66%), HTML/CSS (61,9%), dan SQL (58,6%).
+- **TIOBE Index, November 2026:** Python ada di peringkat 1 dengan rating 20,86%.
+- **Masih aktif dikembangkan?** Ya. Rilis stabil terbaru 3.15.2 terbit pada 25 Oktober 2026 (python.org, per 16 November 2026). Seri 3.15 berstatus bugfix dan didukung sampai Oktober 2031, sedangkan seri 3.10 sudah end-of-life sejak 1 Oktober 2026 (devguide.python.org, per 16 November 2026). Versi besar berikutnya, 3.16, dijadwalkan rilis pada 6 Oktober 2027.
 
 ## Keunggulan dan kelemahan
 
 <ProsCons>
 <Fragment slot="keunggulan">
 
-- Pustaka standar mencakup regex, Unicode, HTTP, SMTP, unit test, logging, dan socket.
-- Paket pihak ketiga tersedia lewat PyPI, melengkapi pustaka standar untuk kebutuhan yang tidak tercakup.
+- Pustaka standarnya mencakup regex, Unicode, HTTP, SMTP, unit test, logging, dan socket.
+- Kalau pustaka standar belum cukup, ada PyPI: lebih dari 940 ribu proyek per 16 November 2026 (pypi.org).
 - Interpreter tersedia di Unix, macOS, dan Windows, dan FAQ resmi menyebut Python portabel.
-- Ada interpreter interaktif dan sintaks yang konsisten, sehingga FAQ resmi merekomendasikannya untuk pemula.
-- `asyncio` tersedia untuk kode jaringan dan pekerjaan I/O-bound.
+- Mode interaktif dan sintaks yang konsisten membuat FAQ resmi merekomendasikannya untuk pemula.
+- Modul `asyncio` tersedia untuk kode jaringan dan pekerjaan I/O-bound.
 
 </Fragment>
 <Fragment slot="kelemahan">
 
-- Pada build standar, GIL memastikan hanya satu thread yang menjalankan bytecode Python pada satu waktu. Build free-threaded yang menonaktifkannya baru ada sejak 3.13 dan belum didukung semua paket.
-- Anotasi tipe tidak ditegakkan saat runtime, berbeda dengan Go yang statically typed. Kamu perlu type checker terpisah bila ingin pemeriksaan tipe.
-- Python dijalankan lewat interpreter, sedangkan Go dikompilasi ke kode mesin. Untuk beban yang sensitif terhadap kecepatan, ukur dulu dengan benchmark sendiri.
-- Antarversi ada API yang dihapus. Python 3.15 menghapus, misalnya, `glob.glob0()`, `glob.glob1()`, dan modul `sre_*`, sehingga kode lama bisa perlu diperbarui.
-- Tiap seri hanya didukung sekitar lima tahun, jadi proyek jangka panjang perlu rencana pindah versi.
+- Di build standar, GIL (global interpreter lock) membuat hanya satu thread yang menjalankan bytecode Python pada satu waktu. Akibatnya, pekerjaan yang berat di CPU tidak bisa dibagi paralel antar-thread.
+- Anotasi tipe tidak ditegakkan saat runtime. Go adalah bahasa statically typed; di Python kamu perlu type checker terpisah.
+- Python dijalankan lewat interpreter, sedangkan Go dikompilasi ke kode mesin native. Soal kecepatan, ukur sendiri dengan benchmark untuk beban kerjamu.
+- Antarversi ada API yang dihapus. Python 3.15 menghapus, misalnya, `glob.glob0()`, `glob.glob1()`, dan modul `sre_*`, jadi kode lama mungkin perlu diperbarui.
+- Dukungan per seri terbatas: 3.15 didukung sampai Oktober 2031, dan 3.10 sudah berakhir. Proyek jangka panjang perlu rencana pindah versi.
 
 </Fragment>
 </ProsCons>
@@ -83,19 +89,19 @@ Python cocok untuk:
 - Layanan jaringan yang lebih banyak menunggu I/O daripada menghitung, dengan `asyncio`.
 - Belajar pemrograman dari nol.
 
-Pikirkan ulang bila:
+Pikirkan ulang kalau:
 
-- Kamu ingin beberapa thread menjalankan bytecode Python bersamaan. Pada build standar, GIL tidak mengizinkannya.
+- Kamu ingin beberapa thread menjalankan bytecode Python bersamaan. Build standar tidak mengizinkannya karena GIL.
 - Kamu butuh jaminan tipe saat runtime tanpa alat tambahan.
 - Proyekmu masih bergantung pada versi yang sudah end-of-life, seperti 3.10.
 
 <VersionNote version="3.13">
-Build free-threaded (tanpa GIL) tersedia sejak 3.13. Sebagian paket dengan extension module belum siap dan akan mengaktifkan kembali GIL. Overhead saat menjalankan kode Python berkisar sekitar 1% sampai 8% menurut dokumentasi resmi, dan pemakaian memori biasanya lebih tinggi.
+Build free-threaded (tanpa GIL) tersedia sejak 3.13 dan resmi didukung sejak 3.14. Ada harganya: dokumentasi resmi menyebut overhead untuk kode satu-thread sekitar 1% di macOS aarch64 dan sekitar 8% di Linux x86-64, dan pemakaian memori biasanya lebih tinggi. Paket dengan extension module yang belum siap bisa menyalakan GIL kembali.
 </VersionNote>
 
 ## Contoh minimal
 
-Simpan kode berikut sebagai `fibonacci.py`.
+Simpan kode ini sebagai `fibonacci.py`. Programnya mencetak deret Fibonacci yang nilainya di bawah 10.
 
 ```python title="fibonacci.py"
 a, b = 0, 1
@@ -104,7 +110,7 @@ while a < 10:
     a, b = b, a + b
 ```
 
-Jalankan dengan `python fibonacci.py`. Bila `python` tidak dikenal, coba `py` di Windows. Di Unix, interpreter Python 3 secara bawaan tidak dipasang dengan nama `python`; biasanya namanya mengikuti versi, misalnya `python3.15`.
+Jalankan dengan `python fibonacci.py`. Kalau `python` tidak dikenal, di Windows coba `py`. Di Unix, interpreter Python 3 secara bawaan tidak dipasang dengan nama `python`; biasanya namanya mengikuti versi, misalnya `python3.15`.
 
 ```text
 0
@@ -115,30 +121,31 @@ Jalankan dengan `python fibonacci.py`. Bila `python` tidak dikenal, coba `py` di
 5
 8
 ```
+
 ## Konsep kunci
 
-- **Interpreter:** program yang membaca dan menjalankan kode Python, termasuk mode interaktif dengan prompt `>>>`.
-- **Type hints:** anotasi tipe yang dibaca tool seperti type checker, bukan ditegakkan saat runtime.
-- **Pustaka standar:** kumpulan modul bawaan, misalnya untuk regex, HTTP, dan logging.
-- **PyPI dan pip:** registri paket pihak ketiga dan alat untuk memasangnya.
-- **Virtual environment (`venv`):** direktori berisi interpreter dan paket yang terisolasi untuk satu proyek.
-- **GIL (global interpreter lock):** pembatas di CPython: pada satu saat, hanya satu thread yang boleh mengeksekusi bytecode Python.
+- **Interpreter:** program yang membaca lalu menjalankan kode Python, termasuk mode interaktif dengan prompt `>>>`.
+- **Type hints:** anotasi tipe yang dibaca alat seperti type checker, bukan ditegakkan saat runtime.
+- **Pustaka standar:** modul bawaan Python, misalnya untuk regex, HTTP, dan logging.
+- **PyPI dan pip:** PyPI adalah registri paket pihak ketiga, dan pip alat untuk memasangnya.
+- **Virtual environment (`venv`):** folder berisi interpreter dan paket yang terpisah untuk satu proyek.
+- **GIL:** pembatas di CPython yang hanya mengizinkan satu thread mengeksekusi bytecode Python pada satu waktu.
 - **Free-threaded build:** build CPython tanpa GIL, tersedia sejak 3.13.
 - **asyncio:** modul untuk konkurensi, ditulis dengan sintaks `async` dan `await`.
-- **Lazy imports:** fitur baru di 3.15 (PEP 810) untuk impor modul yang ditulis eksplisit dengan kata kunci `lazy`.
+- **Lazy imports:** fitur baru di 3.15 (PEP 810): modul yang diimpor dengan kata kunci `lazy` secara eksplisit.
 - **PEP (Python Enhancement Proposal):** naskah desain yang menjelaskan fitur baru atau memberi informasi bagi komunitas.
 
 ## Prasyarat dan langkah berikutnya
 
 Tidak ada prasyarat; Python bisa jadi bahasa pertamamu. Pasang dari [python.org/downloads](https://www.python.org/downloads/), lalu coba interpreter interaktifnya.
 
-Langkah berikutnya: baca [tutorial resmi](https://docs.python.org/3/tutorial/), lalu pelajari lingkungan virtual lewat `python -m venv`. Bila sudah nyaman, lanjut ke `asyncio`, type hints, dan build free-threaded.
+Setelah itu, baca [tutorial resminya](https://docs.python.org/3/tutorial/) dan belajar membuat lingkungan virtual lewat `python -m venv`. Kalau sudah nyaman, lanjut ke `asyncio`, type hints, dan build free-threaded.
 
 ## Alternatif
 
 - **Go:** statically typed dan dikompilasi ke kode mesin, sedangkan Python dijalankan lewat interpreter.
 - **Ruby:** situs resminya menonjolkan kemudahan menulis dan membaca kode, dengan paket bernama gem, sedangkan Python memakai PyPI.
-- **JavaScript:** dipakai 66% responden Stack Overflow Developer Survey 2025, lebih banyak dari Python (57,9%).
+- **JavaScript:** dipakai 66% responden Stack Overflow Developer Survey 2025, lebih banyak daripada Python (57,9%).
 
 ## Sumber resmi
 
@@ -147,13 +154,16 @@ Langkah berikutnya: baca [tutorial resmi](https://docs.python.org/3/tutorial/), 
 - [Unduhan Python](https://www.python.org/downloads/)
 - [Versi Python (Developer's Guide)](https://devguide.python.org/versions/)
 - [Apa yang baru di Python 3.15](https://docs.python.org/3/whatsnew/3.15.html)
+- [Apa yang baru di Python 3.14](https://docs.python.org/3/whatsnew/3.14.html)
 - [Python free-threading HOWTO](https://docs.python.org/3/howto/free-threading-python.html)
 - [Modul typing](https://docs.python.org/3/library/typing.html)
 - [Modul asyncio](https://docs.python.org/3/library/asyncio.html)
 - [Tutorial: menjalankan interpreter](https://docs.python.org/3/tutorial/interpreter.html)
 - [Tutorial: lingkungan virtual dan paket](https://docs.python.org/3/tutorial/venv.html)
 - [Glosarium Python](https://docs.python.org/3/glossary.html)
+- [Stack Overflow Developer Survey 2026](https://survey.stackoverflow.co/2026/technology)
 - [Stack Overflow Developer Survey 2025](https://survey.stackoverflow.co/2025/technology)
 - [TIOBE Index](https://www.tiobe.com/tiobe-index/)
-- [Dokumentasi Go](https://go.dev/doc/)
+- [PyPI](https://pypi.org/)
+- [FAQ Go](https://go.dev/doc/faq)
 - [Situs resmi Ruby](https://www.ruby-lang.org/en/)
