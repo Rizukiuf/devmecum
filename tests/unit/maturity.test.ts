@@ -89,5 +89,5 @@ test('seluruh templat A → 5', () => {
 });
 
 test('seluruh templat E → 5', () => {
-  expect(computeStage(full(range(1, 12), tplE))).toBe(5);
+  expect(computeStage(full(range(1, 13), tplE))).toBe(5);
 });

@@ -1,6 +1,7 @@
 # Lima templat bab (rancangan §5.4 dan Lampiran B).
 # Level bab menentukan tingkat kematangan yang dicapai saat bab itu lengkap:
 # dasar → 2, menengah → 3, lanjut → 4, profesional → 5, umum → 5 (bab 1 → 1).
+# Bab "Bekerja dengan AI" ditambahkan ke templat C, D, E pada keputusan 16 November 2026 (Lampiran B).
 - id: A
   name: Bahasa pemrograman
   chapters:
@@ -70,10 +71,11 @@
     - { number: 9, title: Observability dan troubleshooting, level: lanjut }
     - { number: 10, title: Otomasi dan CI/CD, level: lanjut }
     - { number: 11, title: Produksi dan skala, level: profesional }
-    - { number: 12, title: Alternatif dan perbandingan, level: umum }
-    - { number: 13, title: Evaluasi, level: umum }
-    - { number: 14, title: Lab praktik, level: umum }
-    - { number: 15, title: Sertifikasi dan referensi, level: umum }
+    - { number: 12, title: Bekerja dengan AI, level: umum }
+    - { number: 13, title: Alternatif dan perbandingan, level: umum }
+    - { number: 14, title: Evaluasi, level: umum }
+    - { number: 15, title: Lab praktik, level: umum }
+    - { number: 16, title: Sertifikasi dan referensi, level: umum }
 
 - id: D
   name: Database
@@ -91,8 +93,9 @@
     - { number: 11, title: Keamanan, level: lanjut }
     - { number: 12, title: Integrasi dengan aplikasi, level: lanjut }
     - { number: 13, title: Operasional di produksi dan cloud, level: profesional }
-    - { number: 14, title: Evaluasi dan perbandingan, level: umum }
-    - { number: 15, title: Latihan, level: umum }
+    - { number: 14, title: Bekerja dengan AI, level: umum }
+    - { number: 15, title: Evaluasi dan perbandingan, level: umum }
+    - { number: 16, title: Latihan, level: umum }
 
 - id: E
   name: Konsep dan disiplin
@@ -107,5 +110,6 @@
     - { number: 8, title: Praktik produksi, level: profesional }
     - { number: 9, title: "Etika, risiko, dan keterbatasan", level: umum }
     - { number: 10, title: Perkembangan terkini, level: umum }
-    - { number: 11, title: Latihan dan proyek, level: umum }
-    - { number: 12, title: Referensi, level: umum }
+    - { number: 11, title: Bekerja dengan AI, level: umum }
+    - { number: 12, title: Latihan dan proyek, level: umum }
+    - { number: 13, title: Referensi, level: umum }
