@@ -1,4 +1,3 @@
-import { readFileSync } from 'node:fs';
 import { expect, test } from 'vitest';
 import {
   classifyVersion,
@@ -67,21 +66,33 @@ test('outdatedPages: halaman dengan techVersion di luar seri terbaru', () => {
   expect(outdatedPages(pages, '3.15.3')).toEqual(['src/content/docs/python/b.mdx']);
 });
 
-const PYTHON_YAML = readFileSync(new URL('../../src/data/tech/python.yaml', import.meta.url), 'utf8').replace(
-  /\r\n/g,
-  '\n',
-);
-const NOTE = 'dari GitHub python/cpython (tag) per 23 November 2026';
+// Tiruan gaya python.yaml (komentar di baris latestVersion, versionSource gaya { … }),
+// sengaja bukan berkas nyata supaya tes tidak bergantung pada isi data konten.
+const SAMPLE_YAML = [
+  '# Data teknologi contoh',
+  'name: Contoh',
+  'slug: contoh',
+  'docs: https://contoh.dev/docs/',
+  'latestVersion: "3.15.2" # dari https://contoh.dev/downloads/ per 15 November 2026',
+  'versionSource: { kind: github, repo: contoh/contoh, tagPattern: "^v(\\d+)\\.(\\d+)\\.(\\d+)$" }',
+  'requires: []',
+  'tags: [serbaguna, scripting]',
+  'useCases:',
+  '  - otomasi',
+  '',
+].join('\n');
+const NOTE = 'dari GitHub contoh/contoh (tag) per 23 November 2026';
 
-test('setLatestVersion: hanya baris latestVersion yang berubah pada python.yaml', () => {
-  const next = setLatestVersion(PYTHON_YAML, '3.15.3', NOTE);
-  const before = PYTHON_YAML.split('\n');
+test('setLatestVersion: hanya baris latestVersion yang berubah', () => {
+  const next = setLatestVersion(SAMPLE_YAML, '3.15.3', NOTE);
+  const before = SAMPLE_YAML.split('\n');
   const after = next.split('\n');
   expect(after).toHaveLength(before.length);
   const changed = before.flatMap((line, i) => (line === after[i] ? [] : [i]));
   expect(changed).toHaveLength(1);
   expect(after[changed[0]!]).toBe(`latestVersion: "3.15.3" # ${NOTE}`);
-  expect(next).toContain('versionSource: { kind: github, repo: python/cpython }');
+  expect(after.find((line) => line.startsWith('versionSource:'))).toBe(before.find((line) => line.startsWith('versionSource:')));
+  expect(next.startsWith('# Data teknologi contoh\n')).toBe(true);
 });
 
 test('setLatestVersion: komentar kepala dan baris lain utuh', () => {
@@ -92,7 +103,7 @@ test('setLatestVersion: komentar kepala dan baris lain utuh', () => {
 });
 
 test('setLatestVersion: CRLF tetap CRLF tanpa \\n tunggal', () => {
-  const crlf = PYTHON_YAML.replace(/\n/g, '\r\n');
+  const crlf = SAMPLE_YAML.replace(/\n/g, '\r\n');
   const next = setLatestVersion(crlf, '3.15.3', NOTE);
   expect(next).toContain(`latestVersion: "3.15.3" # ${NOTE}\r\n`);
   expect(next.replace(/\r\n/g, '')).not.toMatch(/[\r\n]/);
