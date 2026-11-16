@@ -1,7 +1,12 @@
 // Laporan pemeriksaan versi teknologi dan penulis baris `latestVersion`.
 // Murni (tanpa I/O): `scripts/check-versions.mjs` yang membaca registri dan berkas.
+//
+// Laporan menjadi isi issue GitHub di repo publik, sedangkan sumber, versi, dan
+// pesan galat berasal dari YAML dan pihak ketiga (nama paket `@scope/x`, nama
+// tag rilis, stderr git). Sel yang memuatnya dibungkus `code()`.
 import { formatDate } from './freshness.ts';
 import type { Result } from './registries.ts';
+import { code } from './report-text.ts';
 import type { VersionSource } from './schemas.ts';
 import { compareVersions, seriesMatches } from './versions.ts';
 
@@ -96,7 +101,7 @@ export function renderVersionReport(
       '',
       ...table(
         ['Teknologi', 'Versi (sekarang → terbaru)', 'Sumber'],
-        behind.map((check) => [check.slug, `${check.current ?? '(belum ada)'} → ${check.latest}`, check.source]),
+        behind.map((check) => [check.slug, code(`${check.current ?? '(belum ada)'} → ${check.latest}`), code(check.source)]),
       ),
       '',
       'Perbarui `latestVersion` dengan `pnpm versions --write`, lalu tinjau halaman di bawah.',
@@ -110,7 +115,7 @@ export function renderVersionReport(
       '',
       ...table(
         ['Teknologi', 'Galat'],
-        failed.map((check) => [check.slug, check.error ?? 'tidak diketahui']),
+        failed.map((check) => [check.slug, code(check.error ?? 'tidak diketahui')]),
       ),
       '',
       'Data lama dibiarkan apa adanya.',

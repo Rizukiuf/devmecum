@@ -7,6 +7,7 @@
 // muncul di dalam span kode (tanpa @mention, rujukan #123, atau tabel).
 import { formatDate } from './freshness.ts';
 import { TIMEOUT_MS, USER_AGENT } from './registries.ts';
+import { code } from './report-text.ts';
 
 export type LinkStatus = 'ok' | 'pindah' | 'mati' | 'tak-pasti';
 
@@ -172,17 +173,6 @@ export async function checkLink(url: string, fetchFn: typeof fetch = fetch): Pro
 
 const MAX_REPORT_LENGTH = 60_000; // batas isi issue GitHub 65.536 karakter
 const MAX_FILES_LISTED = 5;
-const MAX_TEXT_LENGTH = 300;
-
-/** Teks mentah sebagai span kode satu baris; tak ada yang bisa memicu @mention, #rujukan, atau tabel. */
-function code(text: string): string {
-  let flat = text.replace(/[\u0000-\u001f\u007f\u2028\u2029]+/g, ' ').trim();
-  if (flat.length > MAX_TEXT_LENGTH) flat = `${flat.slice(0, MAX_TEXT_LENGTH)}…`;
-  const longestRun = Math.max(0, ...[...flat.matchAll(/`+/g)].map((m) => m[0].length));
-  const fence = '`'.repeat(longestRun + 1);
-  const pad = flat.startsWith('`') || flat.endsWith('`') ? ' ' : '';
-  return `${fence}${pad}${flat}${pad}${fence}`;
-}
 
 function entry(result: LinkResult): string[] {
   const shown = result.files.slice(0, MAX_FILES_LISTED).map(code).join(', ');

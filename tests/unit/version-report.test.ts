@@ -157,9 +157,9 @@ test('renderVersionReport: tabel tertinggal, gagal, halaman, dan petunjuk --writ
   expect(findings).toBe(true);
   expect(markdown).toContain('23 November 2026');
   expect(markdown).toContain('## Tertinggal');
-  expect(markdown).toMatch(/\| python \| 3\.15\.2 → 3\.15\.3 \| GitHub python\/cpython \(tag\) \|/);
+  expect(markdown).toMatch(/\| python \| `3\.15\.2 → 3\.15\.3` \| `GitHub python\/cpython \(tag\)` \|/);
   expect(markdown).toContain('## Gagal diperiksa');
-  expect(markdown).toMatch(/\| go \| HTTP 503 \|/);
+  expect(markdown).toMatch(/\| go \| `HTTP 503` \|/);
   expect(markdown).toContain('## Halaman yang perlu ditinjau');
   expect(markdown).toContain('src/content/docs/python/a.mdx');
   expect(markdown).toContain('pnpm versions --write');
@@ -167,7 +167,29 @@ test('renderVersionReport: tabel tertinggal, gagal, halaman, dan petunjuk --writ
 
 test('renderVersionReport: galat dengan tanda | tidak merusak tabel', () => {
   const { markdown } = renderVersionReport([check({ status: 'gagal', error: 'a | b\nc' })], DATE);
-  expect(markdown).toContain('a \\| b c');
+  expect(markdown).toContain('`a \\| b c`');
+});
+
+test('renderVersionReport: teks pihak ketiga dan YAML tidak memicu mention, rujukan, HTML, atau tabel', () => {
+  const nasty = '@scope/x #12 <b>bold</b> `tick` a|b\nbaris dua';
+  const { markdown } = renderVersionReport(
+    [
+      check({ slug: 'a', source: 'npm @angular/core', status: 'tertinggal', current: nasty, latest: nasty }),
+      check({ slug: 'b', status: 'gagal', error: nasty }),
+    ],
+    DATE,
+  );
+  const rows = markdown.split('\n').filter((l) => l.startsWith('| a ') || l.startsWith('| b '));
+  // Setiap @, # dan < di baris tabel berada di dalam span kode.
+  for (const line of rows) expect(line.replace(/(`+)[^`].*?\1/g, ''), line).not.toMatch(/[@#<]/);
+  expect(markdown).toContain('`npm @angular/core`');
+  // Baris baru di dalam teks tidak memecah tabel: satu baris per entri.
+  expect(markdown.split('\n').filter((l) => l.includes('baris dua'))).toHaveLength(2);
+  // Tanda | di dalam teks di-escape sehingga jumlah kolom tetap.
+  for (const line of rows) {
+    const columns = line.replaceAll('\\|', '').split('|').length - 2;
+    expect(columns, line).toBe(line.startsWith('| a ') ? 3 : 2);
+  }
 });
 
 test('renderVersionReport: tanpa temuan → findings false', () => {
