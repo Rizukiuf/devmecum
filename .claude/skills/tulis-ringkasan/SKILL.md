@@ -11,7 +11,16 @@ Standar penulisan: `docs/panduan-menulis.md`. Baca bagian 1 sampai 6 sebelum men
 
 **Bila sebuah perintah ditolak izinnya** (shell, git, atau tulis berkas), jangan mencari jalan lain. Berhenti, lalu laporkan perintah persisnya supaya pemilik bisa menjalankannya atau memberi izin.
 
-**Mode tanpa antarmuka** (`claude -p`) butuh izin tambahan lewat flag, misalnya `--allowedTools "WebFetch,WebSearch,Agent,Bash(git add *),Bash(git commit *)"`; prompt dikirim lewat stdin supaya tidak tertelan daftar alat.
+**Mode tanpa antarmuka** (`claude -p`) butuh izin tambahan lewat flag, dan prompt dikirim lewat stdin supaya tidak tertelan daftar alat. Beri setiap alat sebagai argumen terpisah. Di Windows sesi biasanya memakai alat PowerShell, jadi izin `Bash(...)` saja tidak cukup; sertakan keduanya:
+
+```
+--allowedTools "WebFetch" "WebSearch" "Agent" \
+  "PowerShell(python *)" "PowerShell(git add *)" "PowerShell(git commit *)" "PowerShell(pnpm validate *)" \
+  "Bash(python *)" "Bash(git add *)" "Bash(git commit *)" "Bash(pnpm validate *)" \
+  --disallowedTools "Bash(git push *)" "PowerShell(git push *)"
+```
+
+**Mode pembaruan.** Bila `index.mdx` teknologi itu sudah ada (misalnya untuk memperbarui versi atau gaya bahasa), jangan menyalin templat di atasnya. Pakai halaman yang ada sebagai bahan: tulis ulang proanya, kembalikan `status: draf`, hapus `factChecked` selagi menulis, lalu lanjut ke `verifikasi-halaman`. Fakta yang sudah terbukti dan tidak ada di catatan peneliti yang baru harus diperiksa ulang oleh pemeriksa, jadi tandai dan jangan dianggap aman.
 
 ## Langkah
 

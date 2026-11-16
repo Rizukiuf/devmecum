@@ -16,7 +16,9 @@ Argumen: `$ARGUMENTS` = slug teknologi (halaman `index.mdx`-nya) atau path file 
 1. **Jalankan contoh kode.**
    - Salin setiap contoh kode halaman ke folder sementara di luar repo, jalankan, dan bandingkan keluarannya dengan yang tertulis. Catat versi runtime yang kamu pakai.
    - Bila berbeda, perbaiki halaman agar sama dengan hasil nyata.
-   - Semua contoh cocok dan bisa dijalankan di komputer ini → `codeTested: true`. Bahasanya tidak bisa dijalankan di sini, atau fiturnya butuh versi lebih baru dari yang terpasang → `codeTested: false` dan sebut alasannya di laporan akhir.
+   - Semua contoh cocok dan bisa dijalankan di komputer ini → `codeTested: true`. Bahasanya tidak bisa dijalankan di sini, atau contohnya memakai fitur yang butuh versi lebih baru dari yang terpasang → `codeTested: false` dan sebut alasannya di laporan akhir.
+   - Versi runtime lokal boleh lebih lama dari `techVersion` halaman **selama contohnya tidak memakai fitur yang khusus versi baru**. Tetap tulis kedua versi di laporan ("dijalankan di 3.11.9; halaman membahas 3.15").
+   - Menulis file contoh: pakai alat Write ke folder sementara di luar repo, lalu jalankan dengan path literal. Perintah PowerShell berinterpolasi string (`"$d\..."`) bisa ditolak pemeriksa sintaks alat. Itu bukan penolakan izin: tulis ulang dengan path literal dan lanjutkan.
 2. **Periksa fakta.** Jalankan subagent `pemeriksa-fakta` dengan **hanya path file** halaman itu. Ia butuh izin WebFetch dan WebSearch; setujui bila diminta.
 3. **Bila `HASIL: GAGAL`:**
    - Untuk setiap klaim `tidak didukung` atau `salinan`: tambahkan sumber resmi yang memuatnya ke `sources`, tulis ulang dengan kata sendiri, atau hapus klaimnya.
@@ -26,7 +28,7 @@ Argumen: `$ARGUMENTS` = slug teknologi (halaman `index.mdx`-nya) atau path file 
    - Periksa tabelnya sendiri: bila ada klaim faktual (di luar yang berstatus `contoh kode`) berstatus `tidak bisa diperiksa`, **berhenti** dan tampilkan klaim itu ke pemilik; terbitkan hanya sesudah pemilik menyetujui secara eksplisit.
    - Setel `factChecked` dan `lastVerified` ke tanggal hari ini (YYYY-MM-DD), dan `status: terbit`.
    - Jalankan `pnpm validate`; harus tanpa galat.
-   - Commit: `git add <file> && git commit -m "docs: terbitkan <judul halaman>"` (tambahkan file data bila `latestVersion` berubah).
+   - Commit: `git add <file> && git commit -m "docs: terbitkan <judul halaman>"` (tambahkan file data bila `latestVersion` berubah). Skill ini yang menerbitkan halaman, jadi `status: terbit` memang dikerjakan di sini; kalau pemiliknya ingin tetap draf, dia akan bilang secara eksplisit. Bila pemilik meminta pesan commit lain, pakai pesan itu.
 5. **Laporkan** ke pemilik: jumlah putaran pemeriksaan, klaim yang dibuang atau diganti sumbernya, status `codeTested` beserta alasannya, dan versi runtime yang dipakai.
 
 ## Pemeriksaan ulang halaman terbit
