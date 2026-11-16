@@ -18,7 +18,8 @@
     "test:e2e": "node scripts/build-uji.mjs && playwright test",
     "budget": "node scripts/count-files.mjs dist",
     "lhci": "lhci autorun",
-    "validate": "node scripts/validate-content.mjs"
+    "validate": "node scripts/validate-content.mjs",
+    "new-tech": "node scripts/new-tech.mjs"
   },
   "pnpm": {
     "onlyBuiltDependencies": [

@@ -1,5 +1,5 @@
 import { afterEach, expect, test, vi } from 'vitest';
-import { deriveDraft, materiSchema, techSchema } from '../../src/lib/schemas.ts';
+import { DOWNLOAD_REGISTRIES, deriveDraft, materiSchema, techSchema } from '../../src/lib/schemas.ts';
 
 const page = {
   title: 'T',
@@ -129,6 +129,55 @@ test('slug berhuruf kapital ditolak', () => {
 
 test('versionSource github tanpa repo ditolak', () => {
   expect(techSchema.safeParse({ ...validTech, versionSource: { kind: 'github' } }).success).toBe(false);
+});
+
+const withoutVersion = (() => {
+  const { latestVersion: _l, versionSource: _v, ...rest } = validTech;
+  return rest;
+})();
+
+test('teknologi tanpa versionSource dan latestVersion sah', () => {
+  expect(techSchema.safeParse(withoutVersion).success).toBe(true);
+});
+
+test('versionSource tanpa latestVersion ditolak', () => {
+  const r = techSchema.safeParse({ ...withoutVersion, versionSource: validTech.versionSource });
+  expect(r.success).toBe(false);
+  expect(JSON.stringify(r.error?.issues)).toContain('latestVersion wajib bila versionSource ada');
+});
+
+test('latestVersion tanpa versionSource tetap sah', () => {
+  expect(techSchema.safeParse({ ...withoutVersion, latestVersion: '1.0' }).success).toBe(true);
+});
+
+test('tagPattern hanya untuk github', () => {
+  const versionSource = { kind: 'npm', name: 'x', tagPattern: '^(\\d+)$' };
+  expect(techSchema.safeParse({ ...validTech, versionSource }).success).toBe(false);
+});
+
+test.each([
+  ['^v\\d+$', false],
+  ['^(v', false],
+  ['^(?:v\\d+)$', false],
+  ['^(?:v)(\\d+)$', true],
+  ['^v(\\d+)\\.(\\d+)\\.(\\d+)$', true],
+])('tagPattern harus regex sah dengan grup tangkapan: %s', (tagPattern, ok) => {
+  const versionSource = { kind: 'github', repo: 'python/cpython', tagPattern };
+  expect(techSchema.safeParse({ ...validTech, versionSource }).success).toBe(ok);
+});
+
+test('registry unduhan dibatasi', () => {
+  const metrics = { downloads: { registry: 'nuget', name: 'x' } };
+  expect(techSchema.safeParse({ ...validTech, metrics }).success).toBe(false);
+  for (const registry of DOWNLOAD_REGISTRIES) {
+    const ok = { downloads: { registry, name: 'x' } };
+    expect(techSchema.safeParse({ ...validTech, metrics: ok }).success).toBe(true);
+  }
+});
+
+test('metrics.github.repo berbentuk pemilik/nama', () => {
+  expect(techSchema.safeParse({ ...validTech, metrics: { github: { repo: 'react' } } }).success).toBe(false);
+  expect(techSchema.safeParse({ ...validTech, metrics: { github: { repo: 'facebook/react' } } }).success).toBe(true);
 });
 
 test('deriveDraft: draf selalu disembunyikan, terbit tidak', () => {

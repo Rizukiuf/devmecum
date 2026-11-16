@@ -3,7 +3,9 @@
 import { readdir, readFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { parse } from 'yaml';
+import { mapLimit } from './concurrency.ts';
 import { formatDate } from './freshness.ts';
+import { findCycle } from './graph.ts';
 import { parseFrontmatter } from './frontmatter.ts';
 import { buildIdIndex, pageSlug, parseId, type IdIndex } from './ids.ts';
 import {
@@ -19,7 +21,14 @@ import {
 export type Problem = { file: string; message: string; severity: 'error' | 'warning' };
 
 type RawFile = { file: string; data?: unknown; readError?: string };
-type PageFile = { file: string; docsPath: string; frontmatter?: Record<string, unknown> | null; readError?: string };
+type PageFile = {
+  file: string;
+  docsPath: string;
+  frontmatter?: Record<string, unknown> | null;
+  readError?: string;
+  /** Tidak dibaca (validasi terfokus); hanya dipakai untuk indeks ID. */
+  skipped?: true;
+};
 
 export type Project = {
   domainsFile: RawFile;
@@ -55,27 +64,38 @@ async function readYaml(root: string, file: string): Promise<RawFile> {
   }
 }
 
-/** Membaca semua data dan frontmatter tanpa menilai isinya. */
-export async function loadProject(root: string): Promise<Project> {
+/** Batas berkas yang dibaca bersamaan, supaya ribuan halaman tidak membuka ribuan handle. */
+const READ_LIMIT = 32;
+
+export type LoadOptions = {
+  /** Halaman (relatif terhadap src/content/docs) yang dibaca; sisanya hanya dicatat. Bawaan: semua. */
+  pages?: (docsPath: string) => boolean;
+};
+
+/**
+ * Membaca data dan frontmatter tanpa menilai isinya. Halaman yang tidak
+ * terpilih tidak dibaca dan tercatat `{ file, docsPath, skipped: true }`.
+ */
+export async function loadProject(root: string, options: LoadOptions = {}): Promise<Project> {
+  const selected = options.pages ?? (() => true);
   const techNames = await listFiles(join(root, DATA_DIR, 'tech'), /\.ya?ml$/);
   const pageNames = await listFiles(join(root, DOCS_DIR), /\.mdx?$/);
 
-  const pages = await Promise.all(
-    pageNames.map(async (docsPath): Promise<PageFile> => {
-      const file = `${DOCS_DIR}/${docsPath}`;
-      try {
-        const parsed = parseFrontmatter(await readFile(join(root, file), 'utf8'));
-        return { file, docsPath, frontmatter: parsed?.data ?? null };
-      } catch (error) {
-        return { file, docsPath, readError: `Frontmatter tidak bisa dibaca: ${(error as Error).message.split('\n')[0]}` };
-      }
-    }),
-  );
+  const pages = await mapLimit(pageNames, READ_LIMIT, async (docsPath): Promise<PageFile> => {
+    const file = `${DOCS_DIR}/${docsPath}`;
+    if (!selected(docsPath)) return { file, docsPath, skipped: true };
+    try {
+      const parsed = parseFrontmatter(await readFile(join(root, file), 'utf8'));
+      return { file, docsPath, frontmatter: parsed?.data ?? null };
+    } catch (error) {
+      return { file, docsPath, readError: `Frontmatter tidak bisa dibaca: ${(error as Error).message.split('\n')[0]}` };
+    }
+  });
 
   return {
     domainsFile: await readYaml(root, `${DATA_DIR}/domains.yaml`),
     templatesFile: await readYaml(root, `${DATA_DIR}/templates.yaml`),
-    techFiles: await Promise.all(techNames.map((name) => readYaml(root, `${DATA_DIR}/tech/${name}`))),
+    techFiles: await mapLimit(techNames, READ_LIMIT, (name) => readYaml(root, `${DATA_DIR}/tech/${name}`)),
     pages,
   };
 }
@@ -116,7 +136,8 @@ export function validateProject(project: Project, now: Date): Problem[] {
 
   // --- Data teknologi (V1, V2) ---
   const techs = new Map<string, KnownTech>();
-  const references: { file: string; requires: unknown; alternatives: unknown }[] = [];
+  const references: { file: string; slug: string; requires: unknown; alternatives: unknown }[] = [];
+  const fileByName = new Map<string, string>();
 
   for (const raw of project.techFiles) {
     if (raw.readError) {
@@ -127,6 +148,14 @@ export function validateProject(project: Project, now: Date): Problem[] {
     const result = techSchema.safeParse(raw.data);
     if (!result.success) {
       for (const issue of result.error.issues) error(raw.file, describeIssue(issue));
+    }
+
+    // Nama teknologi unik, tanpa membedakan huruf besar-kecil.
+    if (typeof fields.name === 'string') {
+      const key = fields.name.trim().toLowerCase();
+      const firstFile = fileByName.get(key);
+      if (firstFile === undefined) fileByName.set(key, raw.file);
+      else error(raw.file, `Nama teknologi "${fields.name}" sudah dipakai ${firstFile}`);
     }
 
     // Tetap didaftarkan walau skemanya gagal, supaya satu salah ketik tidak
@@ -143,13 +172,28 @@ export function validateProject(project: Project, now: Date): Problem[] {
       error(raw.file, `domain "${domain}" tidak ada di src/data/domains.yaml`);
     }
     techs.set(slug, { slug, domain, template: templates.find((template) => template.id === fields.template) });
-    references.push({ file: raw.file, requires: fields.requires, alternatives: fields.alternatives });
+    references.push({ file: raw.file, slug, requires: fields.requires, alternatives: fields.alternatives });
   }
 
   // --- Halaman (V5–V9, V11, V12) ---
   const known: KnownPage[] = [];
+  // Halaman yang tidak dibaca: tech diturunkan dari path (`<domain>/<tech>/…`)
+  // hanya untuk indeks ID, tanpa pemeriksaan apa pun.
+  const unread: { tech: string; relPath: string }[] = [];
 
   for (const page of project.pages) {
+    if (page.skipped) {
+      const [domain, techSlug, ...rest] = page.docsPath.split('/');
+      if (rest.length > 0 && techs.get(techSlug!)?.domain === domain) {
+        unread.push({ tech: techSlug!, relPath: rest.join('/') });
+      }
+      continue;
+    }
+    const domainIndex = /^([^/]+)[/]index[.]mdx?$/.exec(page.docsPath);
+    if (domainIndex !== null && domainIds.has(domainIndex[1]!)) {
+      error(page.file, 'Halaman domain dibangkitkan otomatis dari src/data/domains.yaml');
+      continue;
+    }
     if (page.readError) {
       error(page.file, page.readError);
       continue;
@@ -245,12 +289,19 @@ export function validateProject(project: Project, now: Date): Problem[] {
   }
 
   // --- Rujukan ID (V3, V4, V10) ---
-  const { index } = buildIdIndex([...techs.values()], known);
+  const { index } = buildIdIndex([...techs.values()], [...known, ...unread]);
   const pageById = new Map<string, KnownPage>();
   for (const page of known) {
     const id = page.slug === '' ? page.tech : `${page.tech}/${page.slug}`;
     if (!pageById.has(id)) pageById.set(id, page);
   }
+  // Halaman yang ada tetapi tidak dibaca: keberadaannya diketahui, statusnya tidak.
+  const unreadIds = new Set(
+    unread.map((page) => {
+      const slug = pageSlug(page.relPath);
+      return slug === '' ? page.tech : `${page.tech}/${slug}`;
+    }),
+  );
 
   const checkId = (id: unknown, idIndex: IdIndex): string | undefined => {
     if (typeof id !== 'string' || parseId(id) === null) {
@@ -259,14 +310,45 @@ export function validateProject(project: Project, now: Date): Problem[] {
     return idIndex.has(id) ? undefined : `ID "${id}" tidak terdaftar`;
   };
 
+  const requiresGraph = new Map<string, string[]>();
   for (const ref of references) {
+    const edges: string[] = [];
     for (const id of Array.isArray(ref.requires) ? ref.requires : []) {
+      if (id === ref.slug) {
+        error(ref.file, 'requires: teknologi tidak boleh mensyaratkan dirinya sendiri');
+        continue;
+      }
       const problem = checkId(id, index);
       if (problem) error(ref.file, `requires: ${problem}`);
+      else if (typeof id === 'string' && techs.has(id)) edges.push(id);
     }
+    requiresGraph.set(ref.slug, edges);
     for (const id of Array.isArray(ref.alternatives) ? ref.alternatives : []) {
+      if (id === ref.slug) {
+        error(ref.file, 'alternatives: teknologi tidak boleh menjadi alternatif dirinya sendiri');
+        continue;
+      }
       const problem = checkId(id, index);
       if (problem) warning(ref.file, `alternatives: ${problem}`);
+    }
+  }
+
+  // Lingkaran prasyarat: dilaporkan sekali, pada berkas pertama menurut urutan nama.
+  const cycle = findCycle(requiresGraph);
+  if (cycle !== undefined) {
+    const fileBySlug = new Map(references.map((ref) => [ref.slug, ref.file]));
+    const first = cycle
+      .slice(0, -1)
+      .map((slug) => fileBySlug.get(slug)!)
+      .sort()[0]!;
+    error(first, `requires membentuk lingkaran: ${cycle.join(' → ')}`);
+  }
+
+  // Adopsi dan tren belum dinilai (K11): peringatan, bukan galat.
+  for (const ref of references) {
+    const raw = project.techFiles.find((file) => file.file === ref.file)?.data as Record<string, unknown> | undefined;
+    for (const key of ['adoption', 'trend'] as const) {
+      if (raw?.[key] === undefined) warning(ref.file, `${key} belum dinilai menurut docs/rubrik-adopsi.md`);
     }
   }
 
@@ -279,7 +361,7 @@ export function validateProject(project: Project, now: Date): Problem[] {
       }
       const target = pageById.get(id);
       if (target === undefined) {
-        error(page.file, `prerequisites: "${id}" belum punya halaman`);
+        if (!unreadIds.has(id)) error(page.file, `prerequisites: "${id}" belum punya halaman`);
       } else if (page.meta.status === 'terbit' && target.meta.status !== 'terbit') {
         error(page.file, `prerequisites: halaman terbit tidak boleh mensyaratkan "${id}" yang masih draf`);
       }

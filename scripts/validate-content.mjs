@@ -1,18 +1,25 @@
 // Validasi konten dan data.
 // Pemakaian:
 //   node scripts/validate-content.mjs            → periksa semuanya
-//   node scripts/validate-content.mjs <file…>    → laporkan masalah di file itu saja
+//   node scripts/validate-content.mjs <file…>    → periksa file itu saja; hanya
+//                                                  halaman yang dibutuhkannya dibaca
 // Keluar 1 bila ada galat. Peringatan tidak menggagalkan.
-import { relative, resolve } from 'node:path';
+import { resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { today } from '../src/lib/freshness.ts';
+import { fileProblems } from '../src/lib/hook-io.ts';
 import { loadProject, validateProject } from '../src/lib/validate.ts';
 
 const root = fileURLToPath(new URL('..', import.meta.url));
-const only = process.argv.slice(2).map((file) => relative(root, resolve(file)).replaceAll('\\', '/'));
+const files = [...new Set(process.argv.slice(2).map((file) => resolve(file)))];
+const now = today();
 
-let problems = validateProject(await loadProject(root), today());
-if (only.length > 0) problems = problems.filter((problem) => only.includes(problem.file));
+const problems = [];
+if (files.length === 0) {
+  problems.push(...validateProject(await loadProject(root), now));
+} else {
+  for (const file of files) problems.push(...(await fileProblems(root, file, now)));
+}
 
 for (const problem of problems) {
   const label = problem.severity === 'error' ? 'error     ' : 'peringatan';
