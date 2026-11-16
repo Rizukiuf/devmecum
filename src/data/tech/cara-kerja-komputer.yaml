@@ -1,0 +1,16 @@
+name: Cara kerja komputer
+slug: cara-kerja-komputer
+type: concept
+domain: fondasi
+template: E
+website: https://csed.acm.org/architecture-and-organization/
+docs: https://csed.acm.org/architecture-and-organization/
+requires: []
+alternatives: []
+tags: [arsitektur, perangkat-keras, cpu, memori]
+adoption: mapan # bawaan rubrik: konsep fondasi tanpa bukti kuantitatif; rujukan ACM/IEEE-CS/AAAI CS2023, area Architecture and Organization https://csed.acm.org/architecture-and-organization/
+trend: stabil # bawaan rubrik: konsep tanpa bukti kuantitatif dua titik data
+useCases:
+  - memahami perangkat keras di balik program
+  - memperkirakan kinerja dan konsumsi energi
+  - dasar belajar sistem operasi dan bahasa tingkat rendah

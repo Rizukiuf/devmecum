@@ -1,0 +1,16 @@
+name: Logika dan algoritma
+slug: logika-dan-algoritma
+type: concept
+domain: fondasi
+template: E
+website: https://xlinux.nist.gov/dads/HTML/algorithm.html
+docs: https://xlinux.nist.gov/dads/HTML/algorithm.html
+requires: []
+alternatives: []
+tags: [algoritma, logika, pemecahan-masalah]
+adoption: mapan # bawaan rubrik: konsep fondasi tanpa bukti kuantitatif; rujukan NIST DADS https://xlinux.nist.gov/dads/HTML/algorithm.html
+trend: stabil # bawaan rubrik: konsep tanpa bukti kuantitatif dua titik data
+useCases:
+  - merancang langkah penyelesaian masalah
+  - menyusun alur keputusan dan perulangan
+  - dasar belajar semua bahasa pemrograman

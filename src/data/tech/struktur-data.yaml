@@ -1,0 +1,16 @@
+name: Struktur data
+slug: struktur-data
+type: concept
+domain: fondasi
+template: E
+website: https://xlinux.nist.gov/dads/HTML/datastructur.html
+docs: https://xlinux.nist.gov/dads/HTML/datastructur.html
+requires: [logika-dan-algoritma]
+alternatives: []
+tags: [struktur-data, memori, efisiensi]
+adoption: mapan # bawaan rubrik: konsep fondasi tanpa bukti kuantitatif; rujukan NIST DADS https://xlinux.nist.gov/dads/HTML/datastructur.html
+trend: stabil # bawaan rubrik: konsep tanpa bukti kuantitatif dua titik data
+useCases:
+  - menyimpan dan mengatur data di memori
+  - memilih wadah data yang sesuai (daftar, tumpukan, antrean, pohon)
+  - meningkatkan efisiensi algoritma

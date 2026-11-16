@@ -1,0 +1,16 @@
+name: Regular expression
+slug: regular-expression
+type: concept
+domain: fondasi
+template: E
+website: https://pubs.opengroup.org/onlinepubs/9799919799/basedefs/V1_chap09.html
+docs: https://pubs.opengroup.org/onlinepubs/9799919799/basedefs/V1_chap09.html
+requires: []
+alternatives: []
+tags: [regex, pencocokan-pola, teks]
+adoption: mapan # bawaan rubrik: konsep fondasi tanpa bukti kuantitatif; rujukan POSIX.1-2024 (The Open Group), Regular Expressions https://pubs.opengroup.org/onlinepubs/9799919799/basedefs/V1_chap09.html
+trend: stabil # bawaan rubrik: konsep tanpa bukti kuantitatif dua titik data
+useCases:
+  - mencari dan memvalidasi pola teks
+  - mengganti teks secara massal
+  - menyaring log dan berkas

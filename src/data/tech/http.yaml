@@ -1,0 +1,16 @@
+name: HTTP
+slug: http
+type: standard
+domain: fondasi
+template: E
+website: https://www.rfc-editor.org/info/rfc9110
+docs: https://www.rfc-editor.org/rfc/rfc9110.html
+requires: [jaringan-komputer]
+alternatives: []
+tags: [web, protokol, api, ietf]
+adoption: mapan # bawaan rubrik: standar tanpa bukti kuantitatif; RFC 9110 (HTTP Semantics, STD 97) berstatus Internet Standard https://www.rfc-editor.org/info/rfc9110
+trend: stabil # bawaan rubrik: standar tanpa bukti kuantitatif dua titik data
+useCases:
+  - komunikasi klien dan server di web
+  - membangun dan memakai API
+  - memahami cache dan kode status

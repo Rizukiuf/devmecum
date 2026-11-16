@@ -1,0 +1,16 @@
+name: Sistem operasi dan proses
+slug: sistem-operasi
+type: concept
+domain: fondasi
+template: E
+website: https://csed.acm.org/operating-systems/
+docs: https://csed.acm.org/operating-systems/
+requires: [cara-kerja-komputer]
+alternatives: []
+tags: [sistem-operasi, proses, memori, penjadwalan]
+adoption: mapan # bawaan rubrik: konsep fondasi tanpa bukti kuantitatif; rujukan ACM/IEEE-CS/AAAI CS2023, area Operating Systems https://csed.acm.org/operating-systems/
+trend: stabil # bawaan rubrik: konsep tanpa bukti kuantitatif dua titik data
+useCases:
+  - memahami proses, memori, dan berkas
+  - mendiagnosis program yang lambat atau macet
+  - dasar belajar konkurensi dan keamanan sistem

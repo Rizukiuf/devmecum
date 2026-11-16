@@ -1,0 +1,16 @@
+name: Sistem bilangan
+slug: sistem-bilangan
+type: concept
+domain: fondasi
+template: E
+website: https://csed.acm.org/architecture-and-organization/
+docs: https://standards.ieee.org/ieee/754/6210/
+requires: []
+alternatives: []
+tags: [biner, heksadesimal, representasi-data, floating-point]
+adoption: mapan # bawaan rubrik: konsep fondasi tanpa bukti kuantitatif; rujukan CS2023 (unit AR-Representation, representasi data tingkat mesin) https://csed.acm.org/architecture-and-organization/ dan IEEE 754-2019 https://standards.ieee.org/ieee/754/6210/
+trend: stabil # bawaan rubrik: konsep tanpa bukti kuantitatif dua titik data
+useCases:
+  - membaca dan menulis bilangan biner dan heksadesimal
+  - memahami bilangan bertanda dan komplemen dua
+  - memahami galat pembulatan bilangan pecahan

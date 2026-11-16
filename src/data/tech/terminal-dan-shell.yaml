@@ -1,0 +1,16 @@
+name: Terminal dan shell
+slug: terminal-dan-shell
+type: concept
+domain: fondasi
+template: E
+website: https://pubs.opengroup.org/onlinepubs/9799919799/utilities/V3_chap02.html
+docs: https://pubs.opengroup.org/onlinepubs/9799919799/utilities/V3_chap02.html
+requires: [sistem-operasi]
+alternatives: []
+tags: [shell, terminal, posix, command-line]
+adoption: mapan # bawaan rubrik: konsep fondasi tanpa bukti kuantitatif; rujukan POSIX.1-2024 (The Open Group), Shell Command Language https://pubs.opengroup.org/onlinepubs/9799919799/utilities/V3_chap02.html
+trend: stabil # bawaan rubrik: konsep tanpa bukti kuantitatif dua titik data
+useCases:
+  - menjalankan perintah dan program lewat baris perintah
+  - mengotomatiskan tugas dengan skrip shell
+  - bekerja di server jarak jauh

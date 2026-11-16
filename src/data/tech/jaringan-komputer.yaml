@@ -1,0 +1,16 @@
+name: Jaringan komputer
+slug: jaringan-komputer
+type: concept
+domain: fondasi
+template: E
+website: https://csed.acm.org/networking-and-communication/
+docs: https://csed.acm.org/networking-and-communication/
+requires: []
+alternatives: []
+tags: [jaringan, protokol, komunikasi]
+adoption: mapan # bawaan rubrik: konsep fondasi tanpa bukti kuantitatif; rujukan ACM/IEEE-CS/AAAI CS2023, area Networking and Communication https://csed.acm.org/networking-and-communication/
+trend: stabil # bawaan rubrik: konsep tanpa bukti kuantitatif dua titik data
+useCases:
+  - memahami cara data berpindah antarperangkat
+  - mendiagnosis masalah koneksi
+  - dasar belajar protokol web dan cloud

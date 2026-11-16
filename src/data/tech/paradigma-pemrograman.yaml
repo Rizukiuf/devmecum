@@ -1,0 +1,16 @@
+name: Paradigma pemrograman
+slug: paradigma-pemrograman
+type: concept
+domain: fondasi
+template: E
+website: https://csed.acm.org/programming-languages/
+docs: https://csed.acm.org/programming-languages/
+requires: []
+alternatives: []
+tags: [paradigma, fungsional, berorientasi-objek, logika]
+adoption: mapan # bawaan rubrik: konsep fondasi tanpa bukti kuantitatif; rujukan ACM/IEEE-CS/AAAI CS2023, area Foundations of Programming Languages https://csed.acm.org/programming-languages/
+trend: stabil # bawaan rubrik: konsep tanpa bukti kuantitatif dua titik data
+useCases:
+  - memilih gaya pemrograman yang cocok untuk masalah
+  - membandingkan pendekatan imperatif, fungsional, dan berorientasi objek
+  - berpindah antarbahasa dengan lebih cepat
