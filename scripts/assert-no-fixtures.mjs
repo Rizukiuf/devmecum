@@ -2,6 +2,7 @@
 // Dijalankan di alur deploy sebelum mengunggah dist/.
 import { existsSync, readdirSync, readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
+import { htmlHasFixtureSlug, sitemapFixtureUrls } from '../src/lib/fixture-guard.ts';
 
 const dist = fileURLToPath(new URL('../dist/', import.meta.url));
 const failures = [];
@@ -37,8 +38,12 @@ for (const rel of scanned) {
     continue;
   }
   const text = readFileSync(file, 'utf8');
-  for (const needle of ['data-slug="uji-', '/uji-']) {
-    if (text.includes(needle)) failures.push(`dist/${rel} memuat "${needle}".`);
+  // Pencocokan sempit (lihat src/lib/fixture-guard.ts): slug halaman nyata
+  // berawalan "uji-" tidak boleh menggagalkan build.
+  if (rel.endsWith('.xml')) {
+    for (const url of sitemapFixtureUrls(text)) failures.push(`dist/${rel} memuat URL teknologi uji ${url}.`);
+  } else if (htmlHasFixtureSlug(text)) {
+    failures.push(`dist/${rel} memuat kartu teknologi uji (data-slug="uji-").`);
   }
 }
 
