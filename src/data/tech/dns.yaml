@@ -1,0 +1,16 @@
+name: DNS
+slug: dns
+type: standard
+domain: fondasi
+template: E
+website: https://www.rfc-editor.org/info/rfc1034
+docs: https://www.rfc-editor.org/rfc/rfc1034.html
+requires: [jaringan-komputer]
+alternatives: []
+tags: [dns, nama-domain, protokol, ietf]
+adoption: mapan # bawaan rubrik: standar tanpa bukti kuantitatif; RFC 1034 dan RFC 1035 (STD 13) berstatus Internet Standard https://www.rfc-editor.org/info/rfc1034 https://www.rfc-editor.org/info/rfc1035
+trend: stabil # bawaan rubrik: standar tanpa bukti kuantitatif dua titik data
+useCases:
+  - menerjemahkan nama domain ke alamat IP
+  - mengatur record domain dan email
+  - mendiagnosis situs yang tidak bisa dibuka

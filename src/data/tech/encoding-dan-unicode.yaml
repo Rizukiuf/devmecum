@@ -1,0 +1,16 @@
+name: Encoding dan Unicode
+slug: encoding-dan-unicode
+type: standard
+domain: fondasi
+template: E
+website: https://www.unicode.org/standard/standard.html
+docs: https://www.rfc-editor.org/rfc/rfc3629.html
+requires: []
+alternatives: []
+tags: [unicode, utf-8, karakter, teks]
+adoption: mapan # bawaan rubrik: standar tanpa bukti kuantitatif; Unicode Consortium menyebut The Unicode Standard sebagai pengodean karakter universal https://www.unicode.org/standard/standard.html, dan RFC 3629 (STD 63) menetapkan UTF-8 sebagai Internet Standard https://www.rfc-editor.org/info/rfc3629
+trend: stabil # bawaan rubrik: standar tanpa bukti kuantitatif dua titik data
+useCases:
+  - menyimpan dan menampilkan teks lintas bahasa
+  - memahami UTF-8 dan masalah teks rusak
+  - menangani emoji dan aksara non-Latin

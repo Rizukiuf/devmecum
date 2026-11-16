@@ -1,0 +1,16 @@
+name: JSON
+slug: json
+type: standard
+domain: fondasi
+template: E
+website: https://www.rfc-editor.org/info/rfc8259
+docs: https://www.rfc-editor.org/rfc/rfc8259.html
+requires: []
+alternatives: []
+tags: [json, format-data, serialisasi, api]
+adoption: mapan # bawaan rubrik: standar tanpa bukti kuantitatif; RFC 8259 (STD 90) berstatus Internet Standard https://www.rfc-editor.org/info/rfc8259, dan ECMA-404 edisi ke-2 (Desember 2017) menetapkan sintaksnya https://ecma-international.org/publications-and-standards/standards/ecma-404/
+trend: stabil # bawaan rubrik: standar tanpa bukti kuantitatif dua titik data
+useCases:
+  - bertukar data antara klien dan server
+  - menulis berkas konfigurasi dan data
+  - membaca dan membuat respons API

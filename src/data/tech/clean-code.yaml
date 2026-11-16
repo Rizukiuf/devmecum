@@ -1,0 +1,16 @@
+name: Clean code
+slug: clean-code
+type: concept
+domain: fondasi
+template: E
+website: https://csed.acm.org/software-engineering/
+docs: https://csed.acm.org/wp-content/uploads/2024/04/3.1-Body-of-Knowledge-1.pdf
+requires: []
+alternatives: []
+tags: [clean-code, keterbacaan, refactoring, kualitas-kode]
+adoption: mapan # bawaan rubrik: konsep tanpa bukti kuantitatif; rujukan CS2023 Body of Knowledge yang membahas gaya penulisan demi keterbacaan (SDF-Practices), code smells dan coupling/cohesion (SE-Design), serta refactoring (SE-Refactoring) https://csed.acm.org/wp-content/uploads/2024/04/3.1-Body-of-Knowledge-1.pdf
+trend: stabil # bawaan rubrik: konsep tanpa bukti kuantitatif dua titik data
+useCases:
+  - menulis kode yang mudah dibaca dan dirawat
+  - mengenali code smell saat meninjau kode
+  - merapikan kode lewat refactoring

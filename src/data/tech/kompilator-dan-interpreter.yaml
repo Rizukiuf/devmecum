@@ -1,0 +1,16 @@
+name: Kompilator dan interpreter
+slug: kompilator-dan-interpreter
+type: concept
+domain: fondasi
+template: E
+website: https://csed.acm.org/programming-languages/
+docs: https://csed.acm.org/wp-content/uploads/2024/04/3.1-Body-of-Knowledge-1.pdf
+requires: []
+alternatives: []
+tags: [kompilator, interpreter, bytecode, jit]
+adoption: mapan # bawaan rubrik: konsep fondasi tanpa bukti kuantitatif; rujukan CS2023 Body of Knowledge, unit FPL-Translation (model eksekusi JIT, kompilator, interpreter; bytecode; alur penerjemahan bahasa) https://csed.acm.org/wp-content/uploads/2024/04/3.1-Body-of-Knowledge-1.pdf
+trend: stabil # bawaan rubrik: konsep tanpa bukti kuantitatif dua titik data
+useCases:
+  - memahami cara kode diubah menjadi program yang berjalan
+  - membandingkan bahasa terkompilasi dan terinterpretasi
+  - memahami bytecode dan mesin virtual

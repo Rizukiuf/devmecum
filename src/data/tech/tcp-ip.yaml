@@ -1,0 +1,16 @@
+name: TCP/IP
+slug: tcp-ip
+type: standard
+domain: fondasi
+template: E
+website: https://www.rfc-editor.org/info/rfc9293
+docs: https://www.rfc-editor.org/rfc/rfc9293.html
+requires: [jaringan-komputer]
+alternatives: []
+tags: [tcp, ip, ipv6, protokol, ietf]
+adoption: mapan # bawaan rubrik: standar tanpa bukti kuantitatif; RFC 9293 (TCP, STD 7), RFC 791 (IPv4, STD 5), dan RFC 8200 (IPv6, STD 86) berstatus Internet Standard https://www.rfc-editor.org/info/rfc9293 https://www.rfc-editor.org/info/rfc791 https://www.rfc-editor.org/info/rfc8200
+trend: stabil # bawaan rubrik: standar tanpa bukti kuantitatif dua titik data
+useCases:
+  - memahami cara data sampai di internet
+  - mendiagnosis masalah koneksi dan alamat IP
+  - dasar belajar protokol aplikasi seperti HTTP
