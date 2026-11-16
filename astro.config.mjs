@@ -39,7 +39,10 @@ export default defineConfig({
       },
       routeMiddleware: './src/routeData.ts',
       // Gagalkan build bila ada tautan internal yang menunjuk halaman yang tidak ada.
-      plugins: [starlightLinksValidator()],
+      // Validator hanya mengenal halaman konten Starlight; halaman kustom di
+      // `src/pages` (katalog.astro) ia tolak sebagai "invalid link to custom page".
+      // Daftarkan di `exclude` hanya rute kustom yang ditautkan dari konten.
+      plugins: [starlightLinksValidator({ exclude: ['/katalog/'] })],
       // Tautan ke GitHub hanya aktif bila repositorinya publik.
       editLink: site.repo.public
         ? { baseUrl: `https://github.com/${site.repo.owner}/${site.repo.name}/edit/${site.repo.branch}/` }
