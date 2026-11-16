@@ -33,9 +33,11 @@ Catatan Markdown dengan dua belas judul `##` berikut, berurutan (sama dengan bag
 6. Kelemahan
 7. Kapan dipakai, kapan tidak
 8. Contoh kode atau perintah minimal beserta keluaran yang kamu verifikasi dari dokumentasi
-9. Konsep kunci (sekitar sepuluh istilah, satu kalimat masing-masing)
+9. Konsep kunci (istilah yang perlu dikenal pemula, satu kalimat masing-masing)
 10. Prasyarat dan langkah belajar berikutnya
 11. Alternatif dan perbandingan singkat
 12. Sumber resmi (daftar URL yang dipakai)
+
+Banyaknya butir per judul mengikuti apa yang memang ada di sumber; judul yang sumbernya tipis boleh pendek. Lebih baik sedikit butir yang pasti daripada banyak butir yang dipaksakan.
 
 Akhiri dengan judul **Tidak ditemukan sumber resmi**: daftar hal yang kamu cari tetapi tidak bisa pastikan. Bagian ini boleh kosong bila memang semuanya terpastikan.
