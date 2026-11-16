@@ -273,3 +273,20 @@ test('lencana, tautan, dan popularitas kartu tidak diindeks Pagefind (derau beru
   // Halaman katalog sendiri tetap diindeks.
   await expect(page.locator('[data-pagefind-body]')).toHaveCount(1);
 });
+
+test('tautan "Situs resmi" dan "Dokumentasi" tiap kartu membawa nama teknologi untuk pembaca layar', async ({ page }) => {
+  await page.goto(URL);
+  const item = card(page, 'uji-komponen');
+  const name = (await item.locator('h3').textContent())?.trim() ?? '';
+  expect(name).not.toBe('');
+
+  await expect(item.getByRole('link', { name: `Situs resmi ${name}`, exact: true })).toHaveCount(1);
+  await expect(item.getByRole('link', { name: `Dokumentasi ${name}`, exact: true })).toHaveCount(1);
+  // Teks tambahan hanya untuk pembaca layar; tampilan visual tetap "Situs resmi".
+  await expect(item.locator('.dm-catalog-links a').first()).toHaveText(`Situs resmi ${name}`);
+  const visible = await item.locator('.dm-catalog-links a').first().evaluate((a) => {
+    const hidden = a.querySelector('.dm-visually-hidden');
+    return hidden?.getBoundingClientRect().width;
+  });
+  expect(visible).toBeLessThanOrEqual(1);
+});

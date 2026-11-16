@@ -3,6 +3,9 @@
 // filter katalog di browser; atribut adopsi dan tren dihilangkan bila datanya
 // kosong, dan `data-tags` berisi larik JSON (tag boleh berspasi). Teknologi tingkat 0 tidak punya halaman, jadi judulnya bukan tautan.
 //
+// Tautan "Situs resmi" dan "Dokumentasi" berulang di setiap kartu; nama teknologi yang
+// tersembunyi secara visual membuatnya tak ambigu di daftar tautan pembaca layar.
+//
 // Lencana, tautan, dan popularitas sengaja `data-pagefind-ignore`: halaman katalog
 // dan domain tetap diindeks (satu-satunya hasil untuk teknologi tingkat 0), tetapi
 // kata yang berulang di ratusan kartu ("Situs resmi", "Dokumentasi", label tingkat)
@@ -47,7 +50,7 @@ const meta = [TYPE_LABELS[entry.type], entry.domainName, entry.latestVersion].fi
     )
   }
   <p class="dm-catalog-links" data-pagefind-ignore>
-    <a href={entry.website}>Situs resmi</a>
-    <a href={entry.docs}>Dokumentasi</a>
+    <a href={entry.website}>Situs resmi<span class="dm-visually-hidden"> {entry.name}</span></a>
+    <a href={entry.docs}>Dokumentasi<span class="dm-visually-hidden"> {entry.name}</span></a>
   </p>
 </article>

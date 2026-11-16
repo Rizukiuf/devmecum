@@ -16,12 +16,12 @@ test('setiap domain punya halaman', async ({ request, page }) => {
 test('halaman domain memuat kartu teknologinya', async ({ page }) => {
   await page.goto('/fondasi/');
   const card = page.locator('[data-slug="uji-komponen"]');
-  await expect(card.getByRole('link', { name: 'Uji Komponen' })).toHaveAttribute('href', '/fondasi/uji-komponen/');
+  await expect(card.getByRole('link', { name: 'Uji Komponen', exact: true })).toHaveAttribute('href', '/fondasi/uji-komponen/');
   await expect(card.getByText('Khusus', { exact: true })).toBeVisible();
   await expect(card.getByText('Turun', { exact: true })).toBeVisible();
 
   await page.goto('/bahasa/');
-  await expect(page.locator('[data-slug="python"]').getByRole('link', { name: 'Python' })).toHaveAttribute('href', '/bahasa/python/');
+  await expect(page.locator('[data-slug="python"]').getByRole('link', { name: 'Python', exact: true })).toHaveAttribute('href', '/bahasa/python/');
 });
 
 test('halaman materi tidak tertimpa halaman domain', async ({ page }) => {
