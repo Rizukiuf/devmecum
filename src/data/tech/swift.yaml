@@ -1,0 +1,21 @@
+name: Swift
+slug: swift
+type: language
+domain: bahasa
+template: A
+license: Apache-2.0 # dengan Runtime Library Exception; sumber: https://www.swift.org/about/
+website: https://www.swift.org
+docs: https://docs.swift.org/latest/documentation/the-swift-programming-language/
+latestVersion: "6.4.2" # dari GitHub swiftlang/swift (tag) per 16 November 2026
+versionSource: { kind: github, repo: swiftlang/swift, tagPattern: '^swift-(\d+)\.(\d+)(?:\.(\d+))?-RELEASE$' }
+requires: []
+alternatives: [kotlin, dart]
+tags: [apple, ios, tipe-statis, aman-memori]
+adoption: mapan # SO Survey 2026: 5,9% responden, peringkat 18, di bawah ambang 20%; masih dirilis; swift.org memosisikan Swift luas (aplikasi, server, CLI, embedded) sehingga bukan ceruk tunggal; https://survey.stackoverflow.co/2026/technology/data/languages
+trend: stabil # SO 5,4% (2025; https://survey.stackoverflow.co/2025/technology) ke 5,9% (2026; https://survey.stackoverflow.co/2026/technology/data/languages), naik 0,5 poin (< 2)
+metrics:
+  github: { repo: swiftlang/swift }
+useCases:
+  - aplikasi iOS dan platform Apple
+  - layanan server dan alat command-line
+  - firmware embedded

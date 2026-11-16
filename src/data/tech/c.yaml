@@ -1,0 +1,16 @@
+name: C
+slug: c
+type: language
+domain: bahasa
+template: A
+website: https://www.open-std.org/jtc1/sc22/wg14/
+docs: https://www.open-std.org/jtc1/sc22/wg14/
+requires: []
+alternatives: [cpp, rust, zig]
+tags: [sistem, tingkat-rendah, iso, embedded]
+adoption: arus-utama # SO Survey 2026: 21,8% responden, peringkat 11 (>= 20%); https://survey.stackoverflow.co/2026/technology/data/languages
+trend: stabil # SO 22% (2025; https://survey.stackoverflow.co/2025/technology) ke 21,8% (2026; https://survey.stackoverflow.co/2026/technology/data/languages), perubahan < 2 poin
+useCases:
+  - sistem operasi dan driver
+  - firmware dan sistem embedded
+  - pustaka berkinerja tinggi

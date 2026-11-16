@@ -1,0 +1,16 @@
+name: C#
+slug: csharp
+type: language
+domain: bahasa
+template: A
+website: https://dotnet.microsoft.com/en-us/languages/csharp
+docs: https://learn.microsoft.com/en-us/dotnet/csharp/
+requires: []
+alternatives: [java, kotlin, go]
+tags: [dotnet, berorientasi-objek, backend, game]
+adoption: arus-utama # SO Survey 2026: 27,1% responden, peringkat 8 (>= 20%); https://survey.stackoverflow.co/2026/technology/data/languages
+trend: stabil # SO 27,8% (2025; https://survey.stackoverflow.co/2025/technology) ke 27,1% (2026; https://survey.stackoverflow.co/2026/technology/data/languages), turun 0,7 poin (< 2)
+useCases:
+  - backend dan API dengan .NET
+  - aplikasi desktop Windows
+  - game dengan Unity

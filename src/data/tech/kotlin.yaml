@@ -1,0 +1,21 @@
+name: Kotlin
+slug: kotlin
+type: language
+domain: bahasa
+template: A
+license: Apache-2.0 # sumber: https://raw.githubusercontent.com/JetBrains/kotlin/master/license/LICENSE.txt
+website: https://kotlinlang.org
+docs: https://kotlinlang.org/docs/home.html
+latestVersion: "2.4.21" # dari GitHub JetBrains/kotlin (tag) per 16 November 2026
+versionSource: { kind: github, repo: JetBrains/kotlin, tagPattern: '^v(\d+)\.(\d+)\.(\d+)$' }
+requires: []
+alternatives: [java, swift, dart]
+tags: [jvm, android, multiplatform, tipe-statis]
+adoption: mapan # SO Survey 2026: 10,8% responden, peringkat 15, di bawah ambang 20% dan bukan lima besar; masih dirilis; https://survey.stackoverflow.co/2026/technology/data/languages
+trend: stabil # SO 10,8% (2025; https://survey.stackoverflow.co/2025/technology) ke 10,8% (2026; https://survey.stackoverflow.co/2026/technology/data/languages), tidak berubah
+metrics:
+  github: { repo: JetBrains/kotlin }
+useCases:
+  - aplikasi Android
+  - backend di JVM
+  - kode bersama lintas platform

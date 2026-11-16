@@ -1,0 +1,16 @@
+name: SQL
+slug: sql
+type: language
+domain: bahasa
+template: A
+website: https://www.iso.org/standard/76583.html
+docs: https://www.iso.org/standard/76583.html
+requires: []
+alternatives: []
+tags: [kueri, basis-data, relasional, iso]
+adoption: arus-utama # SO Survey 2026: 58,4% responden, peringkat 2; https://survey.stackoverflow.co/2026/technology/data/languages
+trend: stabil # SO 58,6% (2025; https://survey.stackoverflow.co/2025/technology) ke 58,4% (2026; https://survey.stackoverflow.co/2026/technology/data/languages), perubahan < 2 poin
+useCases:
+  - mengkueri dan mengubah data di basis data relasional
+  - pelaporan dan analisis data
+  - mendefinisikan skema tabel dan hak akses

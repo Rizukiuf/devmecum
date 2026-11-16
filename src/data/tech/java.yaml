@@ -1,0 +1,21 @@
+name: Java
+slug: java
+type: language
+domain: bahasa
+template: A
+license: GPL-2.0-only WITH Classpath-exception-2.0 # OpenJDK; sumber: https://raw.githubusercontent.com/openjdk/jdk/master/LICENSE
+website: https://dev.java
+docs: https://docs.oracle.com/en/java/javase/
+latestVersion: "27" # dari GitHub openjdk/jdk (tag) per 16 November 2026
+versionSource: { kind: github, repo: openjdk/jdk, tagPattern: '^jdk-(\d+)-ga$' }
+requires: []
+alternatives: [kotlin, csharp, go]
+tags: [jvm, backend, enterprise, berorientasi-objek]
+adoption: arus-utama # SO Survey 2026: 27,6% responden, peringkat 7 (>= 20%); https://survey.stackoverflow.co/2026/technology/data/languages
+trend: stabil # SO 29,4% (2025; https://survey.stackoverflow.co/2025/technology) ke 27,6% (2026; https://survey.stackoverflow.co/2026/technology/data/languages), turun 1,8 poin (< 2)
+metrics:
+  github: { repo: openjdk/jdk }
+useCases:
+  - layanan backend dan aplikasi enterprise
+  - aplikasi Android dan pustaka JVM
+  - sistem berskala besar dengan ekosistem matang

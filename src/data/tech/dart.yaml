@@ -1,0 +1,21 @@
+name: Dart
+slug: dart
+type: language
+domain: bahasa
+template: A
+license: BSD-3-Clause # sumber: https://raw.githubusercontent.com/dart-lang/sdk/main/LICENSE
+website: https://dart.dev
+docs: https://dart.dev/language
+latestVersion: "3.14.0" # dari GitHub dart-lang/sdk (tag) per 16 November 2026
+versionSource: { kind: github, repo: dart-lang/sdk, tagPattern: '^(\d+)\.(\d+)\.(\d+)$' }
+requires: []
+alternatives: [kotlin, swift, typescript]
+tags: [tipe-statis, multiplatform, flutter, kompilasi-ke-native]
+adoption: mapan # bawaan rubrik: SO Survey 2026: 4,9% responden, peringkat 21, di bawah ambang 20%, masih dirilis; ceruk utama (khusus) tidak dibuktikan oleh halaman resmi yang dibuka; https://survey.stackoverflow.co/2026/technology/data/languages
+trend: stabil # SO 5,9% (2025; https://survey.stackoverflow.co/2025/technology) ke 4,9% (2026; https://survey.stackoverflow.co/2026/technology/data/languages), turun 1,0 poin (< 2)
+metrics:
+  github: { repo: dart-lang/sdk }
+useCases:
+  - aplikasi lintas platform
+  - aplikasi command-line dan server
+  - aplikasi web

@@ -1,0 +1,23 @@
+name: PHP
+slug: php
+type: language
+domain: bahasa
+template: A
+creator: Rasmus Lerdorf # sumber: https://www.php.net/manual/en/history.php.php
+firstRelease: 1995 # sumber: https://www.php.net/manual/en/history.php.php ("In June of 1995, Rasmus released the source code for PHP Tools to the public")
+license: BSD-3-Clause # sumber: https://www.php.net/license/
+website: https://www.php.net
+docs: https://www.php.net/docs.php
+latestVersion: "8.5.12" # dari GitHub php/php-src (tag) per 16 November 2026
+versionSource: { kind: github, repo: php/php-src, tagPattern: '^php-(\d+)\.(\d+)\.(\d+)$' }
+requires: []
+alternatives: [python, ruby, javascript]
+tags: [web, backend, scripting, cms]
+adoption: mapan # SO Survey 2026: 17,7% responden, peringkat 13, di bawah ambang 20% dan bukan lima besar; masih dirilis (8.5.12, 21 Oktober 2026); https://survey.stackoverflow.co/2026/technology/data/languages
+trend: stabil # SO 18,9% (2025; https://survey.stackoverflow.co/2025/technology) ke 17,7% (2026; https://survey.stackoverflow.co/2026/technology/data/languages), turun 1,2 poin (< 2)
+metrics:
+  github: { repo: php/php-src }
+useCases:
+  - situs dan aplikasi web sisi server
+  - CMS seperti WordPress
+  - API dan layanan backend

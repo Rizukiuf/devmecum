@@ -1,0 +1,16 @@
+name: C++
+slug: cpp
+type: language
+domain: bahasa
+template: A
+website: https://isocpp.org
+docs: https://isocpp.org/std/the-standard
+requires: []
+alternatives: [c, rust, csharp]
+tags: [sistem, berkinerja-tinggi, iso, game]
+adoption: arus-utama # SO Survey 2026: 24,3% responden, peringkat 10 (>= 20%); https://survey.stackoverflow.co/2026/technology/data/languages
+trend: stabil # SO 23,5% (2025; https://survey.stackoverflow.co/2025/technology) ke 24,3% (2026; https://survey.stackoverflow.co/2026/technology/data/languages), naik 0,8 poin (< 2)
+useCases:
+  - game dan mesin grafis
+  - perangkat lunak sistem dan aplikasi berkinerja tinggi
+  - pustaka dan alat dengan kendali memori ketat

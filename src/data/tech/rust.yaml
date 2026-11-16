@@ -1,0 +1,21 @@
+name: Rust
+slug: rust
+type: language
+domain: bahasa
+template: A
+license: MIT OR Apache-2.0 # sumber: https://www.rust-lang.org/policies/licenses
+website: https://rust-lang.org
+docs: https://doc.rust-lang.org/stable/
+latestVersion: "1.100.0" # dari GitHub rust-lang/rust (tag) per 16 November 2026
+versionSource: { kind: github, repo: rust-lang/rust, tagPattern: '^(\d+)\.(\d+)\.(\d+)$' }
+requires: []
+alternatives: [cpp, go, c]
+tags: [sistem, aman-memori, concurrency, tingkat-rendah]
+adoption: mapan # SO Survey 2026: 18,0% responden, peringkat 12, di bawah ambang 20% dan bukan lima besar; rilis stabil 1.100.0 pada 12 November 2026; https://survey.stackoverflow.co/2026/technology/data/languages
+trend: naik # SO 14,8% (2025; https://survey.stackoverflow.co/2025/technology) ke 18,0% (2026; https://survey.stackoverflow.co/2026/technology/data/languages), naik 3,2 poin (>= 2)
+metrics:
+  github: { repo: rust-lang/rust }
+useCases:
+  - perangkat lunak sistem yang aman memori
+  - alat command-line dan layanan berkinerja tinggi
+  - komponen WebAssembly dan embedded
