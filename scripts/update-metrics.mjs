@@ -6,6 +6,10 @@
 // saat pengambilan kali ini gagal; di CI berkas lama tidak ada, jadi angka yang gagal
 // diambil tidak tampil pada deploy itu. Keluar 0 walau ada yang gagal, supaya deploy
 // tidak berhenti karena satu registri sakit; keluar 1 hanya bila berkas tidak bisa ditulis.
+// Skrip ini membuat sekitar satu permintaan API GitHub per teknologi yang punya entri
+// `metrics.github` (sekitar 400 pada ukuran penuh), sedangkan batas GITHUB_TOKEN adalah
+// 1.000 permintaan per jam dan setiap push ke main men-deploy. Deploy beruntun bisa
+// kehilangan angka bintang pada deploy itu (degradasi bertahap, memang disengaja).
 import { mkdir, writeFile } from 'node:fs/promises';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
