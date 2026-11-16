@@ -86,7 +86,7 @@ Docusaurus dan Next.js dicoret karena mengirim lebih banyak JavaScript ke browse
 
 ### 5.1 Hierarki
 
-**Domain → Teknologi → Bab → Halaman.** Satu halaman = satu subbab, sekitar 800–2.000 kata ditambah contoh kode.
+**Domain → Teknologi → Bab → Halaman.** Satu halaman = satu subbab. Panjangnya mengikuti kebutuhan topik (umumnya 800–2.000 kata ditambah contoh kode); angka ini gambaran, bukan syarat.
 
 ### 5.2 Delapan belas domain
 
@@ -126,15 +126,15 @@ Setiap teknologi memakai salah satu template sesuai jenisnya, sehingga letak bab
 |---|---|---|
 | A | Bahasa pemrograman | 26 |
 | B | Framework dan library | 21 |
-| C | Tools dan platform | 15 |
-| D | Database | 15 |
-| E | Konsep dan disiplin | 12 |
+| C | Tools dan platform | 16 |
+| D | Database | 16 |
+| E | Konsep dan disiplin | 13 |
 
-Bab yang tidak relevan ditandai "tidak berlaku" supaya penomoran tetap seragam. Setiap template wajib memuat bab **Evaluasi** (keunggulan, kelemahan, kasus penggunaan, kapan tidak dipakai, perbandingan) dan bab **Bekerja dengan AI**.
+Bab yang tidak relevan ditandai "tidak berlaku" supaya penomoran tetap seragam. Setiap template wajib memuat bab **Evaluasi** (keunggulan, kelemahan, kasus penggunaan, kapan tidak dipakai, perbandingan) dan bab **Bekerja dengan AI**. Di template E, peran Evaluasi diisi bab "Etika, risiko, dan keterbatasan"; bab "Evaluasi dan metrik" di sana membahas cara mengukur hasil. **[P, 16 November 2026]**
 
 ### 5.5 Anatomi halaman Ringkasan (tingkat 1)
 
-Sekitar 600–1.200 kata, urutan tetap:
+Urutan tetap; panjang mengikuti topik (umumnya 600–1.200 kata):
 
 1. Apa itu, dalam dua kalimat
 2. Kartu data (dari file data)
@@ -144,7 +144,7 @@ Sekitar 600–1.200 kata, urutan tetap:
 6. Kelemahan
 7. Kapan dipakai, kapan tidak
 8. Contoh kode atau perintah minimal, lengkap dengan output
-9. Konsep kunci (sekitar 10 istilah, masing-masing satu kalimat)
+9. Konsep kunci (istilah yang perlu dikenal pemula, masing-masing satu kalimat)
 10. Prasyarat dan langkah belajar berikutnya
 11. Alternatif dan perbandingan singkat
 12. Sumber resmi
@@ -527,14 +527,16 @@ Level: bab 2–6 Dasar, 7–15 Menengah, 16–21 Lanjut, 22 Profesional, 23–26
 **B. Framework dan library (21):** 1 Ringkasan · 2 Pengenalan · 3 Instalasi dan struktur proyek · 4 Konsep inti · 5 Routing dan navigasi · 6 Data · 7 Form, validasi, dan input · 8 Tampilan dan styling · 9 Autentikasi dan otorisasi · 10 API dan integrasi layanan · 11 Testing · 12 Performa dan optimisasi · 13 Keamanan · 14 Build dan deployment · 15 Ekosistem dan plugin · 16 Topik lanjut dan internals · 17 Di dunia profesional · 18 Bekerja dengan AI · 19 Evaluasi · 20 Proyek latihan · 21 Referensi dan cheat sheet.
 Level: 2–5 Dasar, 6–11 Menengah, 12–16 Lanjut, 17 Profesional.
 
-**C. Tools dan platform (15):** 1 Ringkasan · 2 Konsep dan arsitektur · 3 Instalasi dan konfigurasi awal · 4 Perintah dan antarmuka inti · 5 Alur kerja harian · 6 Konfigurasi lanjut · 7 Jaringan, penyimpanan, dan integrasi · 8 Keamanan dan manajemen akses · 9 Observability dan troubleshooting · 10 Otomasi dan CI/CD · 11 Produksi dan skala · 12 Alternatif dan perbandingan · 13 Evaluasi · 14 Lab praktik · 15 Sertifikasi dan referensi.
-Level: 2–5 Dasar, 6–7 Menengah, 8–10 Lanjut, 11 Profesional.
+**C. Tools dan platform (16):** 1 Ringkasan · 2 Konsep dan arsitektur · 3 Instalasi dan konfigurasi awal · 4 Perintah dan antarmuka inti · 5 Alur kerja harian · 6 Konfigurasi lanjut · 7 Jaringan, penyimpanan, dan integrasi · 8 Keamanan dan manajemen akses · 9 Observability dan troubleshooting · 10 Otomasi dan CI/CD · 11 Produksi dan skala · 12 Bekerja dengan AI · 13 Alternatif dan perbandingan · 14 Evaluasi · 15 Lab praktik · 16 Sertifikasi dan referensi.
+Level: 2–5 Dasar, 6–7 Menengah, 8–10 Lanjut, 11 Profesional, 12–16 semua level.
 
-**D. Database (15):** 1 Ringkasan · 2 Model data dan arsitektur · 3 Instalasi dan tools klien · 4 Bahasa kueri dasar · 5 Desain skema dan pemodelan data · 6 Kueri lanjut · 7 Indeks dan optimisasi kueri · 8 Transaksi dan konsistensi · 9 Replikasi, sharding, ketersediaan tinggi · 10 Backup, restore, dan migrasi · 11 Keamanan · 12 Integrasi dengan aplikasi · 13 Operasional di produksi dan cloud · 14 Evaluasi dan perbandingan · 15 Latihan.
-Level: 2–4 Dasar, 5–7 Menengah, 8–12 Lanjut, 13 Profesional.
+**D. Database (16):** 1 Ringkasan · 2 Model data dan arsitektur · 3 Instalasi dan tools klien · 4 Bahasa kueri dasar · 5 Desain skema dan pemodelan data · 6 Kueri lanjut · 7 Indeks dan optimisasi kueri · 8 Transaksi dan konsistensi · 9 Replikasi, sharding, ketersediaan tinggi · 10 Backup, restore, dan migrasi · 11 Keamanan · 12 Integrasi dengan aplikasi · 13 Operasional di produksi dan cloud · 14 Bekerja dengan AI · 15 Evaluasi dan perbandingan · 16 Latihan.
+Level: 2–4 Dasar, 5–7 Menengah, 8–12 Lanjut, 13 Profesional, 14–16 semua level.
 
-**E. Konsep dan disiplin (12):** 1 Ringkasan dan peta konsep · 2 Prasyarat · 3 Konsep inti dan teori · 4 Algoritma dan teknik utama · 5 Implementasi langkah demi langkah · 6 Evaluasi dan metrik · 7 Studi kasus · 8 Praktik produksi · 9 Etika, risiko, dan keterbatasan · 10 Perkembangan terkini · 11 Latihan dan proyek · 12 Referensi.
-Level: 2–3 Dasar, 4–6 Menengah, 7 Lanjut, 8 Profesional.
+**E. Konsep dan disiplin (13):** 1 Ringkasan dan peta konsep · 2 Prasyarat · 3 Konsep inti dan teori · 4 Algoritma dan teknik utama · 5 Implementasi langkah demi langkah · 6 Evaluasi dan metrik · 7 Studi kasus · 8 Praktik produksi · 9 Etika, risiko, dan keterbatasan · 10 Perkembangan terkini · 11 Bekerja dengan AI · 12 Latihan dan proyek · 13 Referensi.
+Level: 2–3 Dasar, 4–6 Menengah, 7 Lanjut, 8 Profesional, 9–13 semua level.
+
+Bab "Bekerja dengan AI" di template C, D, dan E ditambahkan pada 16 November 2026 **[P]** agar sesuai §5.4. Topik yang memang tidak bersinggungan dengan AI menandainya "tidak berlaku".
 
 ## Lampiran C — Sumber yang diperiksa (14 November 2026)
 

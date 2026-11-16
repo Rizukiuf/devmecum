@@ -19,13 +19,15 @@ Buku panduan teknologi IT berbahasa Indonesia: situs statis Astro + Starlight. R
 
 ## Batas pekerjaan
 
-- Pekerjaan konten (`src/content/`, `src/data/`) tidak boleh mengubah kode aplikasi (`src/lib/`, `src/components/`, `src/overrides/`, `scripts/`, berkas konfigurasi) dalam PR yang sama, dan sebaliknya.
+- Pekerjaan konten (`src/content/`, `src/data/tech/`) tidak boleh mengubah kode aplikasi (`src/lib/`, `src/components/`, `src/overrides/`, `src/pages/`, `scripts/`, berkas konfigurasi) dalam PR yang sama, dan sebaliknya.
+- `src/data/domains.yaml` dan `src/data/templates.yaml` adalah data struktur yang dikunci tes unit; keduanya diubah lewat PR aplikasi bersama tesnya.
 - `pnpm-lock.yaml` dan `src/data/metrics/` hanya diubah oleh alat, tidak diedit tangan.
 - Menambah teknologi tidak boleh menuntut perubahan kode: cukup satu file YAML dan satu folder MDX.
 
 ## Aturan teknis
 
 - Skrip ditulis sebagai Node `.mjs` (`node scripts/…`). Tidak ada bash: pemilik memakai Windows, CI memakai Linux.
+- Di Windows, jalankan `pnpm` lewat PowerShell. Di Git Bash, Vitest gagal karena modul termuat ganda (`C:/` vs `c:/`).
 - File di `src/lib/` harus bisa diimpor langsung oleh Node: hanya sintaks TypeScript yang bisa dihapus, impor relatif berakhiran `.ts`.
 - Zod diimpor dari `astro/zod`.
 - Jalankan Claude Code dari root repo. Hook memakai `${CLAUDE_PROJECT_DIR}`, yang mengikuti folder tempat sesi dimulai; dari subfolder, hook tidak menemukan skripnya dan perlindungan file tidak berjalan.

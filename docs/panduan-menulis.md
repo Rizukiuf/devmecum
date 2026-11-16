@@ -2,6 +2,8 @@
 
 Panduan ini adalah standar untuk setiap halaman. Penulis manusia maupun Claude Code mengikutinya. Aturannya berasal dari rancangan §5 dan §10; bila ada beda, rancangan yang berlaku.
 
+Yang mengikat adalah prinsip di §1, struktur halaman, frontmatter, dan aturan sumber. Angka panjang dan jumlah butir hanya gambaran: setiap topik berbeda, jadi isi mengikuti kebutuhan topiknya.
+
 ## 1. Prinsip
 
 Delapan standar. Halaman yang melanggar salah satunya belum boleh terbit.
@@ -38,21 +40,21 @@ Delapan standar. Halaman yang melanggar salah satunya belum boleh terbit.
 
 ## 3. Halaman Ringkasan
 
-Halaman `index.mdx` setiap teknologi, 600–1.200 kata, dengan urutan tetap. Mulai dari `templates/ringkasan.mdx`.
+Halaman `index.mdx` setiap teknologi. Mulai dari `templates/ringkasan.mdx`. **Urutan bagian tetap; panjang dan jumlah butir tidak.** Setiap teknologi berbeda: bahasa pemrograman besar butuh lebih banyak ruang daripada tool kecil. Kisaran umumnya 600–1.200 kata, tapi itu gambaran, bukan target. Informasi penting boleh masuk walau halaman jadi lebih panjang; bagian yang memang tipis untuk topik itu boleh pendek.
 
-| Bagian | Isi | Sasaran |
-|---|---|---|
-| Sekilas | Apa itu, dua kalimat | 40–60 kata |
-| Kartu data | `<TechCard />`, tanpa teks tambahan | — |
-| Untuk apa dan siapa pemakainya | Pekerjaan yang diselesaikan, pemakai nyata | 100–150 kata |
-| Popularitas dan status | Angka bersumber dan bertanggal; masih aktif dikembangkan atau tidak | 60–100 kata |
-| Keunggulan dan kelemahan | `<ProsCons>`, masing-masing 3–5 butir berkonteks | — |
-| Kapan dipakai, kapan tidak | Dua daftar pendek | 80–120 kata |
-| Contoh minimal | Kode atau perintah utuh beserta keluaran persis | 1 contoh |
-| Konsep kunci | Sekitar sepuluh istilah, satu kalimat masing-masing | 10 butir |
-| Prasyarat dan langkah berikutnya | Yang perlu dikuasai dulu, dan ke mana sesudahnya | 50–80 kata |
-| Alternatif | 2–4 alternatif dan beda utamanya | 2–4 butir |
-| Sumber resmi | Tautan sama dengan `sources` di frontmatter | — |
+| Bagian | Isi |
+|---|---|
+| Sekilas | Apa itu, singkat (sekitar dua kalimat) |
+| Kartu data | `<TechCard />`, tanpa teks tambahan |
+| Untuk apa dan siapa pemakainya | Pekerjaan yang diselesaikan, pemakai nyata |
+| Popularitas dan status | Angka bersumber dan bertanggal; masih aktif dikembangkan atau tidak |
+| Keunggulan dan kelemahan | `<ProsCons>`, butir berkonteks |
+| Kapan dipakai, kapan tidak | Dua daftar pendek |
+| Contoh minimal | Kode atau perintah utuh beserta keluaran persis; lebih dari satu boleh bila perlu |
+| Konsep kunci | Istilah yang perlu dikenal pemula, satu kalimat masing-masing |
+| Prasyarat dan langkah berikutnya | Yang perlu dikuasai dulu, dan ke mana sesudahnya |
+| Alternatif | Alternatif yang relevan dan beda utamanya |
+| Sumber resmi | Tautan sama dengan `sources` di frontmatter |
 
 ## 4. Frontmatter
 
@@ -105,7 +107,7 @@ Urutan keutamaan: (1) dokumentasi resmi, (2) catatan rilis dan changelog, (3) do
 
 ## 7. Keunggulan dan kelemahan
 
-- Selalu berpasangan: setiap keunggulan punya lawannya.
+- Berimbang: tulis keunggulan dan kelemahan yang nyata. Jumlahnya tidak harus sama, tapi halaman tanpa kelemahan belum jujur.
 - Setiap butir menyebut pembanding atau kondisinya.
 - Benar: "Ekosistem pustaka sangat luas, terutama untuk data dan AI."
 - Benar: "Konkurensi berbasis thread terbatas oleh GIL pada pekerjaan yang berat CPU."
