@@ -4,7 +4,7 @@ type: language
 domain: bahasa
 template: A
 creator: Guido van Rossum # sumber: https://docs.python.org/3/license.html
-firstRelease: 1991 # sumber: https://docs.python.org/3/license.html (tabel riwayat: 0.9.0 sampai 1.2 pada 1991-1995)
+firstRelease: 1991 # sumber: https://docs.python.org/3/faq/general.html ("In February 1991, after just over a year of development, I decided to post to USENET.")
 license: PSF-2.0
 website: https://www.python.org
 docs: https://docs.python.org/3/
