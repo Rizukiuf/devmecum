@@ -13,7 +13,7 @@ test('kartu data berasal dari file data', async ({ page }) => {
   await expect(row('Situs resmi').getByRole('link')).toHaveAttribute('href', 'https://example.com');
   await expect(row('Kegunaan')).toContainText('menguji tampilan komponen');
   // Nama diambil dari data teknologi yang dirujuk, bukan slug-nya.
-  await expect(row('Alternatif')).toContainText('Python');
+  await expect(row('Alternatif').getByRole('link', { name: 'Python' })).toHaveAttribute('href', '/bahasa/python/');
 });
 
 test('kartu data tidak menampilkan baris tanpa data', async ({ page }) => {
