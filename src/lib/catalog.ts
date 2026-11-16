@@ -112,7 +112,10 @@ export function filtersToSearch(filters: CatalogFilters): string {
   return text === '' ? '' : `?${text}`;
 }
 
-export function matchesFilters(entry: CatalogEntry, filters: CatalogFilters): boolean {
+/** Bagian entri yang dibaca filter; elemen kustom katalog membangunnya dari atribut kartu. */
+export type FilterableEntry = Pick<CatalogEntry, 'slug' | 'name' | 'domain' | 'type' | 'stage' | 'adoption' | 'trend' | 'tags'>;
+
+export function matchesFilters(entry: FilterableEntry, filters: CatalogFilters): boolean {
   if (filters.domain !== undefined && entry.domain !== filters.domain) return false;
   if (filters.jenis !== undefined && entry.type !== filters.jenis) return false;
   if (filters.tingkat !== undefined && entry.stage !== filters.tingkat) return false;

@@ -29,8 +29,7 @@ const headings = groups.map((group) => ({ depth: 2, slug: group.slug, text: grou
 <StarlightPage frontmatter={{ title: domain.name, description: domain.description }} headings={headings}>
   <p>{domain.description}</p>
   <p class="dm-domain-summary">
-    {entries.length} teknologi terdaftar ·
-    <a href={`/katalog/?domain=${domain.id}`}>Lihat di katalog berfilter</a>
+    {entries.length} teknologi terdaftar · <a href={`/katalog/?domain=${domain.id}`}>Lihat di katalog berfilter</a>
   </p>
   {entries.length === 0 && <p>Belum ada teknologi terdaftar di domain ini.</p>}
   {

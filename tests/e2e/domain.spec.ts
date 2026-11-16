@@ -58,6 +58,8 @@ test('kartu dikelompokkan per jenis', async ({ page }) => {
 test('halaman domain menautkan katalog berfilter', async ({ page }) => {
   await page.goto('/fondasi/');
   await expect(page.locator('main a[href="/katalog/?domain=fondasi"]')).toBeVisible();
+  // Ada spasi antara titik tengah dan tautan.
+  await expect(page.locator('.dm-domain-summary')).toContainText('terdaftar · Lihat di katalog berfilter');
 });
 
 test('domain tanpa teknologi menampilkan pesan kosong', async ({ page }) => {

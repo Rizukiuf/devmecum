@@ -1,0 +1,164 @@
+---
+// Formulir filter katalog. Logikanya ada di custom element `dm-catalog-filter`,
+// yang memakai fungsi filter yang sama dengan kode server (src/lib/catalog.ts).
+// Tanpa JavaScript formulir tetap tersembunyi dan semua kartu di slot tampil.
+import type { CatalogEntry } from '../lib/catalog.ts';
+import { ADOPTION_LABELS, TREND_LABELS, TYPE_LABELS } from '../lib/labels.ts';
+import { STAGE_LABELS } from '../lib/maturity.ts';
+import type { Domain, TechType } from '../lib/schemas.ts';
+
+interface Props {
+  entries: CatalogEntry[];
+  domains: Domain[];
+}
+const { entries, domains } = Astro.props;
+
+const presentTypes = new Set(entries.map((entry) => entry.type));
+const selects = [
+  { name: 'domain', label: 'Domain', options: domains.map((domain) => [domain.id, domain.name]) },
+  {
+    name: 'jenis',
+    label: 'Jenis',
+    options: (Object.keys(TYPE_LABELS) as TechType[])
+      .filter((type) => presentTypes.has(type))
+      .map((type) => [type, TYPE_LABELS[type]]),
+  },
+  { name: 'tingkat', label: 'Kematangan', options: STAGE_LABELS.map((label, stage) => [String(stage), label]) },
+  { name: 'adopsi', label: 'Adopsi', options: Object.entries(ADOPTION_LABELS) },
+  { name: 'tren', label: 'Tren', options: Object.entries(TREND_LABELS) },
+];
+const total = entries.length;
+---
+
+<dm-catalog-filter class="dm-catalog-filter">
+  <form class="not-content" role="search" aria-label="Filter katalog" hidden>
+    {
+      selects.map((select) => (
+        <div class="dm-catalog-field">
+          <label for={`dm-filter-${select.name}`}>{select.label}</label>
+          <select id={`dm-filter-${select.name}`} name={select.name}>
+            <option value="">Semua</option>
+            {select.options.map(([value, label]) => (
+              <option value={value}>{label}</option>
+            ))}
+          </select>
+        </div>
+      ))
+    }
+    <div class="dm-catalog-field dm-catalog-field-search">
+      <label for="dm-filter-q">Cari nama</label>
+      <input id="dm-filter-q" name="q" type="search" autocomplete="off" />
+    </div>
+    <div class="dm-catalog-actions">
+      <p class="dm-catalog-count" aria-live="polite">Menampilkan {total} dari {total} teknologi</p>
+      <button type="button" class="dm-catalog-reset">Atur ulang</button>
+    </div>
+  </form>
+  <p class="dm-catalog-empty" hidden>Tidak ada teknologi yang cocok dengan filter ini.</p>
+  <slot />
+</dm-catalog-filter>
+
+<script>
+  import { filtersToSearch, matchesFilters, parseFilters, type FilterableEntry } from '../lib/catalog.ts';
+  import type { Stage } from '../lib/maturity.ts';
+  import type { Adoption, TechType, Trend } from '../lib/schemas.ts';
+
+  type Control = HTMLSelectElement | HTMLInputElement;
+
+  function readTags(raw: string | undefined): string[] {
+    try {
+      const value: unknown = JSON.parse(raw ?? '[]');
+      return Array.isArray(value) ? value.filter((tag): tag is string => typeof tag === 'string') : [];
+    } catch {
+      return [];
+    }
+  }
+
+  /** Membaca entri dari atribut kartu. Atribut adopsi/tren yang tidak ada berarti tanpa nilai. */
+  function entryOf(card: HTMLElement): FilterableEntry {
+    const { slug = '', domain = '', jenis = '', tingkat, adopsi, tren, tags } = card.dataset;
+    return {
+      slug,
+      name: card.querySelector('h3')?.textContent?.trim() ?? slug,
+      domain,
+      type: jenis as TechType,
+      // "0" adalah tingkat yang sah; atribut yang hilang menjadi NaN dan tidak cocok dengan tingkat mana pun.
+      stage: (tingkat === undefined || tingkat.trim() === '' ? Number.NaN : Number(tingkat)) as Stage,
+      ...(adopsi !== undefined && { adoption: adopsi as Adoption }),
+      ...(tren !== undefined && { trend: tren as Trend }),
+      tags: readTags(tags),
+    };
+  }
+
+  class CatalogFilter extends HTMLElement {
+    connectedCallback(): void {
+      const form = this.querySelector('form');
+      const count = this.querySelector<HTMLElement>('.dm-catalog-count');
+      const empty = this.querySelector<HTMLElement>('.dm-catalog-empty');
+      const reset = this.querySelector<HTMLButtonElement>('.dm-catalog-reset');
+      if (!form || !count || !empty || !reset) return;
+
+      const controls = [...form.querySelectorAll<Control>('select[name], input[name]')];
+      const domainSelect = form.querySelector<HTMLSelectElement>('select[name="domain"]');
+      const domainIds = domainSelect ? [...domainSelect.options].map((option) => option.value).filter(Boolean) : [];
+      const cards = [...this.querySelectorAll<HTMLElement>('article.dm-catalog-card')].map((card) => ({
+        card,
+        entry: entryOf(card),
+      }));
+
+      const update = (): void => {
+        // Nilai kontrol dibaca lewat parseFilters juga, jadi hanya nilai yang sah yang dipakai.
+        const params = new URLSearchParams();
+        for (const control of controls) params.set(control.name, control.value);
+        const filters = parseFilters(params.toString(), domainIds);
+
+        let shown = 0;
+        for (const { card, entry } of cards) {
+          const match = matchesFilters(entry, filters);
+          card.hidden = !match;
+          if (match) shown += 1;
+        }
+        const text = `Menampilkan ${shown} dari ${cards.length} teknologi`;
+        if (count.textContent !== text) count.textContent = text;
+        empty.hidden = shown !== 0;
+
+        const url = `${location.pathname}${filtersToSearch(filters)}${location.hash}`;
+        if (url !== `${location.pathname}${location.search}${location.hash}`) history.replaceState(history.state, '', url);
+      };
+
+      // Keadaan awal dari URL. Nilai yang tidak ada di pilihan (mis. jenis yang tidak
+      // terwakili di katalog) kembali ke "Semua".
+      const initial = parseFilters(location.search, domainIds);
+      const values: Record<string, string | number | undefined> = {
+        domain: initial.domain,
+        jenis: initial.jenis,
+        tingkat: initial.tingkat,
+        adopsi: initial.adopsi,
+        tren: initial.tren,
+        q: initial.q,
+      };
+      for (const control of controls) {
+        const raw = values[control.name];
+        const value = raw === undefined ? '' : String(raw);
+        if (control instanceof HTMLSelectElement) {
+          control.value = [...control.options].some((option) => option.value === value) ? value : '';
+        } else {
+          control.value = value;
+        }
+      }
+
+      form.addEventListener('input', update);
+      form.addEventListener('change', update);
+      form.addEventListener('submit', (event) => event.preventDefault());
+      reset.addEventListener('click', () => {
+        for (const control of controls) control.value = '';
+        update();
+      });
+
+      form.hidden = false;
+      update();
+    }
+  }
+
+  customElements.define('dm-catalog-filter', CatalogFilter);
+</script>
