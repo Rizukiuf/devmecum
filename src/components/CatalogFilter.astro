@@ -2,6 +2,11 @@
 // Formulir filter katalog. Logikanya ada di custom element `dm-catalog-filter`,
 // yang memakai fungsi filter yang sama dengan kode server (src/lib/catalog.ts).
 // Tanpa JavaScript formulir tetap tersembunyi dan semua kartu di slot tampil.
+//
+// Skrip kecil tepat sesudah formulir menampilkannya saat HTML di-parse, sebelum
+// cat pertama. Bila formulir baru tampil setelah modul filter jalan, kisi kartu
+// terdorong ke bawah (CLS) pada halaman besar. Situs ini tidak memasang CSP
+// (tidak ada header/meta CSP), dan Starlight sendiri memakai skrip inline.
 import type { CatalogEntry } from '../lib/catalog.ts';
 import { ADOPTION_LABELS, TREND_LABELS, TYPE_LABELS } from '../lib/labels.ts';
 import { STAGE_LABELS } from '../lib/maturity.ts';
@@ -54,6 +59,9 @@ const total = entries.length;
       <button type="button" class="dm-catalog-reset">Atur ulang</button>
     </div>
   </form>
+  <script is:inline>
+    document.currentScript.previousElementSibling.hidden = false;
+  </script>
   <p class="dm-catalog-empty" hidden>Tidak ada teknologi yang cocok dengan filter ini.</p>
   <slot />
 </dm-catalog-filter>

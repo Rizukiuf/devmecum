@@ -206,3 +206,60 @@ test('kartu menampilkan bintang GitHub ringkas bila datanya ada', async ({ page 
   // Teknologi tanpa data metrik tidak memuat baris popularitas.
   await expect(card(page, 'uji-terdaftar').locator('.dm-popularity')).toHaveCount(0);
 });
+
+test('judul bagian "Daftar teknologi" mendahului kartu agar urutan judul tidak melompat', async ({ page }) => {
+  await page.goto(URL);
+  const heading = page.getByRole('heading', { level: 2, name: 'Daftar teknologi' });
+  await expect(heading).toHaveCount(1);
+  // Judul h2 ada sebelum kisi kartu, dan kartu (h3) tidak langsung menyusul h1.
+  const order = await page.evaluate(() => {
+    const h2 = document.querySelector('h2');
+    const grid = document.querySelector('.dm-catalog-grid');
+    if (!h2 || !grid) return null;
+    return {
+      before: !!(h2.compareDocumentPosition(grid) & Node.DOCUMENT_POSITION_FOLLOWING),
+      text: h2.textContent?.trim(),
+    };
+  });
+  expect(order).toEqual({ before: true, text: 'Daftar teknologi' });
+});
+
+test('formulir tampil sebelum skrip filter jalan: kisi kartu tidak bergeser (CLS)', async ({ page }) => {
+  // Meniru skrip modul yang baru jalan sesudah cat pertama (HTML besar, CPU lambat):
+  // pendaftaran elemen kustom ditunda. Yang menahan formulir tersembunyi sampai
+  // saat itu akan mendorong kisi kartu ke bawah.
+  await page.addInitScript(() => {
+    const w = window as unknown as { __tops: number[]; __shift: number };
+    w.__tops = [];
+    w.__shift = 0;
+    const define = customElements.define.bind(customElements);
+    customElements.define = (name: string, ctor: CustomElementConstructor, options?: ElementDefinitionOptions) => {
+      if (name === 'dm-catalog-filter') setTimeout(() => define(name, ctor, options), 600);
+      else define(name, ctor, options);
+    };
+    new PerformanceObserver((list) => {
+      for (const entry of list.getEntries()) w.__shift += (entry as unknown as { value: number }).value;
+    }).observe({ type: 'layout-shift', buffered: true });
+    const sample = () => {
+      const grid = document.querySelector<HTMLElement>('.dm-catalog-grid');
+      if (grid) {
+        const top = grid.getBoundingClientRect().top + window.scrollY;
+        if (w.__tops.at(-1) !== top) w.__tops.push(top);
+      }
+      requestAnimationFrame(sample);
+    };
+    requestAnimationFrame(sample);
+  });
+
+  await page.goto(URL);
+  await page.waitForFunction(() => customElements.get('dm-catalog-filter') !== undefined);
+  await expect(filter(page).locator('form')).toBeVisible();
+  await page.evaluate(() => new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve))));
+
+  const { tops, shift } = await page.evaluate(() => {
+    const w = window as unknown as { __tops: number[]; __shift: number };
+    return { tops: w.__tops, shift: w.__shift };
+  });
+  expect(new Set(tops).size, `posisi atas kisi: ${tops.join(', ')}`).toBe(1);
+  expect(shift).toBe(0);
+});

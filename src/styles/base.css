@@ -248,6 +248,19 @@
   fill: transparent !important;
 }
 
+/* Teks yang hanya terbaca pembaca layar (judul bagian, nama teknologi di tautan berulang). */
+.dm-visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
 /* --- Halaman domain dan kartu katalog --- */
 .dm-domain-summary {
   color: var(--sl-color-gray-2);
