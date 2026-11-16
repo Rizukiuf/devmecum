@@ -88,7 +88,7 @@ const versionSourceSchema = z
     } else if (groups < 1) {
       ctx.addIssue({
         code: 'custom',
-        message: '`tagPattern` butuh minimal satu grup tangkapan, misalnya ^v(\d+)\.(\d+)$',
+        message: '`tagPattern` butuh minimal satu grup tangkapan, misalnya ^v(\\d+)\\.(\\d+)$',
         path: ['tagPattern'],
       });
     }
