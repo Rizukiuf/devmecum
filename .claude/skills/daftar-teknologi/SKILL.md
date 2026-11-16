@@ -35,10 +35,11 @@ Bentuk berkas yang benar bisa dilihat di `src/data/tech/python.yaml`. Skema leng
    - `website`, `docs`: URL https resmi. `docs` mengarah ke dokumentasi, bukan beranda yang sama bila ada yang terpisah.
    - `license`: pengenal SPDX bila ada (`MIT`, `Apache-2.0`, `PSF-2.0`). Bila tidak ada pengenal SPDX atau tidak jelas, kosongkan.
    - `versionSource`: untuk teknologi yang punya versi, pilih satu sumber di antara `npm`, `pypi`, `crates`, `maven` (butuh `name`; Maven berbentuk `grup:artefak`), atau `github` (butuh `repo: pemilik/nama`). Utamakan registri paket resminya; pakai `github` bila teknologinya tidak punya paket (bahasa, alat, platform).
-     - `github` tanpa `tagPattern` membaca GitHub Release terbaru lewat API (bisa kena batas laju). Bila repo tidak punya Release, atau tag-nya yang resmi, tambahkan `tagPattern`.
-     - `tagPattern` hanya untuk `github`, wajib punya minimal satu grup tangkapan, dicocokkan **penuh** terhadap nama tag, dan versinya adalah grup-grup itu digabung titik. Contoh: `^go(\d+)\.(\d+)(?:\.(\d+))?$` untuk tag `go1.25.3`. Tulis regex yang **sederhana**: tanpa kuantor bersarang atau alternasi yang tumpang tindih (risiko ReDoS), cukup lurus seperti contoh itu.
+     - `github` tanpa `tagPattern` membaca GitHub Release terbaru lewat API GitHub (kuota kecil tanpa token; lihat langkah 4). Bila repo tidak punya Release, atau tag-nya yang resmi, tambahkan `tagPattern`.
+     - `tagPattern` hanya untuk `github`, wajib punya minimal satu grup tangkapan, dicocokkan **penuh** terhadap nama tag, dan versinya adalah grup-grup itu digabung titik. Contoh: `^go(\d+)\.(\d+)(?:\.(\d+))?$` untuk tag `go1.25.3`. Tulis regex yang **sederhana**: tanpa kuantor bersarang atau alternasi yang tumpang tindih (risiko ReDoS), cukup lurus seperti contoh itu. Tulis nilainya dalam tanda kutip tunggal di YAML (`tagPattern: '^go(d+).(d+)$'`).
      - Konsep dan standar (templat E) umumnya tidak punya `versionSource`; jangan dipaksakan. Tanpa `versionSource`, tanpa `latestVersion`.
-   - `metrics`: `github: { repo: pemilik/nama }` bila ada repo resmi; `downloads: { registry: npm|pypi|crates, name: <paket> }` bila ada di registri itu. Jangan menambah `surveys`; itu diisi terpisah (rancangan §6).
+     - **Semai placeholder.** Skema menolak `versionSource` tanpa `latestVersion`, dan `pnpm versions` hanya memuat berkas yang lolos skema (entri tanpa `latestVersion` dilaporkan "Teknologi tidak dikenal" dan tidak ada yang ditulis). Jadi saat mengisi `versionSource`, hapus baris kerangka `# latestVersion: …` yang berkomentar dan tulis `latestVersion: "0"` (dalam tanda kutip) sebagai penanda sementara. Langkah 4 menggantinya dengan versi asli.
+   - `metrics`: `github: { repo: pemilik/nama }` bila ada repo resmi; `downloads: { registry: npm|pypi|crates, name: <paket> }` bila ada di registri itu. Jangan menambah `surveys`; itu diisi terpisah (lihat `docs/superpowers/specs/2026-11-14-buku-panduan-teknologi-design.md` §6).
    - `tags`: beberapa kata kunci pendek huruf kecil.
    - `useCases`: 2–4 frasa Indonesia pendek tentang untuk apa teknologi itu dipakai (gaya `python.yaml`), bukan kalimat panjang.
    - `creator` dan `firstRelease`: **hanya bila sumber resmi menyebutnya**, dengan komentar di barisnya: `creator: Nama # sumber: <URL>`. Bila tidak ada sumber resmi, hapus barisnya.
@@ -46,22 +47,30 @@ Bentuk berkas yang benar bisa dilihat di `src/data/tech/python.yaml`. Skema leng
    - `alternatives`: slug dari `docs/katalog.md`. Selama masa pendaftaran, slug yang belum terdaftar hanya menghasilkan peringatan `pnpm validate` (nanti menjadi galat di Task 21), jadi isilah, tetapi hanya dengan entri katalog, bukan nama karangan dan bukan diri sendiri.
    - `adoption` dan `trend`: nilai menurut `docs/rubrik-adopsi.md`, dengan **komentar bukti di baris yang sama** (satu kalimat dan satu URL): `adoption: mapan # bukti; URL`. Bila tak ada bukti selain bawaan, tulis nilai bawaan (`mapan`, `stabil`) dengan alasannya: `trend: stabil # bawaan rubrik: baru satu titik data survei`. Kosong hanya menghasilkan peringatan sementara, tetapi tetap isi. Ini penilaian editorial, jadi bukti harus bisa dilacak pemilik di PR.
    - Aturan keras: **jangan menebak fakta**. Bila sumber resmi tidak jelas untuk sebuah kolom opsional, kosongkan (komentari atau hapus barisnya). Bila `website`, `docs`, atau identitas teknologinya sendiri tidak bisa dipastikan dari sumber resmi, **jangan daftarkan**: hapus berkas kerangkanya dan masukkan ke laporan.
-4. **Isi `latestVersion` dengan alat, bukan ingatan.** Setelah `versionSource` terisi untuk satu kelompok entri, jalankan:
+4. **Isi `latestVersion` dengan alat, bukan ingatan.** Setelah `versionSource` dan penanda `latestVersion: "0"` terisi, jalankan (PowerShell):
 
    ```
    pnpm versions <slug…> --write
    ```
 
-   - `--write` menulis `latestVersion: "<versi>" # dari <sumber> per <tanggal>` (disisipkan di bawah `docs:`). Hapus baris kerangka `# latestVersion: …` yang masih berkomentar agar tidak dobel.
-   - Status `mutakhir` atau `tertinggal` berarti beres. Status `gagal` (laporan memuat sebabnya) berarti **sumbernya yang diperbaiki**: nama paket atau `repo` salah, repo tanpa Release (tambahkan `tagPattern`), atau `tagPattern` tidak cocok dengan tag mana pun. Jangan menulis versi dari ingatan untuk menambalnya. Bila tetap gagal sesudah sumber diperbaiki, laporkan entrinya.
+   - Penanda `"0"` selalu lebih lama dari versi nyata, jadi entri berstatus `tertinggal` dan `--write` menggantinya di tempat dengan `latestVersion: "<versi>" # dari <sumber> per <tanggal>`.
+   - Status `mutakhir` atau `tertinggal` berarti beres. Status `gagal` (laporan memuat sebabnya, mis. `HTTP 404`) berarti **sumbernya yang diperbaiki**: nama paket atau `repo` salah, repo tanpa Release (tambahkan `tagPattern`), atau `tagPattern` tidak cocok dengan tag mana pun. Jangan menulis versi dari ingatan untuk menambalnya. Boleh memperbaiki sumber dan mengulang **satu kali**; bila masih `gagal`, entri itu tidak didaftarkan (lihat di bawah).
+   - `pnpm versions` keluar 1 bila ada slug yang disebut `gagal` atau tidak dikenal; itu pertanda ada entri yang harus ditangani, bukan galat alat.
+   - **Periksa hasilnya.** Entri `gagal` tetap memuat `latestVersion: "0"` dan **tetap lolos `pnpm validate`**, jadi lolos validasi tidak membuktikan apa-apa. Cari penanda yang tersisa di berkas yang disentuh dan pastikan kosong:
+
+     ```
+     Select-String -Path src/data/tech/<slug>.yaml … -Pattern '^latestVersion: "0"'
+     ```
+
+     (atau `grep -n '^latestVersion: "0"' src/data/tech/<slug>.yaml …`). Berkas yang masih memuatnya **tidak boleh di-commit**.
+   - **Entri `gagal` atau bersumber tak jelas tidak di-commit.** Hapus berkas YAML-nya (`Remove-Item src/data/tech/<slug>.yaml`), jangan biarkan penanda `"0"` atau YAML separuh jadi di working tree, lalu laporkan di badan PR dengan sebabnya (langkah 7). Commit tidak pernah memuat YAML yang gagal `pnpm validate` atau yang masih bernilai `"0"`.
    - `tanpa-sumber` hanya wajar untuk entri tanpa `versionSource`.
-   - Bila `versionSource` ada tetapi `latestVersion` belum, `pnpm validate` melaporkan galat; itu hilang sesudah `--write` berhasil.
-   - Dengan `tagPattern`, tag dibaca lewat `git ls-remote` (tanpa kuota API). Tanpa `tagPattern`, GitHub dan registri lain dibaca lewat HTTP dan bisa kena batas laju; bila kena, tunggu atau kerjakan per kelompok kecil, jangan ulangi tanpa henti.
+   - Dengan `tagPattern`, tag dibaca lewat `git ls-remote` (tanpa kuota API). Hanya `github` tanpa `tagPattern` yang memakai API GitHub, yang tanpa token terbatas sekitar 60 permintaan per jam; bila `GITHUB_TOKEN` terpasang di lingkungan, alat memakainya. Registri lain (npm, PyPI, crates, Maven) dibaca lewat HTTP biasa. Bila kena batas, tunggu atau kerjakan per kelompok kecil, jangan ulangi tanpa henti.
 5. **Validasi.**
    - `pnpm validate` harus tanpa **galat**. Peringatan tentang `alternatives` ke slug yang belum terdaftar dan tentang `adoption`/`trend` yang belum dinilai boleh ada selama masa pendaftaran; peringatan lain ditelusuri dulu.
-   - `pnpm links src/data/tech/<slug>.yaml …` (semua berkas yang baru dibuat): tanpa tautan `mati`. `mati` berarti URL salah: ganti dengan URL resmi yang benar. `pindah` perbarui ke tujuan barunya. `tak-pasti` (situs memblokir bot, batas laju) bukan kegagalan, tetapi buka tautannya sekali untuk memastikan benar.
-6. **Commit per domain:** `git add src/data/tech/<slug>.yaml …` lalu `git commit -m "docs: daftarkan teknologi <domain>"`. Hanya berkas YAML teknologi yang masuk commit.
-7. **Laporkan** ke pemilik, dan untuk PR: sebuah tabel `slug | adoption | trend | bukti` untuk ditinjau, daftar entri yang **tidak didaftarkan** beserta alasannya (sumber resmi tidak jelas), entri yang `versions`-nya `gagal`, dan kolom opsional yang sengaja dikosongkan.
+   - `pnpm links src/data/tech/<slug>.yaml …` (semua berkas yang baru dibuat): tanpa tautan `mati`. Perintah ini keluar 1 bila ada yang `mati`; itu temuan yang harus diperbaiki, bukan galat alat. `mati` berarti URL salah: ganti dengan URL resmi yang benar. `pindah` perbarui ke tujuan barunya. `tak-pasti` (situs memblokir bot, batas laju) bukan kegagalan, tetapi buka tautannya sekali untuk memastikan benar.
+6. **Commit per domain:** `git add src/data/tech/<slug>.yaml …` lalu `git commit -m "docs: daftarkan teknologi <domain>"`. Hanya berkas YAML teknologi yang lolos langkah 4 dan 5 yang masuk commit.
+7. **Laporkan** ke pemilik, dan untuk PR: sebuah tabel `slug | adoption | trend | bukti` untuk ditinjau, daftar entri yang **tidak didaftarkan** beserta alasannya (sumber resmi tidak jelas), entri yang `versions`-nya `gagal` (berkasnya sudah dihapus, sebutkan sebabnya), dan kolom opsional yang sengaja dikosongkan.
 
 ## Aturan tetap
 
@@ -81,8 +90,10 @@ Izin tambahan diberikan lewat flag, satu argumen per alat, dan prompt dikirim le
 ```
 --allowedTools "WebFetch" "WebSearch" \
   "PowerShell(pnpm new-tech *)" "PowerShell(pnpm versions *)" "PowerShell(pnpm links *)" "PowerShell(pnpm validate *)" \
-  "PowerShell(git add *)" "PowerShell(git commit *)" \
+  "PowerShell(git switch *)" "PowerShell(git add *)" "PowerShell(git commit *)" \
+  "PowerShell(Select-String *)" "PowerShell(Remove-Item src/data/tech/*)" \
   "Bash(pnpm new-tech *)" "Bash(pnpm versions *)" "Bash(pnpm links *)" "Bash(pnpm validate *)" \
-  "Bash(git add *)" "Bash(git commit *)" \
+  "Bash(git switch *)" "Bash(git add *)" "Bash(git commit *)" \
+  "Bash(grep *)" "Bash(rm src/data/tech/*)" \
   --disallowedTools "Bash(git push *)" "PowerShell(git push *)"
 ```
