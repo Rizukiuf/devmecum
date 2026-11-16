@@ -21,6 +21,8 @@ requires: []
 alternatives: []
 tags: [serbaguna]
 useCases: [otomasi]
+adoption: arus-utama
+trend: stabil
 `;
 
 type Fm = Record<string, unknown>;
@@ -294,4 +296,70 @@ test('YAML teknologi yang rusak dilaporkan, bukan melempar', async () => {
     'src/data/tech/python.yaml',
     'YAML',
   );
+});
+
+const techYaml = (slug: string, name: string, requires: string[] = [], alternatives: string[] = []) => `name: ${name}
+slug: ${slug}
+type: language
+domain: bahasa
+template: A
+website: https://example.com
+docs: https://example.com/docs
+latestVersion: "1.x"
+versionSource: { kind: github, repo: contoh/${slug} }
+requires: [${requires.join(', ')}]
+alternatives: [${alternatives.join(', ')}]
+tags: [serbaguna]
+useCases: [otomasi]
+adoption: mapan
+trend: stabil
+`;
+
+test('requires yang melingkar ditolak', async () => {
+  await expectOneError(
+    {
+      'src/data/tech/a.yaml': techYaml('a', 'A', ['b']),
+      'src/data/tech/b.yaml': techYaml('b', 'B', ['a']),
+    },
+    'src/data/tech/a.yaml',
+    'requires membentuk lingkaran: a → b → a',
+  );
+});
+
+test('requires dan alternatives tidak boleh menunjuk dirinya sendiri', async () => {
+  const selfRequires = await errors({ 'src/data/tech/python.yaml': pythonYaml.replace('requires: []', 'requires: [python]') });
+  expect(selfRequires).toHaveLength(1);
+  expect(selfRequires[0]!.message).toContain('requires');
+  expect(selfRequires[0]!.message).toContain('dirinya sendiri');
+  const selfAlt = await errors({ 'src/data/tech/python.yaml': pythonYaml.replace('alternatives: []', 'alternatives: [python]') });
+  expect(selfAlt).toHaveLength(1);
+  expect(selfAlt[0]!.message).toContain('alternatives');
+  expect(selfAlt[0]!.message).toContain('dirinya sendiri');
+});
+
+test('nama teknologi kembar ditolak', async () => {
+  const found = await errors({ 'src/data/tech/ruby.yaml': techYaml('ruby', 'PYTHON') });
+  expect(found).toHaveLength(1);
+  expect(found[0]!.file).toBe('src/data/tech/ruby.yaml');
+  expect(found[0]!.message).toContain('src/data/tech/python.yaml');
+});
+
+test('halaman di <domain>/index.mdx ditolak', async () => {
+  await expectOneError(
+    { 'src/content/docs/bahasa/index.mdx': page({ title: 'Bahasa', description: 'Halaman domain.' }) },
+    'src/content/docs/bahasa/index.mdx',
+    'Halaman domain dibangkitkan otomatis dari src/data/domains.yaml',
+  );
+});
+
+test('adoption atau trend kosong menjadi peringatan', async () => {
+  const yaml = pythonYaml.replace('adoption: arus-utama\n', '').replace('trend: stabil\n', '');
+  const found = await problems({ 'src/data/tech/python.yaml': yaml });
+  expect(found).toHaveLength(2);
+  for (const problem of found) {
+    expect(problem.severity).toBe('warning');
+    expect(problem.file).toBe('src/data/tech/python.yaml');
+    expect(problem.message).toContain('belum dinilai menurut docs/rubrik-adopsi.md');
+  }
+  expect(found.map((p) => p.message.split(' ')[0]).sort()).toEqual(['adoption', 'trend']);
 });
