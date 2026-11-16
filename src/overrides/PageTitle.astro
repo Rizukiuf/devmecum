@@ -1,0 +1,49 @@
+---
+// Pengganti PageTitle Starlight. Untuk halaman materi, judul diapit remah roti
+// di atas dan baris meta (level, versi, tanggal verifikasi) di bawah.
+import Breadcrumb from '../components/Breadcrumb.astro';
+import FreshnessStamp from '../components/FreshnessStamp.astro';
+import LevelBadge from '../components/LevelBadge.astro';
+import { getDomain, getTech, getTemplate } from '../lib/data.ts';
+
+const { title, tech: techSlug, chapter, level } = Astro.locals.starlightRoute.entry.data;
+const tech = techSlug === undefined ? undefined : await getTech(techSlug);
+const domain = tech === undefined ? undefined : await getDomain(tech.domain);
+const template = tech === undefined ? undefined : await getTemplate(tech.template);
+
+const crumbs: { label: string; href?: string }[] = [];
+if (tech !== undefined) {
+  const techHref = `/${tech.domain}/${tech.slug}/`;
+  const chapterTitle = chapter === 1 ? undefined : template?.chapters.find((item) => item.number === chapter)?.title;
+  crumbs.push({ label: 'Beranda', href: '/' });
+  if (domain !== undefined) crumbs.push({ label: domain.name });
+  crumbs.push(chapterTitle === undefined ? { label: tech.name } : { label: tech.name, href: techHref });
+  if (chapterTitle !== undefined) crumbs.push({ label: chapterTitle });
+}
+---
+
+{crumbs.length > 0 && <Breadcrumb items={crumbs} />}
+
+{/* `_top` adalah ID yang dipakai Starlight untuk tautan "kembali ke atas" di daftar isi. */}
+<h1 id="_top">{title}</h1>
+
+{
+  tech !== undefined && (
+    <p class="dm-page-meta">
+      {level !== undefined && <LevelBadge level={level} />}
+      <FreshnessStamp />
+    </p>
+  )
+}
+
+<style>
+  @layer starlight.core {
+    h1 {
+      margin-top: 1rem;
+      font-size: var(--sl-text-h1);
+      line-height: var(--sl-line-height-headings);
+      font-weight: 600;
+      color: var(--sl-color-white);
+    }
+  }
+</style>

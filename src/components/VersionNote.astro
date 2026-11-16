@@ -1,0 +1,16 @@
+---
+// Catatan yang terikat versi. Detail yang cepat berubah dibungkus komponen ini
+// supaya mudah dicari saat versi baru rilis (cari `data-version-note` atau
+// `<VersionNote` di sumber).
+import { Aside } from '@astrojs/starlight/components';
+
+interface Props {
+  /** Versi tempat hal ini mulai berlaku, mis. "3.12". */
+  version: string;
+}
+const { version } = Astro.props;
+---
+
+<div data-version-note={version}>
+  <Aside type="note" title={`Baru di versi ${version}`}><slot /></Aside>
+</div>

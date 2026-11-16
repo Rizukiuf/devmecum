@@ -15,8 +15,77 @@ codeTested: true
 tags: [uji]
 ---
 
+import { TabItem, Tabs } from '@astrojs/starlight/components';
+import TechCard from '@components/TechCard.astro';
+import ProsCons from '@components/ProsCons.astro';
+import BestPractice from '@components/BestPractice.astro';
+import VersionNote from '@components/VersionNote.astro';
+
 Halaman ini bukan konten nyata. Ia dipakai tes otomatis dan pratinjau untuk memeriksa tampilan setiap komponen, dan tidak ikut dibangun di situs produksi.
 
 ## Teks biasa
 
 Paragraf biasa dengan [tautan ke beranda](/) dan `kode sebaris`.
+
+## Kartu data
+
+<TechCard />
+
+## Keunggulan dan kelemahan
+
+<ProsCons>
+<Fragment slot="keunggulan">
+
+- Keunggulan pertama
+- Keunggulan kedua
+
+</Fragment>
+<Fragment slot="kelemahan">
+
+- Kelemahan pertama
+
+</Fragment>
+</ProsCons>
+
+## Callout
+
+:::note
+Isi catatan.
+:::
+
+:::tip
+Isi tips.
+:::
+
+:::caution
+Isi peringatan.
+:::
+
+<BestPractice>Isi praktik terbaik.</BestPractice>
+
+<VersionNote version="1.0">Catatan versi uji.</VersionNote>
+
+## Blok kode
+
+```python title="halo.py" {2}
+def halo():
+    print("Halo")
+```
+
+```diff lang="python"
+- print("lama")
++ print("baru")
+```
+
+<Tabs>
+  <TabItem label="Python">
+    ```python
+    print("Halo")
+    ```
+  </TabItem>
+  <TabItem label="JavaScript">
+    ```js
+    console.log("Halo")
+    ```
+  </TabItem>
+</Tabs>

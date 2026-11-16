@@ -1,0 +1,7 @@
+---
+// Pengganti ThemeProvider Starlight. Skrip inline ini berjalan di <head> sebelum
+// halaman digambar, jadi tema dan pengaturan baca terpasang tanpa kedipan.
+import { bootScript } from '../lib/prefs.ts';
+---
+
+<script is:inline set:html={bootScript()} />

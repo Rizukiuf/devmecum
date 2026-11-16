@@ -1,0 +1,91 @@
+/* Pengaturan baca: ukuran huruf, lebar konten, font kode.
+   Nilainya dipasang sebagai atribut di <html> oleh skrip inline (src/lib/prefs.ts). */
+
+/* Ukuran huruf: semua ukuran Starlight berbasis rem, jadi cukup mengubah akar. */
+:root[data-huruf='kecil'] { font-size: 90%; }
+:root[data-huruf='normal'] { font-size: 100%; }
+:root[data-huruf='besar'] { font-size: 112.5%; }
+:root[data-huruf='sangat-besar'] { font-size: 125%; }
+
+:root[data-lebar='sempit'] { --sl-content-width: 40rem; }
+:root[data-lebar='normal'] { --sl-content-width: 45rem; }
+:root[data-lebar='lebar'] { --sl-content-width: 55rem; }
+
+/* Font kode: hanya font yang sudah ada di perangkat pembaca, tidak ada unduhan. */
+:root[data-font-kode='klasik'] {
+  --sl-font-mono: 'Courier New', Courier, monospace;
+}
+:root[data-font-kode='lokal'] {
+  --sl-font-mono: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', ui-monospace, monospace;
+}
+
+/* Tombol dan dialog "Tampilan". */
+.dm-ds-open {
+  padding: 0.35rem 0.75rem;
+  border: 1px solid var(--sl-color-gray-5);
+  border-radius: 0.375rem;
+  background: transparent;
+  color: var(--sl-color-gray-2);
+  font: inherit;
+  font-size: var(--sl-text-sm);
+  cursor: pointer;
+}
+.dm-ds-open:hover {
+  border-color: var(--sl-color-gray-3);
+  color: var(--sl-color-white);
+}
+
+.dm-ds-dialog {
+  width: min(22rem, calc(100vw - 2rem));
+  margin: auto;
+  padding: 1.25rem;
+  border: 1px solid var(--sl-color-gray-5);
+  border-radius: 0.5rem;
+  background: var(--sl-color-bg-nav);
+  color: var(--sl-color-white);
+  box-shadow: var(--sl-shadow-lg);
+}
+.dm-ds-dialog::backdrop {
+  background: var(--sl-color-backdrop-overlay);
+}
+.dm-ds-dialog form {
+  display: grid;
+  gap: 0.75rem;
+}
+.dm-ds-title {
+  margin: 0;
+  font-size: var(--sl-text-lg);
+  font-weight: 600;
+}
+.dm-ds-field {
+  display: grid;
+  grid-template-columns: 1fr 11rem;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: var(--sl-text-sm);
+}
+.dm-ds-field select {
+  padding: 0.3rem 0.5rem;
+  border: 1px solid var(--sl-color-gray-4);
+  border-radius: 0.375rem;
+  background: var(--sl-color-bg);
+  color: var(--sl-color-white);
+  font: inherit;
+}
+.dm-ds-note {
+  margin: 0;
+  font-size: var(--sl-text-xs);
+  color: var(--sl-color-gray-2);
+}
+.dm-ds-close {
+  justify-self: end;
+  padding: 0.35rem 1rem;
+  border: 0;
+  border-radius: 0.375rem;
+  background: var(--sl-color-text-accent);
+  color: var(--sl-color-text-invert);
+  font: inherit;
+  font-size: var(--sl-text-sm);
+  font-weight: 600;
+  cursor: pointer;
+}
