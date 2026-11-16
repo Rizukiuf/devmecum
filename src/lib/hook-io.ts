@@ -1,7 +1,10 @@
 // Pembantu untuk hooks Claude Code (scripts/hooks/*.mjs).
 // Hook menerima JSON lewat stdin. Keluar dengan kode 2 berarti menolak, dan isi
 // stderr dikembalikan ke Claude; kode lain tidak menolak apa pun.
-import { loadProject, validateProject } from './validate.ts';
+import { readFile } from 'node:fs/promises';
+import { isAbsolute, join } from 'node:path';
+import { parseFrontmatter } from './frontmatter.ts';
+import { loadProject, validateProject, type Problem, type Project } from './validate.ts';
 
 const DRIVE_RE = /^[a-zA-Z]:\//;
 
@@ -47,11 +50,63 @@ export function editedFile(input: Record<string, unknown> | null, repoRoot: stri
   return typeof filePath === 'string' ? toRepoRelative(filePath, repoRoot) : null;
 }
 
-/** Galat validasi untuk satu file konten. Kosong bila file bukan konten atau tidak bermasalah. */
-export async function contentErrorsFor(root: string, filePath: string, now: Date): Promise<string[]> {
-  const rel = toRepoRelative(filePath, root);
-  if (rel === null || !isContentPath(rel)) return [];
-  return (await allContentErrors(root, now)).filter((line) => line.startsWith(`${rel}: `));
+const DOCS_PREFIX = 'src/content/docs/';
+const PAGE_RE = /\.mdx?$/;
+
+const repoRelative = (root: string, filePath: string): string | null =>
+  toRepoRelative(isAbsolute(filePath) ? filePath : join(root, filePath), root);
+
+/** Slug teknologi dari path halaman `<domain>/<tech>/…`; `undefined` bila bukan halaman teknologi. */
+const techFolder = (docsPath: string): string | undefined => {
+  const segments = docsPath.split('/');
+  return segments.length >= 3 ? segments[1] : undefined;
+};
+
+/**
+ * Memuat proyek secukupnya untuk memvalidasi satu berkas; `null` bila berkas
+ * bukan konten. Halaman: berkas itu sendiri ditambah semua halaman teknologinya
+ * (slug kembar) dan teknologi yang dirujuk `prerequisites` (status draf).
+ * Berkas lain (`src/data/**`): tanpa halaman, cukup indeks ID dari path.
+ */
+export async function loadProjectFor(root: string, filePath: string): Promise<Project | null> {
+  const rel = repoRelative(root, filePath);
+  if (rel === null || !isContentPath(rel)) return null;
+  if (!rel.startsWith(DOCS_PREFIX) || !PAGE_RE.test(rel)) return loadProject(root, { pages: () => false });
+
+  const docsPath = rel.slice(DOCS_PREFIX.length);
+  const techs = new Set<string>();
+  const own = techFolder(docsPath);
+  if (own !== undefined) techs.add(own);
+  try {
+    const data = parseFrontmatter(await readFile(join(root, rel), 'utf8'))?.data;
+    if (typeof data?.tech === 'string') techs.add(data.tech);
+    for (const id of Array.isArray(data?.prerequisites) ? data.prerequisites : []) {
+      if (typeof id === 'string') techs.add(id.split('/')[0]!);
+    }
+  } catch {
+    // Frontmatter rusak atau berkas hilang: dilaporkan oleh validasi, cukup halaman itu.
+  }
+  return loadProject(root, {
+    pages: (path) => path === docsPath || techs.has(techFolder(path) ?? ''),
+  });
+}
+
+/**
+ * Masalah validasi (galat dan peringatan) untuk satu berkas konten, dengan I/O
+ * terbatas pada yang dibutuhkan berkas itu. Kosong bila berkas bukan konten.
+ */
+export async function fileProblems(root: string, filePath: string, now: Date): Promise<Problem[]> {
+  const project = await loadProjectFor(root, filePath);
+  if (project === null) return [];
+  const rel = repoRelative(root, filePath);
+  return validateProject(project, now).filter((problem) => problem.file === rel);
+}
+
+/** Galat validasi untuk satu berkas konten, `<file>: <pesan>`. Kosong bila bukan konten atau tidak bermasalah. */
+export async function validateFile(root: string, filePath: string, now: Date): Promise<string[]> {
+  return (await fileProblems(root, filePath, now))
+    .filter((problem) => problem.severity === 'error')
+    .map((problem) => `${problem.file}: ${problem.message}`);
 }
 
 /** Semua galat validasi proyek, satu baris per galat: `<file>: <pesan>`. */

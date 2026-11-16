@@ -363,3 +363,38 @@ test('adoption atau trend kosong menjadi peringatan', async () => {
   }
   expect(found.map((p) => p.message.split(' ')[0]).sort()).toEqual(['adoption', 'trend']);
 });
+
+test('loadProject hanya membaca halaman terpilih', async () => {
+  const files: Record<string, string> = {};
+  for (let i = 0; i < 500; i++) {
+    files[`${PY}05-alur-kontrol/halaman-${String(i).padStart(3, '0')}.mdx`] = page({ ...bab4, chapter: 5 });
+  }
+  const root = await makeProject(files);
+  const target = 'bahasa/python/05-alur-kontrol/halaman-250.mdx';
+  const project = await loadProject(root, { pages: (p) => p === target });
+
+  expect(project.pages).toHaveLength(502);
+  const read = project.pages.filter((p) => !p.skipped);
+  expect(read).toHaveLength(1);
+  expect(read[0]!.docsPath).toBe(target);
+  expect(read[0]!.frontmatter).toMatchObject({ title: 'Variabel', chapter: 5 });
+  for (const skipped of project.pages.filter((p) => p.skipped)) {
+    expect(skipped).toEqual({ file: `src/content/docs/${skipped.docsPath}`, docsPath: skipped.docsPath, skipped: true });
+  }
+});
+
+test('halaman yang dilewati tetap masuk indeks ID', async () => {
+  const percabangan = PY + '05-alur-kontrol/percabangan.mdx';
+  const root = await makeProject({
+    [PY + '04-sintaks-dasar/variabel.mdx']: page(bab4),
+    [percabangan]: page({ ...bab4, title: 'Percabangan', chapter: 5, prerequisites: ['python/variabel', 'python'] }),
+  });
+  const project = await loadProject(root, { pages: (p) => `src/content/docs/${p}` === percabangan });
+  expect(project.pages.filter((p) => !p.skipped).map((p) => p.file)).toEqual([percabangan]);
+  expect(validateProject(project, NOW).filter((p) => p.severity === 'error')).toEqual([]);
+});
+
+test('halaman yang dilewati tidak diperiksa', async () => {
+  const root = await makeProject({ [PY + '27-bonus/ekstra.mdx']: page({ ...bab4, chapter: 27 }) });
+  expect(validateProject(await loadProject(root, { pages: () => false }), NOW)).toEqual([]);
+});

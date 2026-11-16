@@ -1,9 +1,15 @@
 import { copyFile, mkdir, mkdtemp, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
-import { join } from 'node:path';
+import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { afterEach, expect, test } from 'vitest';
-import { contentErrorsFor, isContentPath, isProtectedPath, toRepoRelative } from '../../src/lib/hook-io.ts';
+import {
+  isContentPath,
+  isProtectedPath,
+  loadProjectFor,
+  toRepoRelative,
+  validateFile,
+} from '../../src/lib/hook-io.ts';
 
 test('path Windows dengan huruf drive beda kapital', () => {
   expect(
@@ -82,12 +88,12 @@ useCases: [otomasi]
 
 test('file konten yang sah tidak menghasilkan galat', async () => {
   const dir = await projectWith(goodYaml);
-  expect(await contentErrorsFor(dir, join(dir, 'src/data/tech/python.yaml'), NOW)).toEqual([]);
+  expect(await validateFile(dir, join(dir, 'src/data/tech/python.yaml'), NOW)).toEqual([]);
 });
 
 test('file konten yang salah menghasilkan galat untuk file itu', async () => {
   const dir = await projectWith(goodYaml.replace('"3.x"', '3.10'));
-  const errors = await contentErrorsFor(dir, join(dir, 'src/data/tech/python.yaml'), NOW);
+  const errors = await validateFile(dir, join(dir, 'src/data/tech/python.yaml'), NOW);
   expect(errors).toHaveLength(1);
   expect(errors[0]).toContain('src/data/tech/python.yaml');
   expect(errors[0]).toContain('tanda kutip');
@@ -95,5 +101,103 @@ test('file konten yang salah menghasilkan galat untuk file itu', async () => {
 
 test('file di luar konten tidak divalidasi walau proyeknya bermasalah', async () => {
   const dir = await projectWith(goodYaml.replace('"3.x"', '3.10'));
-  expect(await contentErrorsFor(dir, join(dir, 'README.md'), NOW)).toEqual([]);
+  expect(await validateFile(dir, join(dir, 'README.md'), NOW)).toEqual([]);
+});
+
+const rubyYaml = goodYaml
+  .replace('name: Python', 'name: Ruby')
+  .replace('slug: python', 'slug: ruby')
+  .replace('https://www.python.org', 'https://www.ruby-lang.org')
+  .replace('https://docs.python.org/3/', 'https://docs.ruby-lang.org/')
+  .replace('python/cpython', 'ruby/ruby');
+
+type Fm = Record<string, unknown>;
+const page = (fm: Fm) =>
+  `---\n${Object.entries(fm)
+    .map(([k, v]) => `${k}: ${JSON.stringify(v)}`)
+    .join('\n')}\n---\nIsi.\n`;
+const ringkasan = (tech: string, extra: Fm = {}): Fm => ({
+  title: tech,
+  description: `Ringkasan ${tech}.`,
+  tech,
+  chapter: 1,
+  level: 'umum',
+  status: 'terbit',
+  techVersion: '3.x',
+  lastVerified: '2026-11-14',
+  factChecked: '2026-11-14',
+  sources: ['https://example.com/', 'https://example.com/about/'],
+  codeTested: true,
+  ...extra,
+});
+const bab4 = (tech: string, extra: Fm = {}): Fm => ringkasan(tech, { title: 'Bab 4', chapter: 4, level: 'dasar', ...extra });
+
+const PY = 'src/content/docs/bahasa/python/';
+const RB = 'src/content/docs/bahasa/ruby/';
+
+/** Proyek python + ruby yang sah, ditambah `files`. */
+async function projectWithPages(files: Record<string, string> = {}): Promise<string> {
+  const dir = await projectWith(goodYaml);
+  const all: Record<string, string> = {
+    'src/data/tech/ruby.yaml': rubyYaml,
+    [PY + 'index.mdx']: page(ringkasan('python')),
+    [RB + 'index.mdx']: page(ringkasan('ruby')),
+    ...files,
+  };
+  for (const [file, content] of Object.entries(all)) {
+    await mkdir(dirname(join(dir, file)), { recursive: true });
+    await writeFile(join(dir, file), content);
+  }
+  return dir;
+}
+
+test('validateFile hanya melaporkan berkas itu', async () => {
+  const dir = await projectWithPages({
+    [PY + '27-bonus/rusak.mdx']: page(bab4('python', { chapter: 27 })),
+    [RB + '27-bonus/rusak.mdx']: page(bab4('ruby', { chapter: 27 })),
+    'src/data/tech/ruby.yaml': rubyYaml.replace('"3.x"', '3.10'),
+  });
+  expect(await validateFile(dir, join(dir, PY + 'index.mdx'), NOW)).toEqual([]);
+  const errors = await validateFile(dir, join(dir, PY + '27-bonus/rusak.mdx'), NOW);
+  expect(errors).toHaveLength(1);
+  expect(errors[0]).toMatch(/^src\/content\/docs\/bahasa\/python\/27-bonus\/rusak\.mdx: .*27/);
+});
+
+test('validateFile tetap menolak prasyarat ke halaman draf', async () => {
+  const dir = await projectWithPages({
+    [RB + '04-sintaks-dasar/blok.mdx']: page(bab4('ruby', { title: 'Blok', status: 'draf' })),
+    [PY + 'index.mdx']: page(ringkasan('python', { prerequisites: ['ruby/blok'] })),
+  });
+  // Path bergaya Windows (garis miring terbalik) juga diterima.
+  const errors = await validateFile(dir, join(dir, PY + 'index.mdx').replaceAll('/', '\\'), NOW);
+  expect(errors).toHaveLength(1);
+  expect(errors[0]).toContain(`${PY}index.mdx: `);
+  expect(errors[0]).toContain('masih draf');
+
+  const project = (await loadProjectFor(dir, join(dir, PY + 'index.mdx')))!;
+  const read = project.pages.filter((p) => !p.skipped).map((p) => p.docsPath);
+  expect(read).toEqual(['bahasa/python/index.mdx', 'bahasa/ruby/04-sintaks-dasar/blok.mdx', 'bahasa/ruby/index.mdx']);
+});
+
+test('validateFile menemukan slug kembar di teknologi yang sama', async () => {
+  const dir = await projectWithPages({
+    [PY + '04-sintaks-dasar/variabel.mdx']: page(bab4('python')),
+    [PY + '05-alur-kontrol/variabel.mdx']: page(bab4('python', { chapter: 5 })),
+  });
+  const errors = await validateFile(dir, join(dir, PY + '05-alur-kontrol/variabel.mdx'), NOW);
+  expect(errors).toHaveLength(1);
+  expect(errors[0]).toContain('sudah dipakai');
+});
+
+test('validateFile untuk YAML teknologi tidak membaca halaman', async () => {
+  const dir = await projectWithPages({ 'src/data/tech/python.yaml': goodYaml.replace('requires: []', 'requires: [ruby]') });
+  const project = (await loadProjectFor(dir, join(dir, 'src/data/tech/python.yaml')))!;
+  expect(project.pages.length).toBeGreaterThan(0);
+  expect(project.pages.every((p) => p.skipped)).toBe(true);
+  expect(await validateFile(dir, join(dir, 'src/data/tech/python.yaml'), NOW)).toEqual([]);
+});
+
+test('loadProjectFor mengembalikan null untuk berkas di luar konten', async () => {
+  const dir = await projectWith(goodYaml);
+  expect(await loadProjectFor(dir, join(dir, 'README.md'))).toBeNull();
 });

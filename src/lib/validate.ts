@@ -3,6 +3,7 @@
 import { readdir, readFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { parse } from 'yaml';
+import { mapLimit } from './concurrency.ts';
 import { formatDate } from './freshness.ts';
 import { findCycle } from './graph.ts';
 import { parseFrontmatter } from './frontmatter.ts';
@@ -20,7 +21,14 @@ import {
 export type Problem = { file: string; message: string; severity: 'error' | 'warning' };
 
 type RawFile = { file: string; data?: unknown; readError?: string };
-type PageFile = { file: string; docsPath: string; frontmatter?: Record<string, unknown> | null; readError?: string };
+type PageFile = {
+  file: string;
+  docsPath: string;
+  frontmatter?: Record<string, unknown> | null;
+  readError?: string;
+  /** Tidak dibaca (validasi terfokus); hanya dipakai untuk indeks ID. */
+  skipped?: true;
+};
 
 export type Project = {
   domainsFile: RawFile;
@@ -56,27 +64,38 @@ async function readYaml(root: string, file: string): Promise<RawFile> {
   }
 }
 
-/** Membaca semua data dan frontmatter tanpa menilai isinya. */
-export async function loadProject(root: string): Promise<Project> {
+/** Batas berkas yang dibaca bersamaan, supaya ribuan halaman tidak membuka ribuan handle. */
+const READ_LIMIT = 32;
+
+export type LoadOptions = {
+  /** Halaman (relatif terhadap src/content/docs) yang dibaca; sisanya hanya dicatat. Bawaan: semua. */
+  pages?: (docsPath: string) => boolean;
+};
+
+/**
+ * Membaca data dan frontmatter tanpa menilai isinya. Halaman yang tidak
+ * terpilih tidak dibaca dan tercatat `{ file, docsPath, skipped: true }`.
+ */
+export async function loadProject(root: string, options: LoadOptions = {}): Promise<Project> {
+  const selected = options.pages ?? (() => true);
   const techNames = await listFiles(join(root, DATA_DIR, 'tech'), /\.ya?ml$/);
   const pageNames = await listFiles(join(root, DOCS_DIR), /\.mdx?$/);
 
-  const pages = await Promise.all(
-    pageNames.map(async (docsPath): Promise<PageFile> => {
-      const file = `${DOCS_DIR}/${docsPath}`;
-      try {
-        const parsed = parseFrontmatter(await readFile(join(root, file), 'utf8'));
-        return { file, docsPath, frontmatter: parsed?.data ?? null };
-      } catch (error) {
-        return { file, docsPath, readError: `Frontmatter tidak bisa dibaca: ${(error as Error).message.split('\n')[0]}` };
-      }
-    }),
-  );
+  const pages = await mapLimit(pageNames, READ_LIMIT, async (docsPath): Promise<PageFile> => {
+    const file = `${DOCS_DIR}/${docsPath}`;
+    if (!selected(docsPath)) return { file, docsPath, skipped: true };
+    try {
+      const parsed = parseFrontmatter(await readFile(join(root, file), 'utf8'));
+      return { file, docsPath, frontmatter: parsed?.data ?? null };
+    } catch (error) {
+      return { file, docsPath, readError: `Frontmatter tidak bisa dibaca: ${(error as Error).message.split('\n')[0]}` };
+    }
+  });
 
   return {
     domainsFile: await readYaml(root, `${DATA_DIR}/domains.yaml`),
     templatesFile: await readYaml(root, `${DATA_DIR}/templates.yaml`),
-    techFiles: await Promise.all(techNames.map((name) => readYaml(root, `${DATA_DIR}/tech/${name}`))),
+    techFiles: await mapLimit(techNames, READ_LIMIT, (name) => readYaml(root, `${DATA_DIR}/tech/${name}`)),
     pages,
   };
 }
@@ -158,8 +177,18 @@ export function validateProject(project: Project, now: Date): Problem[] {
 
   // --- Halaman (V5–V9, V11, V12) ---
   const known: KnownPage[] = [];
+  // Halaman yang tidak dibaca: tech diturunkan dari path (`<domain>/<tech>/…`)
+  // hanya untuk indeks ID, tanpa pemeriksaan apa pun.
+  const unread: { tech: string; relPath: string }[] = [];
 
   for (const page of project.pages) {
+    if (page.skipped) {
+      const [domain, techSlug, ...rest] = page.docsPath.split('/');
+      if (rest.length > 0 && techs.get(techSlug!)?.domain === domain) {
+        unread.push({ tech: techSlug!, relPath: rest.join('/') });
+      }
+      continue;
+    }
     const domainIndex = /^([^/]+)[/]index[.]mdx?$/.exec(page.docsPath);
     if (domainIndex !== null && domainIds.has(domainIndex[1]!)) {
       error(page.file, 'Halaman domain dibangkitkan otomatis dari src/data/domains.yaml');
@@ -260,12 +289,19 @@ export function validateProject(project: Project, now: Date): Problem[] {
   }
 
   // --- Rujukan ID (V3, V4, V10) ---
-  const { index } = buildIdIndex([...techs.values()], known);
+  const { index } = buildIdIndex([...techs.values()], [...known, ...unread]);
   const pageById = new Map<string, KnownPage>();
   for (const page of known) {
     const id = page.slug === '' ? page.tech : `${page.tech}/${page.slug}`;
     if (!pageById.has(id)) pageById.set(id, page);
   }
+  // Halaman yang ada tetapi tidak dibaca: keberadaannya diketahui, statusnya tidak.
+  const unreadIds = new Set(
+    unread.map((page) => {
+      const slug = pageSlug(page.relPath);
+      return slug === '' ? page.tech : `${page.tech}/${slug}`;
+    }),
+  );
 
   const checkId = (id: unknown, idIndex: IdIndex): string | undefined => {
     if (typeof id !== 'string' || parseId(id) === null) {
@@ -325,7 +361,7 @@ export function validateProject(project: Project, now: Date): Problem[] {
       }
       const target = pageById.get(id);
       if (target === undefined) {
-        error(page.file, `prerequisites: "${id}" belum punya halaman`);
+        if (!unreadIds.has(id)) error(page.file, `prerequisites: "${id}" belum punya halaman`);
       } else if (page.meta.status === 'terbit' && target.meta.status !== 'terbit') {
         error(page.file, `prerequisites: halaman terbit tidak boleh mensyaratkan "${id}" yang masih draf`);
       }
