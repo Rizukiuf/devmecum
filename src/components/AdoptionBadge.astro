@@ -1,0 +1,13 @@
+---
+// Lencana tingkat adopsi teknologi (docs/rubrik-adopsi.md). Teksnya selalu ikut
+// tampil, jadi maknanya tidak bergantung pada warna.
+import { ADOPTION_LABELS } from '../lib/labels.ts';
+import type { Adoption } from '../lib/schemas.ts';
+
+interface Props {
+  adoption: Adoption;
+}
+const { adoption } = Astro.props;
+---
+
+<span class="dm-badge dm-badge-adoption" data-adoption={adoption}>{ADOPTION_LABELS[adoption]}</span>

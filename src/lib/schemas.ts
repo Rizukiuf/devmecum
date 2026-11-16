@@ -24,8 +24,8 @@ export const TEMPLATE_IDS = ['A', 'B', 'C', 'D', 'E'] as const;
 export const VERSION_SOURCE_KINDS = ['npm', 'pypi', 'crates', 'maven', 'github'] as const;
 export const DOWNLOAD_REGISTRIES = ['npm', 'pypi', 'crates'] as const;
 
-/** Teknologi uji: hanya ikut dibangun bila DEVMECUM_FIXTURES=1. */
-export const FIXTURE_TECH = 'uji-komponen';
+/** Teknologi uji (slug berawalan `uji-`): hanya ikut dibangun bila DEVMECUM_FIXTURES=1. */
+export const isFixtureTech = (slug: string): boolean => slug.startsWith('uji-');
 
 export const SLUG_RE = /^[a-z0-9]+(-[a-z0-9]+)*$/;
 
@@ -233,7 +233,7 @@ export function refinePage(data: PageFields, ctx: IssueSink): void {
  */
 export function deriveDraft(data: { draft?: boolean; status?: string; tech?: string }): boolean {
   if (data.draft === true || data.status === 'draf') return true;
-  return data.tech === FIXTURE_TECH && process.env.DEVMECUM_FIXTURES !== '1';
+  return data.tech !== undefined && isFixtureTech(data.tech) && process.env.DEVMECUM_FIXTURES !== '1';
 }
 
 /** Skema frontmatter untuk validator di luar Astro. Kolom bawaan Starlight dibiarkan lewat. */

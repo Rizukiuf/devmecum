@@ -1,5 +1,5 @@
 import { afterEach, expect, test, vi } from 'vitest';
-import { DOWNLOAD_REGISTRIES, deriveDraft, materiSchema, techSchema } from '../../src/lib/schemas.ts';
+import { DOWNLOAD_REGISTRIES, deriveDraft, isFixtureTech, materiSchema, techSchema } from '../../src/lib/schemas.ts';
 
 const page = {
   title: 'T',
@@ -187,9 +187,18 @@ test('deriveDraft: draf selalu disembunyikan, terbit tidak', () => {
   expect(deriveDraft({ draft: true })).toBe(true);
 });
 
+test('isFixtureTech: slug berawalan uji- adalah teknologi uji', () => {
+  expect(isFixtureTech('uji-komponen')).toBe(true);
+  expect(isFixtureTech('uji-terdaftar')).toBe(true);
+  expect(isFixtureTech('python')).toBe(false);
+  expect(isFixtureTech('ujian')).toBe(false);
+});
+
 test('deriveDraft: konten uji hanya tampil bila DEVMECUM_FIXTURES=1', () => {
   expect(deriveDraft({ status: 'terbit', tech: 'uji-komponen' })).toBe(true);
+  expect(deriveDraft({ status: 'terbit', tech: 'uji-terdaftar' })).toBe(true);
   vi.stubEnv('DEVMECUM_FIXTURES', '1');
   expect(deriveDraft({ status: 'terbit', tech: 'uji-komponen' })).toBe(false);
   expect(deriveDraft({ status: 'draf', tech: 'uji-komponen' })).toBe(true);
+  expect(deriveDraft({ status: 'terbit', tech: 'uji-terdaftar' })).toBe(false);
 });

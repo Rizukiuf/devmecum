@@ -85,6 +85,7 @@ test('setiap file teknologi lolos skema dan slug-nya sama dengan nama file', () 
   const files = readdirSync(dataDir + 'tech').filter((f) => f.endsWith('.yaml'));
   expect(files).toContain('python.yaml');
   expect(files).toContain('uji-komponen.yaml');
+  expect(files).toContain('uji-terdaftar.yaml');
   for (const file of files) {
     const tech = techSchema.parse(load('tech/' + file));
     expect(tech.slug + '.yaml').toBe(file);

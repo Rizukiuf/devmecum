@@ -1,0 +1,45 @@
+---
+// Kartu satu teknologi di katalog dan halaman domain. Atribut `data-*` dibaca
+// filter katalog di browser; atribut adopsi dan tren dihilangkan bila datanya
+// kosong. Teknologi tingkat 0 tidak punya halaman, jadi judulnya bukan tautan.
+import type { CatalogEntry } from '../lib/catalog.ts';
+import { TYPE_LABELS } from '../lib/labels.ts';
+import AdoptionBadge from './AdoptionBadge.astro';
+import StageBadge from './StageBadge.astro';
+import TrendBadge from './TrendBadge.astro';
+
+interface Props {
+  entry: CatalogEntry;
+}
+const { entry } = Astro.props;
+const meta = [TYPE_LABELS[entry.type], entry.domainName, entry.latestVersion].filter(Boolean).join(' · ');
+---
+
+<article
+  class="dm-catalog-card"
+  data-slug={entry.slug}
+  data-domain={entry.domain}
+  data-jenis={entry.type}
+  data-tingkat={entry.stage}
+  data-adopsi={entry.adoption}
+  data-tren={entry.trend}
+>
+  <h3>{entry.href ? <a href={entry.href}>{entry.name}</a> : entry.name}</h3>
+  <p class="dm-catalog-badges">
+    <StageBadge stage={entry.stage} />
+    {entry.adoption && <AdoptionBadge adoption={entry.adoption} />}
+    {entry.trend && <TrendBadge trend={entry.trend} />}
+  </p>
+  <p class="dm-catalog-meta">{meta}</p>
+  {
+    entry.useCases.length > 0 && (
+      <ul class="dm-catalog-usecases">
+        {entry.useCases.slice(0, 3).map((useCase) => <li>{useCase}</li>)}
+      </ul>
+    )
+  }
+  <p class="dm-catalog-links">
+    <a href={entry.website}>Situs resmi</a>
+    <a href={entry.docs}>Dokumentasi</a>
+  </p>
+</article>
