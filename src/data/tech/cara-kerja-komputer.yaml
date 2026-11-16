@@ -12,5 +12,5 @@ adoption: mapan # bawaan rubrik: konsep fondasi tanpa bukti kuantitatif; rujukan
 trend: stabil # bawaan rubrik: konsep tanpa bukti kuantitatif dua titik data
 useCases:
   - memahami perangkat keras di balik program
-  - memperkirakan kinerja dan konsumsi energi
+  - memperkirakan kinerja program
   - dasar belajar sistem operasi dan bahasa tingkat rendah

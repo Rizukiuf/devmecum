@@ -4,11 +4,11 @@ type: concept
 domain: fondasi
 template: E
 website: https://csed.acm.org/architecture-and-organization/
-docs: https://standards.ieee.org/ieee/754/6210/
+docs: https://csed.acm.org/wp-content/uploads/2024/04/3.1-Body-of-Knowledge-1.pdf
 requires: []
 alternatives: []
 tags: [biner, heksadesimal, representasi-data, floating-point]
-adoption: mapan # bawaan rubrik: konsep fondasi tanpa bukti kuantitatif; rujukan CS2023 (unit AR-Representation, representasi data tingkat mesin) https://csed.acm.org/architecture-and-organization/ dan IEEE 754-2019 https://standards.ieee.org/ieee/754/6210/
+adoption: mapan # bawaan rubrik: konsep fondasi tanpa bukti kuantitatif; rujukan CS2023 Body of Knowledge, unit AR-Representation (bilangan tak bertanda/bertanda/komplemen dua, basis bilangan, fixed/floating-point) https://csed.acm.org/wp-content/uploads/2024/04/3.1-Body-of-Knowledge-1.pdf; pelengkap bagian floating-point: IEEE 754-2019 https://standards.ieee.org/ieee/754/6210/
 trend: stabil # bawaan rubrik: konsep tanpa bukti kuantitatif dua titik data
 useCases:
   - membaca dan menulis bilangan biner dan heksadesimal
