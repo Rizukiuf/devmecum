@@ -1,0 +1,21 @@
+name: Julia
+slug: julia
+type: language
+domain: bahasa
+template: A
+license: MIT # sumber: https://julialang.org/ ("made available under the MIT license")
+website: https://julialang.org
+docs: https://docs.julialang.org/en/v1/
+latestVersion: "1.13.4" # dari GitHub JuliaLang/julia (tag) per 17 November 2026
+versionSource: { kind: github, repo: JuliaLang/julia, tagPattern: '^v(\d+)\.(\d+)\.(\d+)$' }
+requires: []
+alternatives: [python, r]
+tags: [komputasi-ilmiah, numerik, performa-tinggi, dinamis]
+adoption: khusus # SO Survey 2026: 1,5% responden (211 dari 14.099, sampel kecil), peringkat 40 (< 5%); dokumentasi resmi menyebutnya "appropriate for scientific and numerical computing"; https://survey.stackoverflow.co/2026/technology/data/languages
+trend: stabil # bawaan rubrik: baru satu titik data survei; Julia tidak ada di grafik utama SO 2025 (hanya tabel isian bebas, 0% "Have Used"), https://survey.stackoverflow.co/2025/technology; SO 2026 1,5% https://survey.stackoverflow.co/2026/technology/data/languages
+metrics:
+  github: { repo: JuliaLang/julia }
+useCases:
+  - komputasi ilmiah dan numerik
+  - simulasi dan pemodelan
+  - analisis data berkinerja tinggi

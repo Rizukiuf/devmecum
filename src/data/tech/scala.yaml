@@ -1,0 +1,21 @@
+name: Scala
+slug: scala
+type: language
+domain: bahasa
+template: A
+license: Apache-2.0 # sumber: https://raw.githubusercontent.com/scala/scala3/main/LICENSE
+website: https://www.scala-lang.org
+docs: https://docs.scala-lang.org
+latestVersion: "3.10.1" # dari GitHub scala/scala3 (tag) per 17 November 2026
+versionSource: { kind: github, repo: scala/scala3, tagPattern: '^(\d+)\.(\d+)\.(\d+)$' }
+requires: []
+alternatives: [kotlin, java, haskell]
+tags: [jvm, fungsional, tipe-statis, multiplatform]
+adoption: mapan # SO Survey 2026: 2,2% responden, peringkat 36, di bawah ambang 20% dan bukan lima besar; masih dirilis (3.10.1, 11 November 2026); ceruk tertentu tidak dibuktikan halaman resmi yang dibuka; https://survey.stackoverflow.co/2026/technology/data/languages
+trend: stabil # SO 2,6% (2025; https://survey.stackoverflow.co/2025/technology) ke 2,2% (2026; https://survey.stackoverflow.co/2026/technology/data/languages), turun 0,4 poin (< 2)
+metrics:
+  github: { repo: scala/scala3 }
+useCases:
+  - layanan backend dan pemrosesan data di JVM
+  - pemrograman fungsional bertipe statis
+  - aplikasi multiplatform

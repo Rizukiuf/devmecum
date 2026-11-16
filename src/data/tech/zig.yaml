@@ -1,0 +1,18 @@
+name: Zig
+slug: zig
+type: language
+domain: bahasa
+template: A
+creator: Andrew Kelley # sumber: https://ziglang.org/ ("Andrew Kelley, the creator of Zig")
+license: MIT # sumber: https://codeberg.org/ziglang/zig/raw/branch/master/LICENSE
+website: https://ziglang.org
+docs: https://ziglang.org/documentation/master/
+requires: []
+alternatives: [c, rust, cpp]
+tags: [sistem, tingkat-rendah, kompilasi-ke-native, manual-memori]
+adoption: mapan # SO Survey 2026: 2,8% responden (398 dari 14.099), peringkat 30, di bawah ambang 20% dan bukan lima besar; masih dirilis (0.17.1, 2 November 2026) tetapi belum 1.0 dan tren tidak naik >= 2 poin sehingga bukan berkembang; https://survey.stackoverflow.co/2026/technology/data/languages
+trend: stabil # SO 2,1% (2025; https://survey.stackoverflow.co/2025/technology) ke 2,8% (2026; https://survey.stackoverflow.co/2026/technology/data/languages), naik 0,7 poin (< 2)
+useCases:
+  - perangkat lunak sistem tingkat rendah
+  - alternatif C dengan toolchain terpadu
+  - pustaka dan alat command-line berkinerja tinggi

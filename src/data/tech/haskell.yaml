@@ -1,0 +1,16 @@
+name: Haskell
+slug: haskell
+type: language
+domain: bahasa
+template: A
+website: https://www.haskell.org
+docs: https://www.haskell.org/documentation/
+requires: []
+alternatives: [scala, fsharp, clojure]
+tags: [fungsional, murni, tipe-statis, lazy]
+adoption: mapan # SO Survey 2026: 2,3% responden (324 dari 14.099, sampel kecil), peringkat 35, di bawah ambang 20% dan bukan lima besar; masih dirilis (kompilator GHC 9.12.4, 27 Maret 2026, haskell.org/ghc); https://survey.stackoverflow.co/2026/technology/data/languages
+trend: stabil # bawaan rubrik: baru satu titik data survei; Haskell tidak ada di grafik utama SO 2025 (hanya tabel isian bebas, 0,1% "Have Used"), https://survey.stackoverflow.co/2025/technology; SO 2026 2,3% https://survey.stackoverflow.co/2026/technology/data/languages
+useCases:
+  - pemrograman fungsional murni
+  - riset bahasa pemrograman dan verifikasi
+  - kompilator dan alat yang butuh tipe kuat

@@ -1,0 +1,17 @@
+name: Bash
+slug: bash
+type: language
+domain: bahasa
+template: A
+license: GPL-3.0-or-later # sumber: https://savannah.gnu.org/projects/bash/ ("GNU General Public License v3 or later")
+website: https://www.gnu.org/software/bash/
+docs: https://www.gnu.org/software/bash/manual/
+requires: []
+alternatives: [powershell, python]
+tags: [shell, scripting, linux, otomasi]
+adoption: arus-utama # SO Survey 2026: 51,3% responden, peringkat 5 (>= 20% dan lima besar); baris survei berlabel "Bash/Shell (all shells)", jadi mencakup semua shell, bukan Bash saja; https://survey.stackoverflow.co/2026/technology/data/languages
+trend: naik # SO 48,7% (2025; https://survey.stackoverflow.co/2025/technology) ke 51,3% (2026; https://survey.stackoverflow.co/2026/technology/data/languages), naik 2,6 poin (>= 2); angka kategori "Bash/Shell", bukan Bash saja
+useCases:
+  - skrip otomasi di Linux dan macOS
+  - bekerja interaktif di command line
+  - perekat alat dalam pipeline CI/CD

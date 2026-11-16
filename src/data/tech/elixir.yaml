@@ -1,0 +1,21 @@
+name: Elixir
+slug: elixir
+type: language
+domain: bahasa
+template: A
+license: Apache-2.0 # sumber: https://raw.githubusercontent.com/elixir-lang/elixir/main/LICENSE
+website: https://elixir-lang.org
+docs: https://elixir.hexdocs.pm/introduction.html
+latestVersion: "1.20.5" # dari GitHub elixir-lang/elixir (tag) per 17 November 2026
+versionSource: { kind: github, repo: elixir-lang/elixir, tagPattern: '^v(\d+)\.(\d+)\.(\d+)$' }
+requires: []
+alternatives: [ruby, go, erlang]
+tags: [fungsional, concurrency, beam, dinamis]
+adoption: mapan # SO Survey 2026: 2,6% responden, peringkat 33, di bawah ambang 20% dan bukan lima besar; masih dirilis (1.20.5, 29 Oktober 2026); https://survey.stackoverflow.co/2026/technology/data/languages
+trend: stabil # SO 2,7% (2025; https://survey.stackoverflow.co/2025/technology) ke 2,6% (2026; https://survey.stackoverflow.co/2026/technology/data/languages), turun 0,1 poin (< 2)
+metrics:
+  github: { repo: elixir-lang/elixir }
+useCases:
+  - layanan web dan real-time yang konkuren
+  - sistem tahan galat di BEAM
+  - aplikasi terdistribusi

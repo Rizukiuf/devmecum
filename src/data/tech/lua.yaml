@@ -1,0 +1,22 @@
+name: Lua
+slug: lua
+type: language
+domain: bahasa
+template: A
+firstRelease: 1994 # sumber: https://www.lua.org/history.html (Lua 1.0 tidak pernah dirilis publik; "We released a new version of Lua ... in July 1994, with the name Lua 1.1")
+license: MIT # sumber: https://www.lua.org/about.html ("the well-known MIT license")
+website: https://www.lua.org
+docs: https://www.lua.org/docs.html
+latestVersion: "5.5.1" # dari GitHub lua/lua (tag) per 17 November 2026
+versionSource: { kind: github, repo: lua/lua, tagPattern: '^v(\d+)\.(\d+)\.(\d+)$' }
+requires: []
+alternatives: [python, javascript]
+tags: [scripting, embedded, ringan, dinamis]
+adoption: mapan # SO Survey 2026: 9,4% responden, peringkat 16, di bawah ambang 20% dan bukan lima besar; masih dirilis (5.5.1); https://survey.stackoverflow.co/2026/technology/data/languages
+trend: stabil # SO 9,2% (2025; https://survey.stackoverflow.co/2025/technology) ke 9,4% (2026; https://survey.stackoverflow.co/2026/technology/data/languages), naik 0,2 poin (< 2)
+metrics:
+  github: { repo: lua/lua }
+useCases:
+  - bahasa skrip yang ditanam di aplikasi dan game
+  - konfigurasi dan ekstensi perangkat lunak
+  - sistem embedded

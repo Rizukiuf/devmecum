@@ -1,0 +1,22 @@
+name: PowerShell
+slug: powershell
+type: language
+domain: bahasa
+template: A
+creator: Jeffrey Snover # sumber: https://learn.microsoft.com/en-us/powershell/scripting/overview ("Jeffrey Snover, the inventor of PowerShell")
+license: MIT # sumber: https://github.com/PowerShell/PowerShell (README menyatakan berlisensi MIT)
+website: https://learn.microsoft.com/en-us/powershell/
+docs: https://learn.microsoft.com/en-us/powershell/scripting/overview
+latestVersion: "7.7.0" # dari GitHub PowerShell/PowerShell (tag) per 17 November 2026
+versionSource: { kind: github, repo: PowerShell/PowerShell, tagPattern: '^v(\d+)\.(\d+)\.(\d+)$' }
+requires: []
+alternatives: [bash, python]
+tags: [shell, scripting, windows, otomasi]
+adoption: arus-utama # SO Survey 2026: 24,6% responden, peringkat 9 (>= 20%); https://survey.stackoverflow.co/2026/technology/data/languages
+trend: stabil # SO 23,2% (2025; https://survey.stackoverflow.co/2025/technology) ke 24,6% (2026; https://survey.stackoverflow.co/2026/technology/data/languages), naik 1,4 poin (< 2)
+metrics:
+  github: { repo: PowerShell/PowerShell }
+useCases:
+  - otomasi administrasi sistem Windows dan lintas platform
+  - mengelola layanan cloud lewat modul
+  - skrip build dan deploy di CI/CD

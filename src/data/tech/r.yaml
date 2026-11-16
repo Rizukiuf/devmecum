@@ -1,0 +1,17 @@
+name: R
+slug: r
+type: language
+domain: bahasa
+template: A
+license: GPL-2.0-only OR GPL-3.0-only # sumber: https://cran.r-project.org/doc/FAQ/R-FAQ.html ("GNU General Public License (GPL), version 2 or version 3")
+website: https://www.r-project.org
+docs: https://cran.r-project.org/manuals.html
+requires: []
+alternatives: [python, julia]
+tags: [statistika, analisis-data, visualisasi, ilmiah]
+adoption: khusus # SO Survey 2026: 4,5% responden, peringkat 22 (< 5%); r-project.org menyebutnya "software environment for statistical computing and graphics", ceruk statistika; https://survey.stackoverflow.co/2026/technology/data/languages
+trend: stabil # SO 4,9% (2025; https://survey.stackoverflow.co/2025/technology) ke 4,5% (2026; https://survey.stackoverflow.co/2026/technology/data/languages), turun 0,4 poin (< 2)
+useCases:
+  - analisis statistik
+  - visualisasi data
+  - riset dan pelaporan ilmiah

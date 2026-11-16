@@ -1,0 +1,23 @@
+name: Ruby
+slug: ruby
+type: language
+domain: bahasa
+template: A
+creator: Yukihiro Matsumoto # sumber: https://www.ruby-lang.org/en/about/
+firstRelease: 1995 # sumber: https://www.ruby-lang.org/en/about/ ("Since its public release in 1995")
+license: Ruby OR BSD-2-Clause # sumber: https://www.ruby-lang.org/en/about/license.txt (lisensi ganda: 2-clause BSDL atau syarat Ruby)
+website: https://www.ruby-lang.org
+docs: https://docs.ruby-lang.org/en/
+latestVersion: "4.0.9" # dari GitHub ruby/ruby (tag) per 17 November 2026
+versionSource: { kind: github, repo: ruby/ruby, tagPattern: '^v(\d+)\.(\d+)\.(\d+)$' }
+requires: []
+alternatives: [python, php, elixir]
+tags: [scripting, web, berorientasi-objek, dinamis]
+adoption: mapan # SO Survey 2026: 5,8% responden, peringkat 19, di atas 5% dan bukan lima besar; masih dirilis (4.0.9, 23 Oktober 2026); https://survey.stackoverflow.co/2026/technology/data/languages
+trend: stabil # SO 6,4% (2025; https://survey.stackoverflow.co/2025/technology) ke 5,8% (2026; https://survey.stackoverflow.co/2026/technology/data/languages), turun 0,6 poin (< 2)
+metrics:
+  github: { repo: ruby/ruby }
+useCases:
+  - aplikasi web dengan framework seperti Rails
+  - skrip otomasi dan alat command-line
+  - prototipe cepat
