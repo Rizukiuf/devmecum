@@ -93,4 +93,28 @@ describe('readMetricsFile', () => {
       downloads: { registry: 'npm', period: 'minggu', value: 4, date: '2026-11-15' },
     });
   });
+
+  it('tanggal yang tidak nyata membuat kolom dibuang', () => {
+    const column = (date: string) => ({ github: { stars: 1, date } });
+    const text = JSON.stringify({
+      generated: 'x',
+      tech: { a: column('2026-99-99'), b: column('2026-02-30'), c: column('2026-11-15') },
+    });
+    const tech = readMetricsFile(write('tanggal.json', text))?.tech;
+    expect(tech?.a).toEqual({});
+    expect(tech?.b).toEqual({});
+    expect(tech?.c?.github?.date).toBe('2026-11-15');
+  });
+
+  it('kunci __proto__ dan constructor tidak merusak pencarian', () => {
+    const column = '{"github":{"stars":5,"date":"2026-11-15"}}';
+    const text = `{"generated":"x","tech":{"__proto__":${column},"constructor":${column},"a":${column}}}`;
+    const file = readMetricsFile(write('proto.json', text));
+    expect(file).toBeDefined();
+    expect(Object.getPrototypeOf(file!.tech)).toBeNull();
+    expect(Object.hasOwn(file!.tech, '__proto__')).toBe(false);
+    expect(Object.keys(file!.tech).sort()).toEqual(['a', 'constructor']);
+    expect((file!.tech as Record<string, unknown>).github).toBeUndefined();
+    expect(({} as Record<string, unknown>).github).toBeUndefined();
+  });
 });

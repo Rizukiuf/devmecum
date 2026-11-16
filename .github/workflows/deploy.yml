@@ -48,7 +48,9 @@ jobs:
         run: pnpm validate
 
       # Angka popularitas berubah tiap minggu, jadi diambil saat deploy (tidak masuk Git).
-      # Kegagalan registri tidak menggagalkan langkah ini; angka lama atau kosong dipakai.
+      # Kegagalan registri tidak menggagalkan langkah ini (skrip keluar 0); angka yang gagal
+      # diambil tidak tampil pada deploy ini. Berkas yang tidak bisa ditulis atau galat tak
+      # terduga tetap menggagalkan langkah.
       - name: Ambil metrik
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

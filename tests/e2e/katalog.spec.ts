@@ -199,8 +199,10 @@ test('formulir bisa dipakai dengan papan ketik', async ({ page }) => {
 
 test('kartu menampilkan bintang GitHub ringkas bila datanya ada', async ({ page }) => {
   await page.goto(URL);
-  await expect(card(page, 'uji-komponen')).toContainText('12,3 rb');
-  await expect(card(page, 'uji-komponen')).toContainText('2,5 jt');
+  const popularity = card(page, 'uji-komponen').locator('.dm-popularity');
+  await expect(popularity).toContainText('12,3 rb bintang GitHub');
+  await expect(popularity).toContainText('2,5 jt unduhan npm per minggu');
+  await expect(popularity).toContainText('per 15 November 2026');
   // Teknologi tanpa data metrik tidak memuat baris popularitas.
   await expect(card(page, 'uji-terdaftar').locator('.dm-popularity')).toHaveCount(0);
 });

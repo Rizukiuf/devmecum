@@ -10,7 +10,7 @@ export type TechMetrics = {
 };
 export type MetricsFile = { generated: string; tech: Record<string, TechMetrics> };
 
-/** Nilai lama dipertahankan per kolom (github, downloads); nilai baru menimpanya. */
+/** Bila ada berkas lama, nilainya dipertahankan per kolom (github, downloads); nilai baru menimpanya. */
 export function mergeMetrics(
   previous: MetricsFile | undefined,
   fresh: Record<string, TechMetrics>,
@@ -33,7 +33,12 @@ export function formatCompact(value: number): string {
 const isRecord = (value: unknown): value is Record<string, unknown> =>
   typeof value === 'object' && value !== null && !Array.isArray(value);
 const isCount = (value: unknown): value is number => typeof value === 'number' && Number.isFinite(value) && value >= 0;
-const isDate = (value: unknown): value is string => typeof value === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(value);
+/** Tanggal kalender yang nyata: `2026-99-99` lolos pola tetapi bukan tanggal. */
+function isDate(value: unknown): value is string {
+  if (typeof value !== 'string' || !/^\d{4}-\d{2}-\d{2}$/.test(value)) return false;
+  const time = new Date(`${value}T00:00:00Z`).getTime();
+  return !Number.isNaN(time) && new Date(time).toISOString().slice(0, 10) === value;
+}
 
 /** Kolom yang bentuknya salah dibuang supaya tampilan tidak pernah memuat "NaN". */
 function cleanMetrics(raw: unknown): TechMetrics {
@@ -65,8 +70,11 @@ export function readMetricsFile(path: string): MetricsFile | undefined {
   try {
     const data: unknown = JSON.parse(readFileSync(path, 'utf8'));
     if (!isRecord(data) || !isRecord(data.tech)) return undefined;
-    const tech: Record<string, TechMetrics> = {};
-    for (const [slug, raw] of Object.entries(data.tech)) tech[slug] = cleanMetrics(raw);
+    // Tanpa prototipe, dan `__proto__` dilewati: berkas ini bukan sumber tepercaya.
+    const tech: Record<string, TechMetrics> = Object.create(null);
+    for (const [slug, raw] of Object.entries(data.tech)) {
+      if (slug !== '__proto__') tech[slug] = cleanMetrics(raw);
+    }
     return { generated: typeof data.generated === 'string' ? data.generated : '', tech };
   } catch {
     return undefined;

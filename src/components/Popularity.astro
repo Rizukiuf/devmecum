@@ -20,16 +20,26 @@ const dateOf = (date: string) => `per ${formatDate(new Date(`${date}T00:00:00Z`)
 const { github, downloads } = metrics ?? {};
 const label = downloads && `Unduhan ${REGISTRY_LABELS[downloads.registry]} ${PERIOD_LABELS[downloads.period]}`;
 const summary = [
-  github && `★ ${formatCompact(github.stars)}`,
-  downloads && `↓ ${formatCompact(downloads.value)} ${PERIOD_LABELS[downloads.period]}`,
-].filter(Boolean);
+  github && { text: `${formatCompact(github.stars)} bintang GitHub`, date: dateOf(github.date) },
+  downloads && {
+    text: `${formatCompact(downloads.value)} unduhan ${REGISTRY_LABELS[downloads.registry]} ${PERIOD_LABELS[downloads.period]}`,
+    date: dateOf(downloads.date),
+  },
+].filter((item) => !!item);
 ---
 
 {
   compact
     ? summary.length > 0 && (
-        <p class="dm-catalog-meta dm-popularity" title={[github && dateOf(github.date), downloads && dateOf(downloads.date)].filter(Boolean).join(' · ')}>
-          {summary.join(' · ')}
+        <p class="dm-catalog-meta dm-popularity">
+          {summary.map((item, index) => (
+            <>
+              {index > 0 && ' · '}
+              <span>
+                {item.text} <small>{item.date}</small>
+              </span>
+            </>
+          ))}
         </p>
       )
     : (

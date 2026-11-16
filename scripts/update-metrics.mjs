@@ -2,9 +2,10 @@
 // dan menulisnya ke src/data/metrics/metrics.json (tidak masuk Git; dibuat saat
 // deploy). Pemakaian: node scripts/update-metrics.mjs
 // Berkas keluaran bisa diganti lewat DEVMECUM_METRICS_FILE (sama seperti pembaca di build).
-// Nilai lama dipertahankan per kolom bila pengambilan kali ini gagal. Keluar 0
-// walau ada yang gagal, supaya deploy tidak berhenti karena satu registri sakit;
-// keluar 1 hanya bila berkas tidak bisa ditulis.
+// Bila berkas lama ada (mis. di mesin lokal), nilai lamanya dipertahankan per kolom
+// saat pengambilan kali ini gagal; di CI berkas lama tidak ada, jadi angka yang gagal
+// diambil tidak tampil pada deploy itu. Keluar 0 walau ada yang gagal, supaya deploy
+// tidak berhenti karena satu registri sakit; keluar 1 hanya bila berkas tidak bisa ditulis.
 import { mkdir, writeFile } from 'node:fs/promises';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';

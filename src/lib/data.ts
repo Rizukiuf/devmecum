@@ -159,5 +159,5 @@ export async function getMetrics(slug: string): Promise<TechMetrics | undefined>
   const file = await cached('metrics', async () =>
     readMetricsFile(process.env.DEVMECUM_METRICS_FILE ?? 'src/data/metrics/metrics.json'),
   );
-  return file?.tech[slug];
+  return file !== undefined && Object.hasOwn(file.tech, slug) ? file.tech[slug] : undefined;
 }
