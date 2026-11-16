@@ -13,3 +13,7 @@ playwright-report/
 
 .claude/settings.local.json
 wrangler-preview.log
+
+# Laporan sementara dari pemantau (skrip versions / rolling-issue)
+laporan.md
+laporan-*.md

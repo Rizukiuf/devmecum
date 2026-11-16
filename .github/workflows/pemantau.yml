@@ -1,0 +1,51 @@
+name: Pemantau
+
+on:
+  # Senin 08.00 WIB, sebelum deploy mingguan (cron deploy.yml pukul 02.00 UTC).
+  schedule:
+    - cron: "0 1 * * 1"
+  workflow_dispatch:
+
+concurrency:
+  group: pemantau
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  versi:
+    name: versi
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      ASTRO_TELEMETRY_DISABLED: 1
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: pnpm/action-setup@v6
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .node-version
+          cache: pnpm
+
+      - name: Pasang dependensi
+        run: pnpm install --frozen-lockfile
+
+      - name: Periksa versi terbaru
+        id: versi
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: pnpm versions --report laporan-versi.md
+
+      - name: Perbarui issue pemantau versi
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: >-
+          node scripts/rolling-issue.mjs
+          --label pemantau-versi
+          --title "Pemantau versi"
+          --body-file laporan-versi.md
+          --findings ${{ steps.versi.outputs.findings }}
