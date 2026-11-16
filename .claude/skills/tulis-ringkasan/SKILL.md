@@ -7,7 +7,11 @@ description: Gunakan saat diminta menulis atau memperbarui halaman Ringkasan (ti
 
 Argumen: `$ARGUMENTS` = slug teknologi (mis. `python`). Hasilnya `src/content/docs/<domain>/<slug>/index.mdx` berstatus `draf`. Skill ini **tidak pernah** menyetel `status: terbit` atau `factChecked`; itu tugas skill `verifikasi-halaman`.
 
-Standar penulisan: `docs/panduan-menulis.md`. Baca bagian 1, 3, 4, dan 5 sebelum menulis.
+Standar penulisan: `docs/panduan-menulis.md`. Baca bagian 1 sampai 6 sebelum menulis, terutama nada bahasanya (§2): santai dan natural, bukan terjemahan dokumentasi.
+
+**Bila sebuah perintah ditolak izinnya** (shell, git, atau tulis berkas), jangan mencari jalan lain. Berhenti, lalu laporkan perintah persisnya supaya pemilik bisa menjalankannya atau memberi izin.
+
+**Mode tanpa antarmuka** (`claude -p`) butuh izin tambahan lewat flag, misalnya `--allowedTools "WebFetch,WebSearch,Agent,Bash(git add *),Bash(git commit *)"`; prompt dikirim lewat stdin supaya tidak tertelan daftar alat.
 
 ## Langkah
 
@@ -17,8 +21,9 @@ Standar penulisan: `docs/panduan-menulis.md`. Baca bagian 1, 3, 4, dan 5 sebelum
 2. **Teliti.** Jalankan subagent `peneliti` dengan masukan slug itu. Ia butuh izin WebFetch dan WebSearch; setujui bila diminta. Tunggu catatan lengkapnya.
 3. **Tulis.**
    - Salin `templates/ringkasan.mdx` ke `src/content/docs/<domain>/<slug>/index.mdx` (`<domain>` dari kolom `domain` di file data).
-   - Ganti semua penanda `GANTI-…`: `title` = nama teknologi, `tech`, `techVersion` (dalam tanda kutip), `lastVerified` = tanggal hari ini, `sources` = minimal dua URL resmi dari catatan peneliti, `codeTested` tetap `false` sampai kodenya dijalankan.
+   - Ganti semua penanda `GANTI-…`: `title` = nama teknologi, `tech`, `techVersion` = seri yang dibahas dalam tanda kutip (`"3.15"`, bukan `"3.15.2"`), `lastVerified` = tanggal hari ini, `sources` = minimal dua URL resmi dari catatan peneliti (survei atau statistik publik boleh ditambahkan untuk angka popularitas), `codeTested` tetap `false` sampai kodenya dijalankan.
    - Isi kesebelas bagian dari catatan peneliti mengikuti panduan menulis, dengan kata-kata sendiri. Hapus semua komentar kerangka.
+   - **Setiap kalimat faktual harus bisa kamu tunjuk ke satu butir catatan peneliti yang berURL.** Jangan menambah generalisasi sendiri seperti "sering dipakai", "cocok untuk…", atau "mudah dipelajari" bila tidak ada butirnya. Menulis konservatif sejak awal menghemat putaran pemeriksaan fakta.
    - Hal yang ada di daftar "Tidak ditemukan sumber resmi" **tidak ditulis**.
    - Biarkan `status: draf` dan jangan menambah `factChecked`.
 4. **Perbarui data.** Bila catatan peneliti menunjukkan versi terbaru yang berbeda dari `latestVersion` di file data, perbarui nilai itu (dalam tanda kutip) dan samakan `techVersion` halaman.

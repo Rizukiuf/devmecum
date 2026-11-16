@@ -7,6 +7,8 @@ description: Gunakan saat sebuah halaman draf Devmecum sudah selesai ditulis dan
 
 Argumen: `$ARGUMENTS` = slug teknologi (halaman `index.mdx`-nya) atau path file halaman. Skill ini satu-satunya yang boleh menyetel `status: terbit`, `factChecked`, dan `codeTested`.
 
+**Bila sebuah perintah ditolak izinnya** (misalnya `git add`), jangan mencari jalan lain. Berhenti, simpan halaman di working tree, dan laporkan perintah persisnya untuk dijalankan pemilik.
+
 **Aturan tetap:** `factChecked` hanya diisi sesudah subagent `pemeriksa-fakta` mengembalikan baris `HASIL: LOLOS`. Jangan pernah mengisinya dari penilaian sendiri, dan jangan memanggil pemeriksa dengan catatan peneliti atau penjelasan penulisan.
 
 ## Langkah
@@ -21,7 +23,7 @@ Argumen: `$ARGUMENTS` = slug teknologi (halaman `index.mdx`-nya) atau path file 
    - Bila ada URL di `sources` yang tidak terbuka, ganti dengan sumber resmi yang terbuka.
    - Ulangi langkah 2. **Paling banyak tiga putaran**; sesudah itu berhenti dan laporkan klaim yang tersisa ke pemilik.
 4. **Bila `HASIL: LOLOS`:**
-   - Periksa tabelnya sendiri: bila ada klaim faktual (selain contoh kode yang kamu jalankan sendiri) berstatus `tidak bisa diperiksa`, **berhenti** dan tampilkan klaim itu ke pemilik; terbitkan hanya sesudah pemilik menyetujui secara eksplisit.
+   - Periksa tabelnya sendiri: bila ada klaim faktual (di luar yang berstatus `contoh kode`) berstatus `tidak bisa diperiksa`, **berhenti** dan tampilkan klaim itu ke pemilik; terbitkan hanya sesudah pemilik menyetujui secara eksplisit.
    - Setel `factChecked` dan `lastVerified` ke tanggal hari ini (YYYY-MM-DD), dan `status: terbit`.
    - Jalankan `pnpm validate`; harus tanpa galat.
    - Commit: `git add <file> && git commit -m "docs: terbitkan <judul halaman>"` (tambahkan file data bila `latestVersion` berubah).

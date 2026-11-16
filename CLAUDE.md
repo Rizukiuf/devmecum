@@ -28,6 +28,7 @@ Buku panduan teknologi IT berbahasa Indonesia: situs statis Astro + Starlight. R
 - Skrip ditulis sebagai Node `.mjs` (`node scripts/…`). Tidak ada bash: pemilik memakai Windows, CI memakai Linux.
 - File di `src/lib/` harus bisa diimpor langsung oleh Node: hanya sintaks TypeScript yang bisa dihapus, impor relatif berakhiran `.ts`.
 - Zod diimpor dari `astro/zod`.
+- Jalankan Claude Code dari root repo. Hook memakai `${CLAUDE_PROJECT_DIR}`, yang mengikuti folder tempat sesi dimulai; dari subfolder, hook tidak menemukan skripnya dan perlindungan file tidak berjalan.
 - Rujukan antarhalaman memakai ID (`python`, `python/variabel-tipe-data`), bukan path atau URL.
 
 ## Menulis konten
