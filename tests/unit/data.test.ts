@@ -59,6 +59,23 @@ test('ada 18 domain dengan id unik dan urutan 1–18', () => {
   expect(domains.map((d) => d.order)).toEqual(Array.from({ length: 18 }, (_, i) => i + 1));
 });
 
+test('setiap domain punya description 1–200 karakter', () => {
+  const raw = load('domains.yaml') as { id: string; description?: unknown }[];
+  for (const d of raw) {
+    expect(typeof d.description, d.id).toBe('string');
+    const length = (d.description as string).length;
+    expect(length, d.id).toBeGreaterThanOrEqual(1);
+    expect(length, d.id).toBeLessThanOrEqual(200);
+  }
+});
+
+test('skema domain menolak domain tanpa description', () => {
+  const { description: _d, ...rest } = domains[0]!;
+  expect(domainSchema.safeParse(rest).success).toBe(false);
+  expect(domainSchema.safeParse({ ...rest, description: '' }).success).toBe(false);
+  expect(domainSchema.safeParse({ ...rest, description: 'x'.repeat(201) }).success).toBe(false);
+});
+
 test('batas kedaluwarsa 3 bulan hanya untuk web-frontend, genai, dan cloud', () => {
   const fast = domains.filter((d) => d.freshnessMonths === 3).map((d) => d.id);
   expect(fast.sort()).toEqual(['cloud', 'genai', 'web-frontend']);

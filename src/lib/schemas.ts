@@ -22,11 +22,14 @@ export const ADOPTIONS = ['arus-utama', 'mapan', 'berkembang', 'khusus', 'warisa
 export const TRENDS = ['naik', 'stabil', 'turun'] as const;
 export const TEMPLATE_IDS = ['A', 'B', 'C', 'D', 'E'] as const;
 export const VERSION_SOURCE_KINDS = ['npm', 'pypi', 'crates', 'maven', 'github'] as const;
+export const DOWNLOAD_REGISTRIES = ['npm', 'pypi', 'crates'] as const;
 
 /** Teknologi uji: hanya ikut dibangun bila DEVMECUM_FIXTURES=1. */
 export const FIXTURE_TECH = 'uji-komponen';
 
 export const SLUG_RE = /^[a-z0-9]+(-[a-z0-9]+)*$/;
+
+const OWNER_REPO_RE = /^[^/\s]+\/[^/\s]+$/;
 
 const slug = z.string().regex(SLUG_RE, 'Slug hanya boleh huruf kecil, angka, dan tanda hubung');
 
@@ -49,11 +52,23 @@ const dateField = z.preprocess(
   z.date({ error: 'Tanggal harus berbentuk YYYY-MM-DD dan ada di kalender' }),
 );
 
+/** Jumlah grup tangkapan (termasuk grup bernama); null bila pola tidak bisa dikompilasi. */
+function captureGroups(pattern: string): number | null {
+  try {
+    // Menambah `|` membuat pola selalu cocok dengan teks kosong, sehingga
+    // panjang hasil exec = jumlah grup + 1, tanpa menebak sintaks pola.
+    return (new RegExp(`${pattern}|`).exec('')?.length ?? 1) - 1;
+  } catch {
+    return null;
+  }
+}
+
 const versionSourceSchema = z
   .strictObject({
     kind: z.enum(VERSION_SOURCE_KINDS),
     name: z.string().min(1).optional(),
-    repo: z.string().regex(/^[^/\s]+\/[^/\s]+$/, 'repo harus berbentuk pemilik/nama').optional(),
+    repo: z.string().regex(OWNER_REPO_RE, 'repo harus berbentuk pemilik/nama').optional(),
+    tagPattern: z.string().min(1).optional(),
   })
   .superRefine((source, ctx) => {
     if (source.kind === 'github' && !source.repo) {
@@ -62,48 +77,78 @@ const versionSourceSchema = z
     if (source.kind !== 'github' && !source.name) {
       ctx.addIssue({ code: 'custom', message: `versionSource ${source.kind} butuh \`name\``, path: ['name'] });
     }
+    if (source.tagPattern === undefined) return;
+    if (source.kind !== 'github') {
+      ctx.addIssue({ code: 'custom', message: '`tagPattern` hanya untuk versionSource github', path: ['tagPattern'] });
+      return;
+    }
+    const groups = captureGroups(source.tagPattern);
+    if (groups === null) {
+      ctx.addIssue({ code: 'custom', message: '`tagPattern` bukan regex yang sah', path: ['tagPattern'] });
+    } else if (groups < 1) {
+      ctx.addIssue({
+        code: 'custom',
+        message: '`tagPattern` butuh minimal satu grup tangkapan, misalnya ^v(\d+)\.(\d+)$',
+        path: ['tagPattern'],
+      });
+    }
   });
 
-export const techSchema = z.strictObject({
-  name: z.string().min(1),
-  slug,
-  type: z.enum(TECH_TYPES),
-  domain: slug,
-  template: z.enum(TEMPLATE_IDS),
-  creator: z.string().min(1).optional(),
-  firstRelease: z.number().int().min(1940).max(2100).optional(),
-  license: z.string().min(1).optional(),
-  website: httpsUrl,
-  docs: httpsUrl,
-  latestVersion: versionString,
-  versionSource: versionSourceSchema,
-  requires: z.array(z.string()),
-  alternatives: z.array(z.string()),
-  tags: z.array(z.string().min(1)),
-  adoption: z.enum(ADOPTIONS).optional(),
-  trend: z.enum(TRENDS).optional(),
-  metrics: z
-    .strictObject({
-      github: z.strictObject({ repo: z.string().min(1) }).optional(),
-      downloads: z.strictObject({ registry: z.string().min(1), name: z.string().min(1) }).optional(),
-    })
-    .optional(),
-  surveys: z
-    .array(
-      z.strictObject({
-        name: z.string().min(1),
-        year: z.number().int(),
-        value: z.string().min(1),
-        url: httpsUrl,
-      }),
-    )
-    .optional(),
-  useCases: z.array(z.string().min(1)),
-});
+export const techSchema = z
+  .strictObject({
+    name: z.string().min(1),
+    slug,
+    type: z.enum(TECH_TYPES),
+    domain: slug,
+    template: z.enum(TEMPLATE_IDS),
+    creator: z.string().min(1).optional(),
+    firstRelease: z.number().int().min(1940).max(2100).optional(),
+    license: z.string().min(1).optional(),
+    website: httpsUrl,
+    docs: httpsUrl,
+    latestVersion: versionString.optional(),
+    versionSource: versionSourceSchema.optional(),
+    requires: z.array(z.string()),
+    alternatives: z.array(z.string()),
+    tags: z.array(z.string().min(1)),
+    adoption: z.enum(ADOPTIONS).optional(),
+    trend: z.enum(TRENDS).optional(),
+    metrics: z
+      .strictObject({
+        github: z
+          .strictObject({ repo: z.string().regex(OWNER_REPO_RE, 'repo harus berbentuk pemilik/nama') })
+          .optional(),
+        downloads: z
+          .strictObject({ registry: z.enum(DOWNLOAD_REGISTRIES), name: z.string().min(1) })
+          .optional(),
+      })
+      .optional(),
+    surveys: z
+      .array(
+        z.strictObject({
+          name: z.string().min(1),
+          year: z.number().int(),
+          value: z.string().min(1),
+          url: httpsUrl,
+        }),
+      )
+      .optional(),
+    useCases: z.array(z.string().min(1)),
+  })
+  .superRefine((tech, ctx) => {
+    if (tech.versionSource !== undefined && tech.latestVersion === undefined) {
+      ctx.addIssue({
+        code: 'custom',
+        message: 'latestVersion wajib bila versionSource ada',
+        path: ['latestVersion'],
+      });
+    }
+  });
 
 export const domainSchema = z.strictObject({
   id: slug,
   name: z.string().min(1),
+  description: z.string().min(1).max(200),
   order: z.number().int().min(1),
   freshnessMonths: z.union([z.literal(3), z.literal(6)]),
 });
@@ -198,6 +243,12 @@ export const materiSchema = z
   .superRefine(refinePage);
 
 export type Level = (typeof LEVELS)[number];
+export type TechType = (typeof TECH_TYPES)[number];
+export type TemplateId = (typeof TEMPLATE_IDS)[number];
+export type Adoption = (typeof ADOPTIONS)[number];
+export type Trend = (typeof TRENDS)[number];
+export type DownloadRegistry = (typeof DOWNLOAD_REGISTRIES)[number];
+export type VersionSource = z.infer<typeof versionSourceSchema>;
 export type Tech = z.infer<typeof techSchema>;
 export type Domain = z.infer<typeof domainSchema>;
 export type Template = z.infer<typeof templateSchema>;

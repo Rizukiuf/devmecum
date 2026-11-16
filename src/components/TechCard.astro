@@ -26,7 +26,7 @@ const hostOf = (url: string) => new URL(url).host.replace(/^www\./, '');
     {tech.license && <div><dt>Lisensi</dt><dd>{tech.license}</dd></div>}
     <div><dt>Situs resmi</dt><dd><a href={tech.website}>{hostOf(tech.website)}</a></dd></div>
     <div><dt>Dokumentasi</dt><dd><a href={tech.docs}>{hostOf(tech.docs)}</a></dd></div>
-    <div><dt>Versi terbaru</dt><dd>{tech.latestVersion}</dd></div>
+    {tech.latestVersion && <div><dt>Versi terbaru</dt><dd>{tech.latestVersion}</dd></div>}
     <div><dt>Kematangan</dt><dd><StageBadge stage={stage} /></dd></div>
     {
       requires.length > 0 && (
