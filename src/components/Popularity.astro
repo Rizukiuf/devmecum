@@ -1,7 +1,9 @@
 ---
 // Bintang GitHub dan unduhan paket satu teknologi, dari data yang diambil saat
 // deploy. Tanpa data tidak merender apa pun. Bentuk bawaan: baris untuk <dl>
-// kartu data; `compact`: satu baris ringkas untuk kartu katalog.
+// kartu data; `compact`: satu baris ringkas untuk kartu katalog. Angkanya berubah
+// tiap deploy dan berulang di banyak halaman, jadi tidak diindeks Pagefind
+// (`data-pagefind-ignore`, sengaja).
 import { getMetrics } from '../lib/data.ts';
 import { formatDate } from '../lib/freshness.ts';
 import { formatCompact } from '../lib/metrics.ts';
@@ -31,7 +33,7 @@ const summary = [
 {
   compact
     ? summary.length > 0 && (
-        <p class="dm-catalog-meta dm-popularity">
+        <p class="dm-catalog-meta dm-popularity" data-pagefind-ignore>
           {summary.map((item, index) => (
             <>
               {index > 0 && ' · '}
@@ -45,7 +47,7 @@ const summary = [
     : (
         <>
           {github && (
-            <div class="dm-popularity">
+            <div class="dm-popularity" data-pagefind-ignore>
               <dt>Bintang GitHub</dt>
               <dd>
                 {formatCompact(github.stars)} <small>{dateOf(github.date)}</small>
@@ -53,7 +55,7 @@ const summary = [
             </div>
           )}
           {downloads && (
-            <div class="dm-popularity">
+            <div class="dm-popularity" data-pagefind-ignore>
               <dt>{label}</dt>
               <dd>
                 {formatCompact(downloads.value)} <small>{dateOf(downloads.date)}</small>

@@ -2,6 +2,11 @@
 // Kartu satu teknologi di katalog dan halaman domain. Atribut `data-*` dibaca
 // filter katalog di browser; atribut adopsi dan tren dihilangkan bila datanya
 // kosong, dan `data-tags` berisi larik JSON (tag boleh berspasi). Teknologi tingkat 0 tidak punya halaman, jadi judulnya bukan tautan.
+//
+// Lencana, tautan, dan popularitas sengaja `data-pagefind-ignore`: halaman katalog
+// dan domain tetap diindeks (satu-satunya hasil untuk teknologi tingkat 0), tetapi
+// kata yang berulang di ratusan kartu ("Situs resmi", "Dokumentasi", label tingkat)
+// hanya menjadi derau di hasil pencarian.
 import type { CatalogEntry } from '../lib/catalog.ts';
 import { TYPE_LABELS } from '../lib/labels.ts';
 import AdoptionBadge from './AdoptionBadge.astro';
@@ -27,7 +32,7 @@ const meta = [TYPE_LABELS[entry.type], entry.domainName, entry.latestVersion].fi
   data-tags={JSON.stringify(entry.tags)}
 >
   <h3>{entry.href ? <a href={entry.href}>{entry.name}</a> : entry.name}</h3>
-  <p class="dm-catalog-badges">
+  <p class="dm-catalog-badges" data-pagefind-ignore>
     <StageBadge stage={entry.stage} />
     {entry.adoption && <AdoptionBadge adoption={entry.adoption} />}
     {entry.trend && <TrendBadge trend={entry.trend} />}
@@ -41,7 +46,7 @@ const meta = [TYPE_LABELS[entry.type], entry.domainName, entry.latestVersion].fi
       </ul>
     )
   }
-  <p class="dm-catalog-links">
+  <p class="dm-catalog-links" data-pagefind-ignore>
     <a href={entry.website}>Situs resmi</a>
     <a href={entry.docs}>Dokumentasi</a>
   </p>

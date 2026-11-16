@@ -263,3 +263,13 @@ test('formulir tampil sebelum skrip filter jalan: kisi kartu tidak bergeser (CLS
   expect(new Set(tops).size, `posisi atas kisi: ${tops.join(', ')}`).toBe(1);
   expect(shift).toBe(0);
 });
+
+test('lencana, tautan, dan popularitas kartu tidak diindeks Pagefind (derau berulang)', async ({ page }) => {
+  await page.goto(URL);
+  const total = await page.locator(CARD).count();
+  await expect(page.locator(`${CARD} .dm-catalog-links[data-pagefind-ignore]`)).toHaveCount(total);
+  await expect(page.locator(`${CARD} .dm-catalog-badges[data-pagefind-ignore]`)).toHaveCount(total);
+  await expect(page.locator(`${CARD} .dm-popularity:not([data-pagefind-ignore])`)).toHaveCount(0);
+  // Halaman katalog sendiri tetap diindeks.
+  await expect(page.locator('[data-pagefind-body]')).toHaveCount(1);
+});
