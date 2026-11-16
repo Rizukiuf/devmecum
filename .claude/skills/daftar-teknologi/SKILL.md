@@ -14,7 +14,7 @@ Bahannya:
 - `docs/panduan-menulis.md` §5: aturan sumber.
 - Skema: `techSchema` di `src/lib/schemas.ts`. Urutan kolom mengikuti kerangka `pnpm new-tech`. Jangan meniru `src/data/tech/python.yaml`: tidak punya `adoption`/`trend` berkomentar bukti, dan `versionSource`-nya tanpa `tagPattern` tidak memenuhi aturan skill ini (`releases/latest` repo itu 404).
 
-Contoh berkas jadi. Ini **hanya bentuk**: isi nyata harus dari sumber yang kamu buka sendiri. Nilai seperti `latestVersion` nyata tetapi bisa sudah usang: **jangan menyalin versinya**; tulis `latestVersion: "0"` dan biarkan `pnpm versions --write` (langkah 4) mengisinya. Penanda `<…>` pada `adoption` dan `trend` wajib diganti (jangan disalin mentah):
+Contoh berkas jadi. Ini **hanya bentuk**: isi nyata harus dari sumber yang kamu buka sendiri. Nilai seperti `latestVersion` di bawah adalah hasil alat dan bisa sudah usang: **jangan menyalin versinya**; tulis `latestVersion: "0"` dan biarkan `pnpm versions --write` (langkah 4) mengisinya. Penanda `<…>` pada `adoption` dan `trend` wajib diganti (jangan disalin mentah):
 
 ```yaml
 name: Go
@@ -88,7 +88,7 @@ useCases:
    - Bila sumber versi tetap tak bisa dibuat benar padahal `website` dan `docs` pasti (produk tertutup, layanan cloud, proyek di luar lima jenis sumber), hapus `versionSource` dan `latestVersion`, daftarkan entrinya, dan laporkan "tanpa pemantau versi" beserta sebabnya. Hapus **berkas** hanya untuk entri yang sumber resminya (`website`/`docs`) tak jelas.
    - Hanya `github` tanpa `tagPattern` memakai API GitHub, yang tanpa token dibatasi sekitar 60 permintaan per jam; dengan `tagPattern`, tag dibaca lewat `git ls-remote` (tanpa kuota API). Registri lain dibaca lewat HTTP biasa. Bila `GITHUB_TOKEN` terpasang, alat memakainya; jangan mencetak atau menulis isinya.
 5. **Validasi.**
-   - **Cek sisa kerangka.** Entri `gagal` tetap memuat `latestVersion: "0"` dan kerangka berisi `useCases: - GANTI` tetap lolos `pnpm validate`, jadi validasi saja tidak cukup. Dengan alat Grep (path `src/data/tech`, pola `^latestVersion: "0"|GANTI|^#|<[A-Za-z]|^tags: \[\]`) hasilnya harus kosong untuk berkas yang kamu sentuh (di PowerShell: `Select-String -CaseSensitive -Path src/data/tech/*.yaml -Pattern '^latestVersion: "0"|GANTI|^#|<[A-Za-z]|^tags: \[\]'`; berkas `uji-*` dan teknologi lain boleh muncul, abaikan). Pola `^#` hanya menangkap baris yang seluruhnya komentar, yaitu sisa kerangka (`# creator: GANTI`, `# license: MIT`, `# metrics:` …); komentar sah (`# sumber:`, bukti, `# dari …`) selalu menempel di belakang nilai, jadi tidak ikut tertangkap. Pola `<[A-Za-z]` menangkap penanda `<TULIS …>` yang belum diganti. Bila yang tertangkap teks sah di `useCases` atau `tags` (mis. `List<T>`), periksa konteksnya; tulis ulang frasanya tanpa tanda `<` bila mudah, atau biarkan dan sebut di laporan. Pastikan juga `useCases` berisi 2–4 butir.
+   - **Cek sisa kerangka.** Entri `gagal` tetap memuat `latestVersion: "0"` dan kerangka berisi `useCases: - GANTI` tetap lolos `pnpm validate`, jadi validasi saja tidak cukup. Dengan alat Grep (path `src/data/tech`, pola `^latestVersion: "0"|GANTI|^#|<[A-Za-z]|^tags: \[\]`) hasilnya harus kosong untuk berkas yang kamu sentuh (di PowerShell: `Select-String -CaseSensitive -Path src/data/tech/*.yaml -Pattern '^latestVersion: "0"|GANTI|^#|<[A-Za-z]|^tags: \[\]'`; berkas `uji-*` dan teknologi lain boleh muncul, abaikan). Pola `^#` hanya menangkap baris yang seluruhnya komentar, yaitu sisa kerangka (`# creator: GANTI`, `# license: MIT`, `# metrics:` …); komentar sah (`# sumber:`, bukti, `# dari …`) selalu menempel di belakang nilai, jadi tidak ikut tertangkap. Pola `<[A-Za-z]` menangkap penanda `<TULIS …>` yang belum diganti. Bila yang tertangkap teks sah di `useCases`, `tags`, atau `tagPattern` (mis. `List<T>`, `(?<major>…)`), periksa konteksnya; tulis ulang frasanya tanpa tanda `<` bila mudah, atau biarkan dan sebut di laporan. Pastikan juga `useCases` berisi 2–4 butir.
    - Bila PR menyentuh `src/content/docs/index.mdx` atau menambah banyak entri, jalankan juga `pnpm build` (dan `pnpm test:e2e` bila relevan) sebelum selesai: entri baru mengubah halaman katalog, dan tautan di beranda diperiksa saat build.
    - `pnpm validate` tanpa **galat**. Peringatan tentang `alternatives` ke slug yang belum terdaftar dan tentang `adoption`/`trend` yang belum dinilai bersifat sementara (nanti menjadi galat), jadi tetap diisi sebenar mungkin; peringatan lain ditelusuri dulu.
    - `pnpm links src/data/tech/<slug>.yaml …` (berkas yang baru dibuat, dalam satu perintah; jangan dua perintah `pnpm links` bersamaan; hanya `website`, `docs`, dan `surveys[].url` yang diperiksa): tanpa tautan `mati`. Perintah ini keluar 1 bila ada yang `mati`; itu temuan yang harus diperbaiki, bukan galat alat. `mati` berarti URL salah: ganti dengan URL resmi yang benar. `pindah` perbarui ke tujuan barunya. `tak-pasti` (situs memblokir bot, batas laju) bukan kegagalan, tetapi buka tautannya sekali untuk memastikan benar.
@@ -104,7 +104,7 @@ useCases:
 
 ## Melengkapi entri lama
 
-Hanya bila diminta. Untuk menyegarkan versi entri yang sudah terdaftar dengan komentar standar `# dari … per <tanggal>`, ganti `latestVersion` menjadi `"0"` lalu jalankan `pnpm versions <slug> --write`, dan cocokkan hasilnya seperti langkah 4. Bila versinya sudah sama, alat melapor `mutakhir` dan tidak mengubah berkasnya (komentar lama tetap).
+Hanya bila diminta. Untuk menyegarkan versi entri yang sudah terdaftar dengan komentar standar `# dari … per <tanggal>`, ganti `latestVersion` menjadi `"0"` lalu jalankan `pnpm versions <slug> --write`, dan cocokkan hasilnya seperti langkah 4. Penyemaian `"0"` perlu karena tanpanya, versi yang sudah sama hanya dilapor `mutakhir` dan komentar lama tidak diperbarui. Bila hasilnya `gagal` atau versinya tak cocok dengan halaman resmi, kembalikan baris semula (`git restore src/data/tech/<slug>.yaml`, hanya untuk berkas yang kamu sentuh pada run ini) dan laporkan; jangan tinggalkan `"0"`. Selesai dengan cek sisa langkah 5 (`^latestVersion: "0"` harus kosong).
 
 ## Bila izin ditolak
 
@@ -118,9 +118,9 @@ Pekerjaan ini butuh akses web (WebFetch, WebSearch), penyuntingan berkas, shell,
 --allowedTools "WebFetch" "WebSearch" "Edit(src/data/tech/*)" "Write(src/data/tech/*)" \
   "PowerShell(pnpm new-tech *)" "PowerShell(pnpm versions *)" "PowerShell(pnpm links *)" "PowerShell(pnpm validate *)" \
   "PowerShell(git switch *)" "PowerShell(git add *)" "PowerShell(git commit *)" \
-  "PowerShell(Remove-Item src/data/tech/*)" \
+  "PowerShell(Remove-Item src/data/tech/*)" "PowerShell(git restore src/data/tech/*)" \
   "Bash(pnpm new-tech *)" "Bash(pnpm versions *)" "Bash(pnpm links *)" "Bash(pnpm validate *)" \
   "Bash(git switch *)" "Bash(git add *)" "Bash(git commit *)" \
-  "Bash(rm src/data/tech/*)" \
+  "Bash(rm src/data/tech/*)" "Bash(git restore src/data/tech/*)" \
   --disallowedTools "Bash(git push *)" "PowerShell(git push *)"
 ```

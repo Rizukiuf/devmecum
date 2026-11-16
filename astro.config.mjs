@@ -42,6 +42,8 @@ export default defineConfig({
       // Validator hanya mengenal halaman konten Starlight; halaman kustom di
       // `src/pages` (katalog.astro) ia tolak sebagai "invalid link to custom page".
       // Daftarkan di `exclude` hanya rute kustom yang ditautkan dari konten.
+      // Pola dicocokkan persis dengan tautan seperti ditulis di konten: tulis `/katalog/`
+      // lengkap dengan garis miring penutup, tanpa `#anchor`.
       plugins: [starlightLinksValidator({ exclude: ['/katalog/'] })],
       // Tautan ke GitHub hanya aktif bila repositorinya publik.
       editLink: site.repo.public
