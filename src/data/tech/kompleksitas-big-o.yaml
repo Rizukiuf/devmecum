@@ -1,0 +1,16 @@
+name: Kompleksitas (Big-O)
+slug: kompleksitas-big-o
+type: concept
+domain: fondasi
+template: E
+website: https://xlinux.nist.gov/dads/HTML/bigOnotation.html
+docs: https://xlinux.nist.gov/dads/HTML/bigOnotation.html
+requires: []
+alternatives: []
+tags: [algoritma, efisiensi, analisis]
+adoption: mapan # bawaan rubrik: konsep fondasi tanpa bukti kuantitatif; rujukan NIST DADS https://xlinux.nist.gov/dads/HTML/bigOnotation.html
+trend: stabil # bawaan rubrik: konsep tanpa bukti kuantitatif dua titik data
+useCases:
+  - membandingkan efisiensi algoritma
+  - memilih struktur data yang tepat
+  - memperkirakan kinerja saat data membesar

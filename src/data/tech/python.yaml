@@ -3,16 +3,18 @@ slug: python
 type: language
 domain: bahasa
 template: A
-creator: Guido van Rossum
-firstRelease: 1991
+creator: Guido van Rossum # sumber: https://docs.python.org/3/license.html
+firstRelease: 1991 # sumber: https://docs.python.org/3/faq/general.html ("In February 1991, after just over a year of development, I decided to post to USENET.")
 license: PSF-2.0
 website: https://www.python.org
 docs: https://docs.python.org/3/
-latestVersion: "3.15.2" # dari https://www.python.org/downloads/ per 15 November 2026
-versionSource: { kind: github, repo: python/cpython }
+latestVersion: "3.15.2" # dari GitHub python/cpython (tag) per 16 November 2026
+versionSource: { kind: github, repo: python/cpython, tagPattern: '^v(\d+)\.(\d+)\.(\d+)$' }
 requires: []
 alternatives: [javascript, ruby, go]
 tags: [serbaguna, scripting, data, otomasi]
+adoption: arus-utama # SO Survey 2026: 58,0% responden, peringkat 4; https://survey.stackoverflow.co/2026/technology/data/languages
+trend: stabil # SO Survey: 57,9% (2025) -> 58,0% (2026), perubahan < 2 poin; https://survey.stackoverflow.co/2025/technology
 useCases:
   - otomasi dan scripting
   - analisis data dan machine learning
